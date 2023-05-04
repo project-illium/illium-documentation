@@ -101,7 +101,7 @@ message MintTransaction {
     repeated Output outputs   = 5;
     uint64 fee                = 6;
     repeated bytes nullifiers = 7;
-    bytes txo_root            = 8;
+    bytes txoc_root           = 8;
     bytes mint_key            = 9;
     int64 locktime            = 10;
     bytes signature           = 11;
