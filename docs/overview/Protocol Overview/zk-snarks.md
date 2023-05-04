@@ -73,7 +73,5 @@ At this point the prover would share the `proof` and `publicParams` with the ver
 
 And finally, on line 3 the verifier would verify the proof using the `verifyingKey` and the `publicParams`.
 
-That's all there is to it. If you understand digital signatures you should have no trouble understanding zk-snarks,
-at least from this high level.
-
+That's all there is to it. See that wasn't so bad!
 

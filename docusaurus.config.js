@@ -68,6 +68,7 @@ const config = {
             sidebarId: 'tutorialSidebar',
             position: 'left',
             label: 'Overview',
+            href: "/docs/overview/Protocol%20Overview/introduction"
           },
           {
             type: 'docSidebar',
