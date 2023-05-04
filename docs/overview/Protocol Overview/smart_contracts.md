@@ -41,9 +41,11 @@ transaction validation lurk program to accept the private and public parameters 
 func ValidateUnlockingScript(script []byte, scriptParams [][]byte, locktime int64, priv PrivateParams, pub PublicParams) bool
 ```
 
-This is a form of *transaction introspection*. The private and public parameters contains all the information, both
+This is a form of *transaction introspection*. The private and public parameters contain all the information, both
 public and private, about the transaction being validated. This allows the unlocking script to inspect the relevant
 parts of the transaction and to make a decision to unlock or not based on what data the transaction includes.
+
+## Smart Contracts
 
 From this we can enforce a covenant and start building something that looks like a smart contract (again we are writting
 this is Go for readability, but in practice this would be written in lurk):
@@ -78,23 +80,20 @@ This contract could read and mutate state if it wanted to:
 ```go
 func Unlock(scriptParams [][]byte, locktime int64, priv PrivateParams, pub PublicParams) {
 	
-	var (
-	    state = priv.Inputs[0].State
-	    newState []byte
-	)
+	state := priv.Inputs[0].State
 	
 	switch scriptParams[0] {
 	case 0x00: 
-		newState = Method0(state)
+		state = Method0(state)
     case 0x01:
         Method1()
 	case 0x02:
 		Method2()
 	}
-	
-	if newState != nil && !bytes.Equal(newState, priv.Outputs[0].State) {
-		return false
-	}
+
+    if !bytes.Equal(state, priv.Outputs[0].State) {
+        return false
+    }
 	
 	if !bytes.Equal(priv.Outputs[0].ScriptHash, priv.Inputs[0].ScriptHash) {
 		return false
@@ -113,7 +112,6 @@ func Unlock(scriptParams [][]byte, locktime int64, priv PrivateParams, pub Publi
 
     var (
         state = priv.Inputs[1].State
-        newState []byte
         contract2ScriptHash = []byte{//some script hash}
     )
     
@@ -122,14 +120,14 @@ func Unlock(scriptParams [][]byte, locktime int64, priv PrivateParams, pub Publi
         if !bytes.Equal(priv.Inputs[1].ScriptHash, contract2ScriptHash) {
             return false
         }
-        newState = Method0(state)
+        state = Method0(state)
     case 0x01:
         Method1()
     case 0x02:
         Method2()
     }
-        
-    if newState != nil && !bytes.Equal(newState, priv.Outputs[0].State) {
+
+    if !bytes.Equal(state, priv.Outputs[0].State) {
         return false
     }
     
@@ -145,12 +143,12 @@ a covenant that `contract2` must also be an input to the same transaction. Furth
 and uses it as an input for its own computation.
 
 All told anything that could be done with smart contracts on Ethereum, say, can also be done in illium. While a UTXO-based
-system like illium is a little more complex to reasonable than an account-based system like Ethereum, the complexity 
+system like illium is a little more complex to reason about than an account-based system like Ethereum, the complexity 
 could be abstracted away by a purpose-built smart contract IDE. 
 
 There is just one caveat to all this. Unlike Ethereum, where the time it takes to verify a smart contract transaction
 grows with the complexity of the contract, in illium the verification is constant time! This means that complex smart
-contracts take no longer to verify than ordinary transaction. This is not only good for privacy, but also for scalability. 
+contracts take no longer to verify than ordinary transfers. This is not only good for privacy, but also for scalability. 
 
 The tradeoff here, however, is the more complex the smart contract, the more time it takes to create the proof for the
 transaction. So the CPU time ends up being offloaded onto the prover (those creating the transactions) rather than the
