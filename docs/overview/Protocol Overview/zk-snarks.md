@@ -1,0 +1,79 @@
+---
+sidebar_position: 2
+---
+
+# zk-snarks
+
+Before we can dive into the Illium protocol we need to get our heads around zk-snarks. Don't worry, while the math
+behind zk-snarks is super difficult to understand, you don't need to know any math to get a high level overview of
+what they are and what they do. 
+
+In a nutshell zk-snarks are programmatic cryptographic proofs that allow us to prove just about any statement we desire. 
+
+Consider something you're likely already familiar with:
+
+## Digital Signatures
+
+Digital signatures could be thought of as a very specific type of zero knowledge proof. A prover can sign a message
+using his private key and a verifier can verify the signature by checking it against the prover's 
+public key. In code we might make use of digital signatures as follows:
+
+```go
+privateKey, publicKey := GenerateKeyPair()
+
+message := "hello world"
+
+signature := Sign(privateKey, message)
+
+valid := Verify(publicKey, message, signature)
+```
+
+Here the `Sign()` and `Verify()` functions are hiding all the complexity of the elliptic curve math behind the digital
+signature but all you really need to know is what they do. 
+
+Zk-snarks are just as easy to understand from this high level.
+
+## Back to zk-snarks
+
+Consider a function in code that looks like the following:
+
+```go
+func foobar(privateParams, publicParams) bool {
+	// Some code here
+}
+```
+
+In the above code block we have a function, which we're calling `foobar`, that takes in two sets of parameters, one
+private and one public, and returns a boolean (either true or false). The body of our function could be anything we want
+it to be. 
+
+Once we define the function body, zk-snarks allow us
+to prove that we know some combination of private and public parameters that make the function return `True` *without*
+revealing the private parameters (we will reveal the public parameters).
+
+In this sense we can create a zero-knowledge proof for just about any statement we can write in code. 
+
+Let's see what this might look like in code:
+
+```go
+provingKey, verifyingKey := Compile(foobar)
+
+proof := Prove(provingKey, privateParams, publicParams)
+
+valid := Verify(verifyingKey, publicParams, proof)
+```
+
+In the first line we "compile" the `foobar` function and produce a keypair which is cryptographically linked to our
+`foobar` function. When used in production both the prover and verifier would have prior agreement on the body of the
+`foobar` function and could independently calculate the keypair.
+
+In the second line the prover creates a proof using the `provingKey` and the private and public parameters. 
+
+At this point the prover would share the `proof` and `publicParams` with the verifier. 
+
+And finally, on line 3 the verifier would verify the proof using the `verifyingKey` and the `publicParams`.
+
+That's all there is to it. If you understand digital signatures you should have no trouble understanding zk-snarks,
+at least from this high level.
+
+
