@@ -81,6 +81,7 @@ const config = {
             sidebarId: 'tutorialSidebar',
             position: 'left',
             label: 'Node',
+            href: "/docs/node/running_a_node"
           },
           {
             type: 'docSidebar',
