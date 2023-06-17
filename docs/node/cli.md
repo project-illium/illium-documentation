@@ -66,6 +66,7 @@ Available commands:
   getaccumulatorcheckpoint    Returns the accumulator at the requested height
   getaddress                  Returns the most recent address of the wallet
   getaddresses                Returns all the addresses created by this wallet
+  getaddrinfo                 Returns info about the given address
   getbalance                  Returns the combined balance of all addresses in the wallet
   getblock                    Returns the detailed data for a block
   getblockchaininfo           Returns data about the blockchain
