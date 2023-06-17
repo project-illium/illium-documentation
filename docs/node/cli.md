@@ -79,6 +79,7 @@ Available commands:
   getmerkleproof              Returns a Merkle (SPV) proof for a specific transaction in the provided block
   getminfeeperkilobyte        Returns the node's current minimum transaction fee
   getminstake                 Returns the node's current minimum stake policy
+  getnetworkkey               Returns node's network private key
   getnewaddress               Generates a new address and returns it
   getpeers                    Returns a list of peers that this node is connected to
   getprivatekey               Returns the serialized spend and view keys for the given address

@@ -59,6 +59,9 @@ Node Options:
       --coinbaseaddr=         An optional address to send all coinbase rewards
                               to. If this option is not used the wallet will
                               automatically select an internal address.
+      --networkkey=           A network key to use for this node. This will
+                              override the node's peer ID.
+
 
 Policy:
       --minfeeperkilobyte=    The minimum fee per kilobyte that the node will
