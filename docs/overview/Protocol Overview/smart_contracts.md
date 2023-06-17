@@ -16,7 +16,7 @@ we've already taked about.
 First, the output commitment preimage is modified to include a `state` field.
 
 ```go
-outputCommitment := blake2b(scriptHash, amount, state, salt)
+outputCommitment := blake2s(scriptHash, amount, state, salt)
 ```
 
 This makes it such that each output in the chain can now optionally have state attached to it, but the state will
@@ -38,7 +38,7 @@ Illium does have covenants. To enable this feature we have to modify the `Valida
 transaction validation lurk program to accept the private and public parameters as an input. 
 
 ```go
-func ValidateUnlockingScript(script []byte, scriptParams [][]byte, locktime int64, priv PrivateParams, pub PublicParams) bool
+func ValidateUnlockingScript(unlockingScript, input.UnlockingParams, pub.Locktime, PrivateParams, PublicParams) bool
 ```
 
 This is a form of *transaction introspection*. The private and public parameters contain all the information, both
@@ -51,8 +51,8 @@ From this we can enforce a covenant and start building something that looks like
 this is Go for readability, but in practice this would be written in lurk):
 
 ```go
-func Unlock(scriptParams [][]byte, locktime int64, priv PrivateParams, pub PublicParams) {
-	switch scriptParams[0] {
+func Unlock(unlockingParams input.UnlockingParams, locktime pub.Locktime, priv PrivateParams, pub PublicParams) {
+	switch unlockingParams[0] {
 	case 0x00: 
 		Method0()
     case 0x01:
@@ -78,11 +78,11 @@ methods to be called again by spending from the next output commitment.
 This contract could read and mutate state if it wanted to:
 
 ```go
-func Unlock(scriptParams [][]byte, locktime int64, priv PrivateParams, pub PublicParams) {
+func Unlock(unlockingParams input.UnlockingParams, locktime pub.Locktime, priv PrivateParams, pub PublicParams) {
 	
 	state := priv.Inputs[0].State
 	
-	switch scriptParams[0] {
+	switch unlockingParams[0] {
 	case 0x00: 
 		state = Method0(state)
     case 0x01:
@@ -91,7 +91,7 @@ func Unlock(scriptParams [][]byte, locktime int64, priv PrivateParams, pub Publi
 		Method2()
 	}
 
-    if !bytes.Equal(state, priv.Outputs[0].State) {
+    if !bytes.Equal(priv.Outputs[0].State, state) {
         return false
     }
 	
@@ -108,14 +108,14 @@ new state be saved in the output before enforcing the `ScriptHash` covenant and 
 Contracts could even interact with other contracts:
 
 ```go
-func Unlock(scriptParams [][]byte, locktime int64, priv PrivateParams, pub PublicParams) {
+func Unlock(unlockingParams input.UnlockingParams, locktime pub.Locktime, priv PrivateParams, pub PublicParams) {
 
     var (
         state = priv.Inputs[1].State
         contract2ScriptHash = []byte{//some script hash}
     )
     
-    switch scriptParams[0] {
+    switch unlockingParams[0] {
     case 0x00:
         if !bytes.Equal(priv.Inputs[1].ScriptHash, contract2ScriptHash) {
             return false
@@ -127,7 +127,7 @@ func Unlock(scriptParams [][]byte, locktime int64, priv PrivateParams, pub Publi
         Method2()
     }
 
-    if !bytes.Equal(state, priv.Outputs[0].State) {
+    if !bytes.Equal(priv.Outputs[0].State, state) {
         return false
     }
     

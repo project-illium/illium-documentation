@@ -6,7 +6,7 @@ sidebar_position: 4
 
 Bitcoin block headers contain a field called the `merkle root`. The merkle root is a compact cryptographic representation of 
 the transactions contained in the block. To build the tree the transactions are first hashed, then the hashes are paired
-together, concatenated and hashed again. This process is repeated for each layer of the tree until you have a single "root"
+together, concatenated, and hashed again. This process is repeated for each layer of the tree until you have a single "root"
 hash at the top of the tree as shown below.
 
 ![Merkle-Tree-1](/img/Merkle-Tree-1.png)
@@ -39,7 +39,7 @@ It works as follows. First, when we insert a new output commitment into the tree
 hashing:
 
 ```go
-hash := blake2b(index, outputCommitment)
+hash := blake2s(index, outputCommitment)
 ```
 
 This ensures that each hash in the tree is unique, even if the output commitment is not. 
@@ -55,7 +55,7 @@ If we were to add a fifth output commitment we would simply leave that output lo
 Now we have a tree with two "peaks". The "root" in this case would be hash of all the peaks:
 
 ```go
-root := blake2b(peak1, peak2)
+root := blake2s(peak1, peak2)
 ```
 
 If we add a sixth output commitment the second tree grows in size:
@@ -69,7 +69,7 @@ After a seventh output commitent we now have three peaks:
 Again, the root would be:
 
 ```go
-root := blake2b(peak1, peak2, peak3)
+root := blake2s(peak1, peak2, peak3)
 ```
 
 After adding an eighth output commitment into the tree, all the peaks merge back into a single peak:

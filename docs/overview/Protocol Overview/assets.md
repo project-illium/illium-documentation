@@ -12,7 +12,7 @@ To enable the token protocol we are going to once again modify our output commit
 `assetID` field.
 
 ```go
-outputCommitment := blake2b(scriptHash, amount, assetID, state, salt)
+outputCommitment := blake2s(scriptHash, amount, assetID, state, salt)
 ```
 
 For regular illium (ILX) transfers the `assetID` is just a zero byte array. For all other transfers it's the unique 
@@ -29,35 +29,36 @@ func ProveTransactionValidity(priv PrivateParams, pub PublicParams) bool {
 
 	for i, input := range priv.Inputs {
 		
-		h := blake2b(append(input.Index, input.Commitment...))
+		h := blake2s(append(input.Index, input.Commitment...))
 		
 		if !ValidateInclusionProof(h, input.InclusionProof, pub.TxocRoot) {
-			return false
+			    return false
 		}
 		
 		preimage := append(input.ScriptHash, input.Amount, in.AssetID, in.State, input.Salt)
-		if !bytes.Equal(input.Commitment, blake2b(preimage)) {
-			return false
+		if !bytes.Equal(input.Commitment, blake2s(preimage)) {
+			    return false
 		}
-		
-		if !bytes.Equal(input.ScriptHash, blake2b(input.UnlockingScript)) {
-			return false
-		}
-		
-		if !ValidateUnlockingScript(input.UnlockingScript, input.ScriptParams, pub.Locktime) {
-			return false
-		}
+
+        unlockingScirpt := append(input.ScriptCommitment, input.ScriptParams...)
+        if !bytes.Equal(input.ScriptHash, blake2s(unlockingScript)) {
+                return false
+        }
+
+        if !ValidateUnlockingScript(unlockingScript, input.UnlockingParams, pub.Locktime) {
+                return false
+        }
 
         if input.AssetID == ILX_ASSET_ID {
                 ilxInputTotal += input.Amount
         } else {
                 assetInputTotals[input.AssetID] += input.Amount
         }
-		
-		nullifier := blake2b(append(input.Index, input.Salt, input.UnlockingScript))
+
+        nullifier := blake2s(append(input.Index, input.Salt, unlockingScript))
 		
 		if !bytes.Equal(pub.Nullifiers[i], nullifier) {
-			return false
+			    return false
 		}
 	}
 	
@@ -66,8 +67,8 @@ func ProveTransactionValidity(priv PrivateParams, pub PublicParams) bool {
 	
 	for i, output : range priv.Outputs {
 		preimage := append(output.ScriptHash, output.Amount, output.AssetID, output.State, output.Salt)
-		if !bytes.Equal(pub.Outputs[i].Commitment, blake2b(preimage)) {
-			return false
+		if !bytes.Equal(pub.Outputs[i].Commitment, blake2s(preimage)) {
+			    return false
 		}
 		if output.AssetID == ILX_ASSET_ID {
                 ilxOutputTotal += output.Amount
@@ -77,12 +78,12 @@ func ProveTransactionValidity(priv PrivateParams, pub PublicParams) bool {
 	}
 	
 	if ilxOutputTotal + pub.Fee > ilxInputTotal {
-		return false
+		    return false
 	}
 	
 	for assetID, total := range assetOutputTotals {
 		if total > assetInputTotals[assetID] {
-			return false
+			    return false
         }
 	}
 	

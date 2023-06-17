@@ -87,6 +87,7 @@ const config = {
             sidebarId: 'tutorialSidebar',
             position: 'left',
             label: 'API',
+            href: "/docs/api/overview"
           },
           {
             href: 'https://github.com/facebook/docusaurus',
