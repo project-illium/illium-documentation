@@ -3,7 +3,7 @@ sidebar_position: 5
 ---
 # Data Messages
 
-```protobuf
+```go
 message MempoolTransaction {
     Transaction transaction = 1;
     // The time when the transaction was added too the pool.

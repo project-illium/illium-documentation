@@ -2,7 +2,7 @@
 sidebar_position: 2
 ---
 # Blockchain Service
-```protobuf
+```javascript
 service BlockchainService {
     // GetMempoolInfo returns the state of the current mempool
     rpc GetMempoolInfo(GetMempoolInfoRequest) returns (GetMempoolInfoResponse) {}
@@ -69,7 +69,7 @@ service BlockchainService {
 ```
 
 ### RPC Messages
-```protobuf
+```go
 message GetMempoolInfoRequest{}
 message GetMempoolInfoResponse {
     // The count of transactions in the mempool

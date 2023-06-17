@@ -3,7 +3,7 @@ sidebar_position: 4
 ---
 # Wallet Service
 
-```protobuf
+```javascript
 service WalletService {
     // GetBalance returns the combined balance of all addresses in the wallet
     rpc GetBalance(GetBalanceRequest) returns (GetBalanceResponse) {}
@@ -101,7 +101,7 @@ service WalletService {
 
 ### RPC Messages
 
-```protobuf
+```go
 message GetBalanceRequest {}
 message GetBalanceResponse {
     // Balance response

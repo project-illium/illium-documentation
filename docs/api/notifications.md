@@ -3,7 +3,7 @@ sidebar_position: 6
 ---
 # Notifications
 
-```protobuf
+```go
 message TransactionNotification {
     // State of the transaction acceptance.
     enum Type {

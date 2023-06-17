@@ -3,7 +3,7 @@ sidebar_position: 3
 ---
 # Node Service
 
-```protobuf
+```javascript
 service NodeService {
     // GetHostInfo returns info about the libp2p host
     rpc GetHostInfo(GetHostInfoRequest) returns (GetHostInfoResponse) {}
@@ -65,7 +65,7 @@ service NodeService {
 
 ### RPC Messages
 
-```protobuf
+```go
 message GetHostInfoRequest {}
 message GetHostInfoResponse {
     // The host peer ID
