@@ -62,6 +62,7 @@ Available commands:
   createmultisigspendkeypair  Generates a spend keypair for use in a multisig address
   createmultisigviewkeypair   Generates a view keypair for use in a multisig address
   createrawtransaction        Creates a new, unsigned (unproven) transaction using the given parameters
+  createrawstaketransaction   Creates a new, unsigned (unproven) stake transaction using the given parameters
   deleteprivatekeys           Deletes the wallet's private keys and seed from disk
   getaccumulatorcheckpoint    Returns the accumulator at the requested height
   getaddress                  Returns the most recent address of the wallet
