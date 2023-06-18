@@ -86,7 +86,7 @@ The DHT key used for the advertisement is:
 
 ```go
 relayKey := "/ilx/relaypeers"
-hash, _ := mh.Sum([]byte(relayKey), mh.SHA2_256, -1)
+hash, _ := multihash.Sum([]byte(relayKey), multihash.SHA2_256, -1)
 key := cid.NewCidV1(cid.Raw, hash)
 ```
 

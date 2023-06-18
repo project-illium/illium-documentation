@@ -18,8 +18,8 @@ const config = {
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
-  organizationName: 'facebook', // Usually your GitHub org/user name.
-  projectName: 'docusaurus', // Usually your repo name.
+  organizationName: 'project-illium', // Usually your GitHub org/user name.
+  projectName: 'illium', // Usually your repo name.
 
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
@@ -42,7 +42,7 @@ const config = {
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
           editUrl:
-            'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
+            'https://github.com/project-illium/illium-documentation',
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
@@ -92,7 +92,7 @@ const config = {
             href: "/docs/api/overview"
           },
           {
-            href: 'https://github.com/facebook/docusaurus',
+            href: 'https://github.com/project-illium/illium-documentation',
             label: 'GitHub',
             position: 'right',
           },
@@ -105,8 +105,8 @@ const config = {
             title: 'Docs',
             items: [
               {
-                label: 'Tutorial',
-                to: '/docs/intro',
+                label: 'Introduction',
+                to: '/docs/overview/Protocol%20Overview/introduction',
               },
             ],
           },
@@ -114,8 +114,8 @@ const config = {
             title: 'Community',
             items: [
               {
-                label: 'Stack Overflow',
-                href: 'https://stackoverflow.com/questions/tagged/docusaurus',
+                label: 'Reddit',
+                href: 'https://reddit.com/r/illium',
               },
               {
                 label: 'Discord',
@@ -132,12 +132,12 @@ const config = {
             items: [
               {
                 label: 'GitHub',
-                href: 'https://github.com/facebook/docusaurus',
+                href: 'https://github.com/project-illium',
               },
             ],
           },
         ],
-        copyright: `Copyright © ${new Date().getFullYear()} My Project, Inc. Built with Docusaurus.`,
+        copyright: `Copyright © ${new Date().getFullYear()} Project-Illium.`,
       },
       prism: {
         theme: lightCodeTheme,
