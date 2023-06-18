@@ -75,6 +75,7 @@ const config = {
             sidebarId: 'tutorialSidebar',
             position: 'left',
             label: 'Protocol Specification',
+            href: "/docs/protocol_spec/overview"
           },
           {
             type: 'docSidebar',
