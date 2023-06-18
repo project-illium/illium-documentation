@@ -62,6 +62,10 @@ Becoming a validator is extremely simple. The following steps will walk you thro
    success
    ```
    
+    **Note**: You may stake more than one utxo.
+
+    **Note2**: Keep your node up and running. You will not earn rewards of your node is off.
+   
 ### Earning rewards
 
 Rewards are distributed at the beginning of each new epoch (1-week period). The ilxd software will detect when the 

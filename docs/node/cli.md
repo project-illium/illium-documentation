@@ -103,11 +103,13 @@ Available commands:
   setminfeeperkilobyte        Sets the node's fee policy
   setminstake                 Sets the node's minimum stake policy
   setwalletpassphrase         Encrypts the wallet for the first time
+  signmessage                 Sign a message with the network key
   spend                       Sends coins from the wallet
   stake                       Stakes the selected wallet UTXOs and turns the node into a validator
   submittransaction           Validates a transaction and submits it to the network
   unblockpeer                 Removes a peer from the block list
   updatetreasurywhitelist     Adds or removes a transaction from the treasury whitelist
+  verifymessage               Verify a signed message
   walletlock                  Encrypts the wallet's private keys
   walletunlock                Decrypts the wallet seed and holds it in memory for the specified period of time
 ```

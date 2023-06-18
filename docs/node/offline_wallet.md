@@ -157,7 +157,7 @@ $ ./ilxd --networkkey=08011240dcd8b19d2cc66f0ec613d4b08b7d73682e2e11122c09959a2c
 
 **Note**: the network key is also derived from your wallet's mnemonic seed so backing up your seed also backs up your network key.
 
-Create a raw stake transactions
+Create a raw stake transaction
 
 ```
 $ ilxcli createrawstaketransaction --commitment=110d2d4a3516fd399c248972ff3b3268c856140f3587ffae9348e9b890d16e29 \

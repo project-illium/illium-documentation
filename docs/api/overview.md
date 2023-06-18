@@ -9,7 +9,7 @@ Ilxd offers a full-featured gRPC API which can be used to control the running fu
 wallet, act as a high-powered blockchain server, and even act as an indexed wallet server for lite wallets. 
 
 ### Running the rpc server
-By default, ilxd will start the blockchain service, node, service, and wallet service and only accept connections from
+By default, ilxd will start the blockchain service, node service, and wallet service and only accept connections from
 localhost.
 
 If you want to except external connections you will need to use the `grpclisten` command line option:
@@ -25,7 +25,7 @@ ilxd.conf:
 grpclisten=/ip4/0.0.0.0/tcp/5001
 ```
 
-If you want to disable the node server or the wallet server you can do so again with either a command line option:
+If you want to disable the node service or the wallet service you can do so again with either a command line option:
 
 ```
 --disablenodeservice
@@ -41,7 +41,7 @@ disablewalletservice=1
 ### TLS
 
 Grpc requires the use of TLS for all RPCs. On first startup, ilxd will generate a self-signed certificate and put it in the 
-node directory. 
+application directory. 
 
 On linux the default is:
 ```
