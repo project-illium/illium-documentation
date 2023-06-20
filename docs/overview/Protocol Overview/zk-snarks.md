@@ -14,9 +14,13 @@ Consider something you're likely already familiar with:
 
 ## Digital Signatures
 
-Digital signatures could be thought of as a very specific type of zero knowledge proof. A prover can sign a message
-using his private key and a verifier can verify the signature by checking it against the prover's 
-public key. In code we might make use of digital signatures as follows:
+Digital signatures and zero-knowledge proofs are fundamental concepts in cryptography. In a digital signature scheme, a signer uses their private key to sign a message. Anyone can verify the signature against the signer's public key, ensuring the authenticity and integrity of the message.
+
+On the other hand, a zero-knowledge proof allows a prover to demonstrate knowledge of a secret to a verifier, without revealing the secret itself.
+
+Both of these concepts are critical for secure communication and transaction verification in a variety of applications.
+
+In code we might make use of digital signatures as follows:
 
 ```go
 privateKey, publicKey := GenerateKeyPair()
