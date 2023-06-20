@@ -217,7 +217,7 @@ transaction's locktime is less than or equal to the block timestamp.
 Next we need to prove that this transaction is spending only the correct amount of coins. If we didn't do this it would
 be possible for a transaction to create coins out of thin air. 
 
-First let's add total up the input amounts:
+First let's add up the input amounts:
 
 ```go
 func ProveTransactionValidity(priv PrivateParams, pub PublicParams) bool {

@@ -90,7 +90,7 @@ $ ilxcli setautostakerewards -a true
 
 This setting persists even after the node is restarted.
 
-**Note**: The internal wallet must not be pruned and have access to the spend private keys to auto stake rewards.
+**Note**: The internal wallet must not be pruned or encrypted to auto stake rewards.
 
 ### Destaking
 
@@ -122,7 +122,7 @@ $ ilxcli spend --amount=105292150459298487 \
                --commitment=110d2d4a3516fd399c248972ff3b3268c856140f3587ffae9348e9b890d16e29
 ```
 
-**Note***: since you are allowed to stake multiple utxos, you must spend *all* your staked utxos to cease being a validator.
+**Note**: since you are allowed to stake multiple utxos, you must spend *all* your staked utxos to cease being a validator.
 
 ### Stake Expiration
 Stake automatically expires after a 26-week period. You can obviously re-stake your coins after expiration by executing the
