@@ -40,7 +40,7 @@ func ProveTransactionValidity(priv PrivateParams, pub PublicParams) bool {
 			    return false
 		}
 
-        unlockingScirpt := append(input.ScriptCommitment, input.ScriptParams...)
+        unlockingScript := append(input.ScriptCommitment, input.ScriptParams...)
         if !bytes.Equal(input.ScriptHash, blake2s(unlockingScript)) {
                 return false
         }
