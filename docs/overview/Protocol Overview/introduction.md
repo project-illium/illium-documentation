@@ -9,7 +9,7 @@ In this guide we will provide a comprehensive overview of the Illium protocol. T
 protocols built on top of zk-snarks may seem like a daunting task, but we're going to make it dirt simple. 
 If you have a decent understanding of the Bitcoin protocol there's no reason you can't also understand Illium.
 
-In fact,  in this guide we're going to reference Bitcoin quite a bit to as many of the concepts are simular. Where
+In fact,  in this guide we're going to reference Bitcoin quite a bit to as many of the concepts are similar. Where
 they are different we will make sure to point it out. 
 
 But first...
