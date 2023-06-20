@@ -5,7 +5,7 @@ sidebar_position: 7
 # Smart Contracts
 
 Thus far we've seen how we can create Bitcoin-like unlocking scripts, albeit with a more advanced turning complete
-programming language. But there is more to smart contracts than just unlocking scripts. Typically, smart contract 
+programming language. But there is more to smart contracts than just unlocking scripts. Typically, smart contracts 
 allow users to save data (state) inside a contract and to read and manipulate that state. 
 
 Illium allows users to do this as well. To understand how we're going to have to introduce some changes to a few concepts
@@ -38,7 +38,7 @@ Illium does have covenants. To enable this feature we have to modify the `Valida
 transaction validation lurk program to accept the private and public parameters as an input. 
 
 ```go
-func ValidateUnlockingScript(unlockingScript, input.UnlockingParams, pub.Locktime, PrivateParams, PublicParams) bool
+func ValidateUnlockingScript(unlockingScript, input.UnlockingParams, pub.Locktime, priv, pub) bool
 ```
 
 This is a form of *transaction introspection*. The private and public parameters contain all the information, both
@@ -51,7 +51,7 @@ From this we can enforce a covenant and start building something that looks like
 this is Go for readability, but in practice this would be written in lurk):
 
 ```go
-func Unlock(unlockingParams input.UnlockingParams, locktime pub.Locktime, priv PrivateParams, pub PublicParams) {
+func Unlock(unlockingParams [][]byte, locktime pub.Locktime, priv PrivateParams, pub PublicParams) {
 	switch unlockingParams[0] {
 	case 0x00: 
 		Method0()
@@ -78,7 +78,7 @@ methods to be called again by spending from the next output commitment.
 This contract could read and mutate state if it wanted to:
 
 ```go
-func Unlock(unlockingParams input.UnlockingParams, locktime pub.Locktime, priv PrivateParams, pub PublicParams) {
+func Unlock(unlockingParams [][]byte, locktime pub.Locktime, priv PrivateParams, pub PublicParams) {
 	
 	state := priv.Inputs[0].State
 	
@@ -108,7 +108,7 @@ new state be saved in the output before enforcing the `ScriptHash` covenant and 
 Contracts could even interact with other contracts:
 
 ```go
-func Unlock(unlockingParams input.UnlockingParams, locktime pub.Locktime, priv PrivateParams, pub PublicParams) {
+func Unlock(unlockingParams [][]byte, locktime pub.Locktime, priv PrivateParams, pub PublicParams) {
 
     var (
         state = priv.Inputs[1].State
