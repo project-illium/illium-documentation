@@ -75,7 +75,7 @@ the coins will be sent to the wallet's internal address.
 If you wish the coins to go to a different address you can specify the address with a command line/config file option:
 
 ```
-$ .ilxd --coinbaseaddr=reg1pvuxrsstxqcye5pzau9w27h42gukqjmpv8qeze88nadnqf4xx84aursjg6qd608vlxkcrda7zyzmuhwyzxu5q6j5s48htc60q065fu5cdvhnq9
+$ ./ilxd --coinbaseaddr=reg1pvuxrsstxqcye5pzau9w27h42gukqjmpv8qeze88nadnqf4xx84aursjg6qd608vlxkcrda7zyzmuhwyzxu5q6j5s48htc60q065fu5cdvhnq9
 ```
 
 ### Autostake

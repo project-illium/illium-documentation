@@ -7,7 +7,7 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   title: 'Illium Docs',
-  tagline: 'Dinosaurs are cool',
+  tagline: 'Please go to github and help style this page',
   favicon: 'img/favicon.ico',
 
   // Set the production url of your site here
