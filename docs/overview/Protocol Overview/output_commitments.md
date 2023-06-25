@@ -99,7 +99,7 @@ address := serialize(scriptHash, viewPublicKey)
 ```
 
 To answer the question about how does the recipient know if a transaction belongs to him, the sender of the transaction 
-encrypts the output commitment preimage with the recipient's `viewPublicKey` found in the recipient's address and includes the ciphertext in output.
+encrypts the output commitment preimage with the recipient's `viewPublicKey` found in the recipient's address and includes the ciphertext in the output.
 
 ```json
 {
