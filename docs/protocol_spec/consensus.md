@@ -42,7 +42,7 @@ message MsgAvaResponse {
 
 1. When a new block is passed into the consensus engine it is assigned a preference - `Preferred` or `Not Preferred`.
 2. If a new block conflicts (same height) with another block that is `Preferred` the new block preference is set to `Not Preferred`.
-3. Once per millisecond the consensus engine select a random peer to query to the validator set, weighted by the percentage of
+3. Once per millisecond the consensus engine select a random peer to query from the validator set, weighted by the percentage of
 total stake that validator has, and sends a `MsgAvaRequest` to that peer containing all outstanding inventory.
 4. We rate limit the number of inflight requests go out at any one time to the number of responses remaining needed to finalized the block. 
 If the next 1 millisecond step occurs before any of the outstanding requests return, the step is skipped.
