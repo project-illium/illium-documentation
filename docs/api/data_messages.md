@@ -1,21 +1,9 @@
 ---
-sidebar_position: 5
+sidebar_position: 6
 ---
 # Data Messages
 
 ```go
-message MempoolTransaction {
-    Transaction transaction = 1;
-    // The time when the transaction was added too the pool.
-    int64 added_time = 2;
-    // The block height when the transaction was added to the pool.
-    int32 added_height = 3;
-    // The total fee the transaction pays.
-    int64 fee = 4;
-    // The fee per kilobyte the transaction pays.
-    int64 fee_per_kilobyte = 5;
-}
-
 message TransactionData {
     oneof txids_or_txs {
         // Just the transaction ID
@@ -49,31 +37,35 @@ message BlockInfo {
 }
 
 message Validator {
-        // The validator ID encoded in bytes.
-        bytes validator_ID        = 1;
-        // The number of coins staked by this validator.
-        uint64 total_stake        = 2;
-        // The nullifiers for the utxos the validator has staked.
-        repeated bytes nullifiers = 3;
-        // The total of any unclaimed validator rewards.
-        uint64 unclaimed_coins    = 4;
-        // The number of blocks this validator has created this epoch.
-        uint32 epoch_blocks       = 5;
+    // The validator ID encoded in bytes.
+    bytes validator_ID        = 1;
+    // The number of coins staked by this validator.
+    uint64 total_stake        = 2;
+    // The total stake weighted by time lock.
+    uint64 stake_weight       = 3;
+    // The nullifiers for the utxos the validator has staked.
+    repeated bytes nullifiers = 4;
+    // The total of any unclaimed validator rewards.
+    uint64 unclaimed_coins    = 5;
+    // The number of blocks this validator has created this epoch.
+    uint32 epoch_blocks       = 6;
 }
 
 message Utxo {
     // The commitment associated with the output
-    bytes commitment = 1;
+    bytes commitment    = 1;
     // The amount of coins
-    uint64 amount    = 2;
+    uint64 amount       = 2;
     // The address that the utxo is associated with
-    string address   = 3;
+    string address      = 3;
     // Whether or not this is a watch only utxo.
     // We canot spend watch only utxos without the
     // private key.
-    bool watchOnly = 4;
+    bool watchOnly      = 4;
     // Is this utxo staked by the wallet.
-    bool staked = 5;
+    bool staked         = 5;
+    // The timestamp this utxo is timelocked until (if applicable)
+    int64 locked_untill = 6;
 }
 
 message RawTransaction {
@@ -128,6 +120,8 @@ message TxoProof {
     uint64 flags               = 4;
     // The index of this commitment in the tree
     uint64 index               = 5;
+    // The txoRoot this proof links to. This is found in the block header.
+    bytes txoRoot              = 6;
 }
 
 message Peer {
@@ -137,14 +131,14 @@ message Peer {
     string user_agent     = 2;
     // Multiaddrs
     repeated string addrs = 3;
-}
-
-message WalletTransaction {
-    // Transaction ID
-    bytes transaction_ID = 1;
-    // The net number of coins coming into the wallet
-    // Positive = receive
-    // Negative = send
-    int64 netCoins      = 2;
-}
+    }
+    
+    message WalletTransaction {
+        // Transaction ID
+        bytes transaction_ID = 1;
+        // The net number of coins coming into the wallet
+        // Positive = receive
+        // Negative = send
+        int64 netCoins      = 2;
+    }
 ```

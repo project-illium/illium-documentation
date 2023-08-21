@@ -1,26 +1,13 @@
 ---
-sidebar_position: 6
+sidebar_position: 7
 ---
 # Notifications
 
 ```go
 message TransactionNotification {
-    // State of the transaction acceptance.
-    enum Type {
-        // A transaction in mempool.
-        UNCONFIRMED = 0;
-        // A transaction in a finalized block.
-        FINALIZED   = 1;
-    }
-
-    // Whether or not the transaction has been included in a block.
-    Type type = 1;
-    oneof transaction {
-        // A transaction included in a block.
-        Transaction finalized_transaction          = 2;
-        // A transaction in mempool.
-        MempoolTransaction unconfirmed_transaction = 3;
-    }
+    // The transaction in this notification has finalized and
+    // been added to the blockchain.
+    Transaction transaction = 1;
 }
 
 message BlockNotification {

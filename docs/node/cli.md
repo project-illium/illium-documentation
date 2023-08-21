@@ -84,6 +84,7 @@ Available commands:
   getnewaddress               Generates a new address and returns it
   getpeers                    Returns a list of peers that this node is connected to
   getprivatekey               Returns the serialized spend and view keys for the given address
+  gettimelockedaddress        Returns an address which locks coins until the provided timestamp
   gettransaction              Returns the transaction for the given transaction ID
   gettransactions             Returns the list of transactions for the wallet
   gettreasurywhitelist        Returns the current treasury whitelist for the node
@@ -107,6 +108,7 @@ Available commands:
   spend                       Sends coins from the wallet
   stake                       Stakes the selected wallet UTXOs and turns the node into a validator
   submittransaction           Validates a transaction and submits it to the network
+  timelockcoins               Lock coins in a timelocked address
   unblockpeer                 Removes a peer from the block list
   updatetreasurywhitelist     Adds or removes a transaction from the treasury whitelist
   verifymessage               Verify a signed message

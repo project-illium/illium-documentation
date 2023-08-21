@@ -28,6 +28,14 @@ service WalletService {
     // and view key will be derived from the mnemonic seed.
     rpc GetNewAddress(GetNewAddressRequest) returns (GetNewAddressResponse) {}
 
+    // GetTimelockedAddress returns a timelocked address that cannot be spent
+    // from until the given timelock has passed. The private key used for this
+    // address is the same as the wallet's most recent spend key used in a basic
+    // address. This implies the key can be derived from seed, however the wallet
+    // will not detect incoming payments to this address unless the timelock is
+    // included in the utxo's state field.
+    rpc GetTimelockedAddress(GetTimelockedAddressRequest) returns (GetTimelockedAddressResponse) {}
+
     // GetTransactions returns the list of transactions for the wallet
     rpc GetTransactions(GetTransactionsRequest) returns (GetTransactionsResponse) {}
 
@@ -103,7 +111,16 @@ service WalletService {
     // **Requires wallet to be unlocked**
     rpc Spend(SpendRequest) returns (SpendResponse) {}
 
-    // SweepWallet sweeps all the coins from this wallet to the provided address
+    // TimelockCoins moves coins into a timelocked address using the requested timelock.
+    // The internal wallet will be able to spend the coins after the timelock expires and
+    // the transaction will be recoverable if the wallet is restored from seed.
+    //
+    // This RPC primarily exists to lock coins for staking purposes.
+    //
+    // **Requires wallet to be unlocked**
+    rpc TimelockCoins(TimelockCoinsRequest) returns (TimelockCoinsResponse) {}
+
+    // SweepWallet sweeps all the coins from this wallet to the provided address.
     // This RPC is provided so that you don't have to try to guess the correct fee
     // to take the wallet's balance down to zero. Here the fee will be subtracted 
     // from the total funds. 
@@ -131,6 +148,15 @@ message GetWalletSeedResponse {
 message GetAddressRequest {}
 message GetAddressResponse {
     // The most recent wallet address
+    string address = 1;
+}
+
+message GetTimelockedAddressRequest {
+    // The unix timestamp (in seconds) to lock the coins until
+    int64 lock_until = 1;
+}
+message GetTimelockedAddressResponse {
+    // The resulting timelocked address
     string address = 1;
 }
 
@@ -327,6 +353,8 @@ message CreateRawTransactionRequest {
         string address = 1;
         // The amount to send
         uint64 amount  = 2;
+        // An optional state field
+        bytes state    = 3;
     }
 }
 message CreateRawTransactionResponse {
@@ -392,6 +420,29 @@ message SpendRequest {
     repeated bytes input_commitments = 4;
 }
 message SpendResponse {
+    // The transaction ID of the transaction.
+    //
+    // If submission was unsuccessful and error will be returned.
+    bytes transaction_ID = 1;
+}
+
+message TimelockCoinsRequest {
+    // Amount of coins to lock
+    uint64 amount                    = 1;
+    // The unix time (in seconds) to lock the coins until
+    int64 lock_until                 = 2;
+    // The fee to use for the transaction.
+    // If zero the wallet will use its internal fee policy.
+    uint64 fee_per_kilobyte          = 3;
+    // An optional list of input commitments to spend. If this
+    // is empty the wallet will select its own inputs.
+    //
+    // Note that staked commitments will not be selected by
+    // the wallet. You will need to list staked commitments
+    // here if you wish to spend them.
+    repeated bytes input_commitments = 4;
+}
+message TimelockCoinsResponse {
     // The transaction ID of the transaction.
     //
     // If submission was unsuccessful and error will be returned.

@@ -78,6 +78,24 @@ If you wish the coins to go to a different address you can specify the address w
 $ ./ilxd --coinbaseaddr=reg1pvuxrsstxqcye5pzau9w27h42gukqjmpv8qeze88nadnqf4xx84aursjg6qd608vlxkcrda7zyzmuhwyzxu5q6j5s48htc60q065fu5cdvhnq9
 ```
 
+### Timelocking
+
+You can increase the amount of reward you earn by locking your coins in a timelock address before staking them. Your stake
+weighting and reward increases according to a yield curve based on how much you stake (the reward increases superlinearly as
+the timelock increases.)
+
+To first timelock your coins run:
+```
+$ ilxcli timelockcoins --amount=105292150459298487 --lockuntil=1722321036
+```
+
+Now you can stake the locked utxo:
+```
+$ ilxcli stake -c 8ad4cc17bcf1f0a3f3eda0754a92cb29e183b9cea74a9bb760e168ffab5d48a0
+```
+
+You wont be able to spend your staked utxo until after the timelock expires.
+
 ### Autostake
 
 By default, rewards are not automatically staked. They go into your wallet and are spendable coins like any others. Ilxd
