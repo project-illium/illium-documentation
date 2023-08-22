@@ -9,8 +9,8 @@ service WalletServerService {
     // attempting to decrypt each output. If outputs decrypt, they will be indexed so the client
     // can fetch them later.
     //
-    // To free up resources keys will automatically unregister after some time if the wallet has not
-    // connected in some time.
+    // To free up resources keys will automatically unregister if the wallet has not connected 
+    // in some time.
     rpc RegisterViewKey(RegisterViewKeyRequest) returns (RegisterViewKeyResponse) {}
 
     // SubscribeTransactions subscribes to a stream of TransactionsNotifications that match to the
@@ -81,7 +81,7 @@ message GetWalletTransactionsResponse {
 
 message GetTxoProofRequest {
     // One or more commitments to fetch the txo proof for.
-    // Since transactions only contain one txo_root if you
+    // Since transactions only contain one txo_root you
     // should request the commitment for each input in your
     // transaction as a batch so the returned proofs all share
     // the same txo_root. Otherwise you may get different roots

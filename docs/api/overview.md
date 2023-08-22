@@ -25,18 +25,23 @@ ilxd.conf:
 grpclisten=/ip4/0.0.0.0/tcp/5001
 ```
 
-If you want to disable the node service or the wallet service you can do so again with either a command line option:
+If you want to disable the node service, wallet service, or wallet server service you can do so again with either a command line option:
 
 ```
 --disablenodeservice
 --disablewalletservice
+--disablewalletserverservice
 ```
 
 Or a config option:
 ```
 disablenodeservice=1
 disablewalletservice=1
+disablewalletserverservice=1
 ```
+
+The wallet server service requires the node to be run with the `--wsindex` option. If this index is not used the wallet
+server service will be disabled by default.
 
 ### TLS
 
