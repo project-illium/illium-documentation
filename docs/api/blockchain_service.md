@@ -65,6 +65,10 @@ service BlockchainService {
     // SubscribeBlocks returns a stream of notifications when new blocks are finalized and
     // connected to the chain.
     rpc SubscribeBlocks(SubscribeBlocksRequest) returns (stream BlockNotification) {}
+    
+    // SubscribeCompressedBlocks returns a stream of CompressedBlock notifications when new
+    // blocks are finalized and connected to the chain.
+    rpc SubscribeCompressedBlocks(SubscribeCompressedBlocksRequest) returns (stream CompressedBlockNotification) {}
 }
 ```
 
@@ -291,4 +295,6 @@ message SubscribeBlocksRequest {
     // a marshaled block.
     bool full_transactions = 2;
 }
+
+message SubscribeCompressedBlocksRequest {}
 ```

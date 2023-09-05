@@ -19,4 +19,10 @@ message BlockNotification {
     // on the request.
     repeated TransactionData transactions = 2;
 }
+
+message CompressedBlockNotification {
+    // A compressed block containing only the height,
+    // txids, outputs, and nullifiers.
+    CompressedBlock block = 1;
+}
 ```
