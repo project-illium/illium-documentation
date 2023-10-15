@@ -92,6 +92,13 @@ const config = {
             href: "/docs/api/overview"
           },
           {
+            type: 'docSidebar',
+            sidebarId: 'tutorialSidebar',
+            position: 'left',
+            label: 'Developers',
+            href: "/docs/developers/overview"
+          },
+          {
             href: 'https://github.com/project-illium/illium-documentation',
             label: 'GitHub',
             position: 'right',
@@ -142,6 +149,7 @@ const config = {
       prism: {
         theme: lightCodeTheme,
         darkTheme: darkCodeTheme,
+        additionalLanguages: ['lisp'],
       },
     }),
 };
