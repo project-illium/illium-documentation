@@ -157,6 +157,12 @@ unlocking-params = (nil <signature>)
 
 ### Voting Contract
 
+This voting contract allows anyone to vote on an issue using their public key. 
+The contract state tracks both the votes and who has already voted, ensuring
+nobody votes twice. 
+
+And admin is allowed to close the vote.
+
 ```
 script-params = (<admin-pubkey> <len-candidates>)
 state = (<is_open> <db_root> <vote-records>)
@@ -195,11 +201,6 @@ unlocking-params = (<method> <signature>)
         ;; Import the merkle database
         !(import std/merkle-db)
 
-        !(def state !(param priv-in input-index state))
-
-        ;; Make sure the vote is open
-        !(assert (> (car state) 0))
-
         !(defun record-vote (candidate vote-records) (
             !(def current-votes (list-get candidate vote-records))
             (list-update vote-records candidate (+ current-votes 1))
@@ -211,6 +212,8 @@ unlocking-params = (<method> <signature>)
                  records
              )
         ))
+        
+        !(def state !(param priv-in input-index state))
 
         !(def vote-records (if (state)
                                 state
@@ -222,21 +225,24 @@ unlocking-params = (<method> <signature>)
         !(def signature (list-get 3 unlocking-params))
         !(def state-root (list-get 1 state))
         
+        ;; Make sure the vote is open
+        !(assert (> (car state) 0))
+        
         ;; Verify the voter can produce a valid signature
         !(assert (checksig signature pubkey !(param sighash)))
 
         ;; Verify this pubkey hasn't voted yet
-        !(assert-eq (db-exists pubkey merkle-proof state-root) nil)  
+        !(assert-eq (db-exists state-root pubkey merkle-proof) nil)  
               
         ;; Compute the new state root                   
-        !(def new-state-root (db-put pubkey merkle-proof state-root))
+        !(def new-state-root (db-put state-root pubkey merkle-proof))
 
         ;; Compute the new state with the recorded vote
         !(def new-state !(list 1 new-state-root (record-vote (car (cdr unlocking-params)) vote-records)))
 
         ;; Enforce a covenant making sure the output commitment is computed correctly
         !(def new-salt (hash !(param priv-in intput-index salt)))
-        !(def new-output (hash !(list !(param priv-in input-index script-hash) 0 !(param priv-in input-index asset-id) new-state new-salt)))
+        !(def new-output !(list !(param priv-in input-index script-hash) 0 !(param priv-in input-index asset-id) new-state new-salt))
         !(assert-eq !(priv-out 0) new-output)
 
         ;; Enforce that the ciphertext is computed correctly.
@@ -252,3 +258,69 @@ unlocking-params = (<method> <signature>)
     )
 )
 ```
+
+## Contracts Interacting With Other Contracts
+
+Contracts aren't limited to interacting with only their code. Because transactions can have multiple inputs, contracts
+can call methods in other contracts or even send coins into other contracts. 
+
+Let's change the voting example above create a separate voter registration contract:
+
+```lisp
+(lambda (script-params unlocking-params input-index private-params public-params)
+    !(import std/merkle-db)
+    !(import std/crypto)
+    
+    !(def pubkey (list-get 0 unlocking-params))
+    !(def merkle-proof (list-get 2 unlocking-params))
+    !(def signature (list-get 1 unlocking-params))
+    !(def state-root (car !(param priv-in input-index state)))
+
+    ;; Verify the voter can produce a valid signature
+    !(assert (checksig signature pubkey !(param sighash)))
+
+    ;; Compute the new state root
+    !(def new-state-root (db-put pubkey merkle-proof state-root))
+    
+    ;; If this is the first time contract is used, set the isntance ID
+    ;; to the nullifier. Otherwise load the instance ID from the state.
+    !(def instance-id (if state
+                          (car state)
+                          !(param nullifiers input-index)))
+
+    ;; Enforce a covenant making sure the output commitment is computed correctly
+    !(def new-salt (hash !(param priv-in intput-index salt)))
+    !(def new-state !(list instance-id new-state-root))
+    !(def new-output !(list !(param priv-in input-index script-hash) 0 !(param priv-in input-index asset-id) new-state new-salt))
+    !(assert-eq !(priv-out 0) new-output)
+
+    ;; Enforce that the ciphertext is computed correctly.
+    !(assert-eq (!param pub-out 0 ciphertext) (encrypt new-salt new-output))
+
+    ;; Return True
+    t
+)
+```
+
+And now let's modify the `vote()` method in our previous contract to verify the voter is registered in the registration
+contract. We're adding these lines in the method:
+
+```lisp
+;; Import the get-contract function
+!(import std/contracts)
+
+;; get-contract searches the inputs for an input with
+;; the provided script-commitment and instance-id. 
+;; Asserts that the input exists.
+!(def registration-contract (get-contract (list-get 2 script-params) (list-get 3 script-params))
+
+;; Grab the root hash of the registration db from the registration contract
+!(def registration-db-root (car (cdr (list-get 5 registration-contract))))
+
+;; Grab the registration db inclusion proof from the unlocking params
+!(def registration-proof (list-get 5 unlocking-params))
+
+;; Finally verify the voter's public key exists in the registration contract db.
+!(assert db-exists registration-db-root pubkey registration-proof)
+```
+

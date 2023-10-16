@@ -115,38 +115,33 @@ The unlocking params contains a list of booleans which controls which public key
 enough signatures to meet the threshold.
 
 ```
-script-params = (2 
-                 38638524446742899037319502593209650811348912402202633643473587178518683616605
-                 36658952239368196179411107338850823986413867676499251153308962460121304457050
-                 20486493300060975983145877698432160049215636875273515610012268274633091208904)
+script-params = (<threshold> <pubkey0> <pubkey1> <pubkey2>)
                  
-unlocking-params ((1 0 1)
-                  (104680053221797146745664299446634294148527306301217458512245992184063551192936 96967250879136841156231224283811052799422852482810462568516135896482765741619)
-                  (106174541402748389253564059772831164408915061371499417370101751842303638822349 49987139668092406428141079558793410583590758355718562696257432868534413512979))
+unlocking-params ((1 0 1) <sig0> <sig2>)
+                 
 ```
 
 ```lisp
 (lambda (script-params unlocking-params input-index private-params public-params)
         !(def threshold (car script-params))
         !(def key-selector (car unlocking-params))
+        !(def pubkeys (cdr script-params))
+        !(def sigs (cdr unlocking-params))
         
         !(defun validate-sigs (selector, key-idx, sig-idx, valid-sigs) (
                 (if (= (car selector) 1)
-                    (if (check-sig (list-get sig-idx unlocking-params) (list-get key-idx script-params) !(param sighash))
-                        (if (= (+ valid-sigs 1) threshold)
-                             t
-                             (validate-sigs (cdr selector) (+ key-idx 1) (+ sig-idx 1) (+ valid-sigs 1))
-                        )
+                    (if (check-sig (list-get sig-idx sigs) (list-get key-idx pubkeys) !(param sighash))
+                        (validate-sigs (cdr selector) (+ key-idx 1) (+ sig-idx 1) (+ valid-sigs 1))
                         nil
                     )
                     (if (cdr selector)
                         (validate-sigs (cdr selector) (+ key-idx 1) sig-idx valid-sigs)
-                        nil
+                        (>= valid-sigs threshold)
                     )
                 )
         ))
          
-        (validate-sigs key-selector 1 1 0)
+        (validate-sigs key-selector 0 0 0)
 )
 ```
 

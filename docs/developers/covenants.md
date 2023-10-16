@@ -19,7 +19,7 @@ Here's an example. The following script only allows funds to be sent to a specif
 
 ```lisp
 (lambda (script-params unlocking-params input-index private-params public-params)
-      !(assert-eq !(param pub-out 0 script-hash) 104680053221797146745664299446634294148527306301217458512245992184063551192936))
+      !(assert-eq !(param pub-out 0 script-hash) 104680053221797146745664299446634294148527306301217458512245992184063551192936)
       !(assert-eq !(param pub-out 0 amount) !(param priv-in input-index amount))
       (check-sig (car unlocking-params) (car script-params) !(param sighash))
 )
