@@ -7,7 +7,7 @@ description: Review of transactions concepts
 
 Unlike most other smart contracting platforms, Illim is a UTXO-based cryptocurrency. This design allows us maximize
 user privacy but comes a little steeper learning curve. In the future we'll likely have a smart contract IDE that will
-abstract away some of this complexity and deliver a more familiar developer experience, but it's still good to under
+abstract away some of this complexity and deliver a more familiar developer experience, but it's still good to understand
 the nuts and bolts of the system. 
 
 If you've read the illium protocol overview and feel like you have to grasp of how things work you can skip to the next

@@ -1,5 +1,5 @@
 ---
-sidebar_position: 7
+sidebar_position: 9
 description: Marco extensions
 ---
 
@@ -20,7 +20,7 @@ it will essentially be compiled into pure lurk before the commitment is made.
 
 The macros defined here make it so that you can avoid the pattern of using many levels of nested expressions. Instead, the
 macro preprocessor will handle the nesting when the macros are expanded into pure lurk. This is true even when multiple
-macros in succession are used and there are a number of levels of nesting.
+macros are used  in succession and there are a number of levels of nesting.
 
 For example:
 ```lisp
@@ -179,7 +179,7 @@ The preprocessor offers some limited package management facilities. Library file
 - Library files may contain more than one module.
 - Modules must only make use of macros.
 - Modules may import other modules, but cannot do circular imports.
-- All top level functions and variables defined in the macro are exported.
+- All top level functions and variables defined in the module are exported.
 
 The preprocessor takes in a dependency directory as an argument. The dependency directory may have sub-directories.
 

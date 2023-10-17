@@ -1,5 +1,5 @@
 ---
-sidebar_position: 6
+sidebar_position: 8
 description: Lurk language overview
 ---
 
@@ -427,6 +427,26 @@ Example:
      (map-get :k1 m))
 ```
 Evaluates to: `v0`
+
+#### check-overflow
+
+```
+(check-overflow <a> <b>)
+```
+
+check-overflow returns true if a + b > max-u64. While the `num` type supports integers much larger than 64 bits, the total
+number of illium coins does not exceed a u64 so it's important to verify no overflow is happening hen adding coin amounts.
+
+```lisp
+(check-overflow 18446744073709551615 1)
+```
+Evaluates to: `t`
+
+```lisp
+(check-overflow 3 1)
+```
+
+Evaluates to: `nil`
 
 ### Illium Unlocking Functions
 
