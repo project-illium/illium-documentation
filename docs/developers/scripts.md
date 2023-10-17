@@ -27,7 +27,7 @@ Consider the script from above:
 
 ```lisp
 (lambda (script-params unlocking-params input-index private-params public-params)
-      (check-sig (car unlocking-params) (car script-params) (list-get 7 public-params))
+      (check-sig (car unlocking-params) (car script-params) (nth 7 public-params))
 )
 ```
 
@@ -41,7 +41,7 @@ If we wanted to we could have just hard-coded the public key inside the script i
 
 ```lisp
 (lambda (script-params unlocking-params input-index private-params public-params)
-      (check-sig (car unlocking-params) 79877116396000796934016162317696488904839608298135655275973165100101729765931 (list-get 7 public-params))
+      (check-sig (car unlocking-params) 79877116396000796934016162317696488904839608298135655275973165100101729765931 (nth 7 public-params))
 )
 ```
 
@@ -130,7 +130,7 @@ unlocking-params ((1 0 1) <sig0> <sig2>)
         
         !(defun validate-sigs (selector, key-idx, sig-idx, valid-sigs) (
                 (if (= (car selector) 1)
-                    (if (check-sig (list-get sig-idx sigs) (list-get key-idx pubkeys) !(param sighash))
+                    (if (check-sig (nth sig-idx sigs) (nth key-idx pubkeys) !(param sighash))
                         (validate-sigs (cdr selector) (+ key-idx 1) (+ sig-idx 1) (+ valid-sigs 1))
                         nil
                     )

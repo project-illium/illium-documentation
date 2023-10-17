@@ -321,7 +321,7 @@ Or just build out the list using the cons/nil format defined above.
 If expressions take the form:
 
 ```lisp
-(if <condition> <then_expression> <else_expression)
+(if <condition> <then_expression> <else_expression>)
 ```
 
 Example:
@@ -332,6 +332,18 @@ Example:
 ```
 Evaluates to: `t`
 
+Non-nil expressions are treated as True in the conditional
+
+```lisp
+(let ((x 3))
+     (if x
+         t
+         nil
+     )
+)
+```
+Evaluates to: `t`
+
 Finally, where `=` tests the equality between integers, the `eq` function tests the equality between expressions:
 ```lisp
 (if (eq (cons 1 2) (cons 1 2))
@@ -339,3 +351,113 @@ Finally, where `=` tests the equality between integers, the `eq` function tests 
     (+ 9 7))
 ```
 Evaluates to: `t`
+
+### Builtins
+
+The following functions are not technically builtin functions in Lurk, however they are functions that are defined in
+the illium validation program and thus are available to be used by unlocking script. Hence, they act like builtin functions.
+
+#### hash
+hash takes in a list of values, concatenates the values then returns the `blake2s` hash of the concatenation.
+If there is only one value in the list then the result is the hash of that single value.
+
+```lisp
+(hash <list>)
+```
+
+The following types are allowed in the list and are serialized as follows:
+- `num`: <32 bytes>
+- `u64`: <8 bytes>
+- `char`: <1 byte>
+
+Note: a variable can be cast to another type as so:
+```lisp
+(u64 x)
+```
+Evaluates to: `x` (type u64)
+
+#### nth
+
+```
+(nth <index> <list>)
+```
+
+nth returns the value in a list at a given index
+
+```lisp
+(nth 2 '(a b c d))
+```
+Evaluates to: `c`
+
+#### map-update
+
+```
+(map-update <key> <value> <map>)
+```
+
+map-update inserts or updates the value for the given key in the map and returns the updated map. The map must be formatted as a flat list:
+
+
+```lisp
+(:key0 value0 :key1 value1)
+```
+
+Example:
+```lisp
+(let ((m '(:k0 v0 :k1 v1)))
+     (map-update :k1 7 m))
+```
+Evaluates to: `(:k0 v0 :k1 7)`
+
+#### map-get
+
+```
+(map-get <key> <map>)
+```
+
+map-get returns the value for the given key in the map. The map must be formatted as a flat list:
+
+```lisp
+(:key0 value0 :key1 value1)
+```
+
+Example:
+```lisp
+(let ((m '(:k0 v0 :k1 v1)))
+     (map-get :k1 m))
+```
+Evaluates to: `v0`
+
+### Illium Unlocking Functions
+
+As we've already seen illium unlocking functions are `lambda` expressions. The entire expression must evaluate
+to a `function` and the body of the function **must** evaluate to either True or False (t or nil). Remember that *any*
+non-nil return value will be treated at True.
+
+Returns True
+```lisp
+(lambda (script-params unlocking-params input-index private-params public-params)
+    t
+)
+```
+
+Also is True
+```lisp
+(lambda (script-params unlocking-params input-index private-params public-params)
+    7
+)
+```
+
+Also is True
+```lisp
+(lambda (script-params unlocking-params input-index private-params public-params)
+    (cons 1 2)
+)
+```
+
+Returns False
+```lisp
+(lambda (script-params unlocking-params input-index private-params public-params)
+    nil
+)
+```

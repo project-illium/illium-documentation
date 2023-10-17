@@ -80,7 +80,7 @@ And finally the `lurkCommitment` is computed as the hash of unlocking script.
 
 ```
 script = `(lambda (script-params unlocking-params input-index private-params public-params)
-                  (check-sig (car unlocking-params) (car script-params) (list-get 7 public-params))
+                  (check-sig (car unlocking-params) (car script-params) (nth 7 public-params))
           )`
 
 lurkCommitment = commit(script)          

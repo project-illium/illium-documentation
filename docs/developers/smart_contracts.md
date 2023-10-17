@@ -111,10 +111,10 @@ unlocking-params = (nil <signature>)
 		!(assert (> bid-amount current-bid))
 
 		;; Assert that the bidder's commitment contains the correct amount
-		!(assert-eq bid-amount (list-get 1 refund-output))
+		!(assert-eq bid-amount (nth 1 refund-output))
 
 		;; Assert that the bidder's commitment contains the correct asset id
-		!(assert-eq asset-id (list-get 2 refund-output))
+		!(assert-eq asset-id (nth 2 refund-output))
 
 		;; Assert that the public output 0 ciphertext is equal to the encryption of
 		;; the new contract output.
@@ -149,8 +149,8 @@ unlocking-params = (nil <signature>)
 
 	;; Execute one of the two methods based on the selection in the unlocking params
 	(if (car unlocking-params)
-		(bid (list-get 1 unlocking-params) (list-get 2 unlocking-params))
-		(withdraw (list-get 1 unlocking-params))
+		(bid (nth 1 unlocking-params) (nth 2 unlocking-params))
+		(withdraw (nth 1 unlocking-params))
     )
 )
 ```
@@ -202,7 +202,7 @@ unlocking-params = (<method> <signature>)
         !(import std/merkle-db)
 
         !(defun record-vote (candidate vote-records) (
-            !(def current-votes (list-get candidate vote-records))
+            !(def current-votes (nth candidate vote-records))
             (list-update vote-records candidate (+ current-votes 1))
         ))
 
@@ -220,10 +220,10 @@ unlocking-params = (<method> <signature>)
                                 (make-vote-records (car (cdr script-params)) 1 !(list 0))
                             ))
 
-        !(def pubkey (list-get 1 unlocking-params))
-        !(def merkle-proof (list-get 4 unlocking-params))
-        !(def signature (list-get 3 unlocking-params))
-        !(def state-root (list-get 1 state))
+        !(def pubkey (nth 1 unlocking-params))
+        !(def merkle-proof (nth 4 unlocking-params))
+        !(def signature (nth 3 unlocking-params))
+        !(def state-root (nth 1 state))
         
         ;; Make sure the vote is open
         !(assert (> (car state) 0))
@@ -271,9 +271,9 @@ Let's change the voting example above create a separate voter registration contr
     !(import std/merkle-db)
     !(import std/crypto)
     
-    !(def pubkey (list-get 0 unlocking-params))
-    !(def merkle-proof (list-get 2 unlocking-params))
-    !(def signature (list-get 1 unlocking-params))
+    !(def pubkey (nth 0 unlocking-params))
+    !(def merkle-proof (nth 2 unlocking-params))
+    !(def signature (nth 1 unlocking-params))
     !(def state-root (car !(param priv-in input-index state)))
 
     ;; Verify the voter can produce a valid signature
@@ -312,13 +312,13 @@ contract. We're adding these lines in the method:
 ;; get-contract searches the inputs for an input with
 ;; the provided script-commitment and instance-id. 
 ;; Asserts that the input exists.
-!(def registration-contract (get-contract (list-get 2 script-params) (list-get 3 script-params))
+!(def registration-contract (get-contract (nth 2 script-params) (nth 3 script-params))
 
 ;; Grab the root hash of the registration db from the registration contract
-!(def registration-db-root (car (cdr (list-get 5 registration-contract))))
+!(def registration-db-root (car (cdr (nth 5 registration-contract))))
 
 ;; Grab the registration db inclusion proof from the unlocking params
-!(def registration-proof (list-get 5 unlocking-params))
+!(def registration-proof (nth 5 unlocking-params))
 
 ;; Finally verify the voter's public key exists in the registration contract db.
 !(assert db-exists registration-db-root pubkey registration-proof)
