@@ -5,7 +5,7 @@ description: Review of transactions concepts
 
 # Concept Review
 
-Unlike most other smart contracting platforms, Illim is a UTXO-based cryptocurrency. This design allows us maximize
+Unlike most other smart contracting platforms, Illium is a UTXO-based cryptocurrency. This design allows us maximize
 user privacy but comes a little steeper learning curve. In the future we'll likely have a smart contract IDE that will
 abstract away some of this complexity and deliver a more familiar developer experience, but it's still good to understand
 the nuts and bolts of the system. 
@@ -43,7 +43,7 @@ transaction.
 
 ![Utxos](/img/utxo.jpg)
 
-Outputs which have been create but not yet spent are call ― unspent transaction outputs or UTXOs.
+Outputs which have been created but not yet spent are call ― unspent transaction outputs or UTXOs.
 
 ## Output Commitments
 
