@@ -171,17 +171,17 @@ We'll do this using the gRPC interface.
 	}
 	
 	// Sign the transaction
-	sig, err := spendPriv.Sign(createRawResp.Tx.GetTx().GetStandardTransaction().SigHash())
+	sig, err := spendPriv.Sign(createRawResp.RawTx.Tx.GetStandardTransaction().SigHash())
 	if err != nil {
 		log.Fatal(err)
 	}
 	
 	// Add the signature to the input's unlocking params
-	createRawResp.Tx.Inputs[0].UnlockingParams = [][]byte{sig}
+	createRawResp.RawTx.Inputs[0].UnlockingParams = [][]byte{sig}
 	
 	// Create the proof for the transaction
 	provedResp, err := walletClient.ProveRawTransaction(context.Background(), &pb.ProveRawTransactionRequest{
-		Tx: createRawResp.Tx,
+		Tx: createRawResp.RawTx,
 	})
 	if err != nil {
 		log.Fatal(err)
