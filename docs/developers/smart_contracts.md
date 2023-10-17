@@ -232,10 +232,10 @@ unlocking-params = (<method> <signature>)
         !(assert (checksig signature pubkey !(param sighash)))
 
         ;; Verify this pubkey hasn't voted yet
-        !(assert-eq (db-exists state-root pubkey merkle-proof) nil)  
+        !(assert-eq (db-exists pubkey merkle-proof state-root) nil)  
               
         ;; Compute the new state root                   
-        !(def new-state-root (db-put state-root pubkey merkle-proof))
+        !(def new-state-root (db-put nil pubkey merkle-proof state-root))
 
         ;; Compute the new state with the recorded vote
         !(def new-state !(list 1 new-state-root (record-vote (car (cdr unlocking-params)) vote-records)))
@@ -280,7 +280,7 @@ Let's change the voting example above create a separate voter registration contr
     !(assert (checksig signature pubkey !(param sighash)))
 
     ;; Compute the new state root
-    !(def new-state-root (db-put pubkey merkle-proof state-root))
+    !(def new-state-root (db-put nil pubkey merkle-proof state-root))
     
     ;; If this is the first time contract is used, set the isntance ID
     ;; to the nullifier. Otherwise load the instance ID from the state.
@@ -321,6 +321,6 @@ contract. We're adding these lines in the method:
 !(def registration-proof (nth 5 unlocking-params))
 
 ;; Finally verify the voter's public key exists in the registration contract db.
-!(assert db-exists registration-db-root pubkey registration-proof)
+!(assert db-exists pubkey registration-proof registration-db-root)
 ```
 

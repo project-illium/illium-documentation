@@ -75,7 +75,7 @@ unlocking-params = (<data> <merkle-proof>)
     !(def state-root (car !(param priv-in input-index state)))
 
     ;; Compute the new state root
-    !(def new-state-root (db-put pubkey merkle-proof state-root))
+    !(def new-state-root (db-put nil data merkle-proof state-root))
 
     ;; Compute the required output
     !(def required-output !(list

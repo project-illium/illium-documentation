@@ -69,7 +69,7 @@ use it in the client configuration.
 
 For example, in Go:
 ```go
-certificateFile := filepath.Join(bchutil.AppDataDir("ilxd", false), "rpc.cert")
+certificateFile := filepath.Join(repo.AppDataDir("ilxd", false), "rpc.cert")
 creds, err := credentials.NewClientTLSFromFile(certificateFile, "localhost")
 if err != nil {
     fmt.Println(err)

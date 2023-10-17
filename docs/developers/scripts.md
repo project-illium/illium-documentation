@@ -23,7 +23,7 @@ scritHash = hash(lurkCommitment || params)
 The `params` that are committed to will ultimately get passed in to the unlocking function when the utxo is being
 spent and the script will have an opportunity to evaluate the paramters.
 
-Consider the script from above:
+Consider the following script:
 
 ```lisp
 (lambda (script-params unlocking-params input-index private-params public-params)
