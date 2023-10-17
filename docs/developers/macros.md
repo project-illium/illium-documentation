@@ -163,3 +163,48 @@ forms:
 !(param priv-out <index> state)                       ;; expands to: (nth 3 (nth <index> (car (cdr private-params))))
 !(param priv-out <index> salt)                        ;; expands to: (nth 4 (nth <index> (car (cdr private-params))))
 ```
+
+## Import
+
+The preprocessor offers some limited package management facilities. Library files can be created with the form:
+
+```lisp 
+!(module math (
+        !(defun plus-two (x) (+ x 2))
+        !(defun plus-three (x) (+ x 3))
+))
+```
+
+- Library files must use the `.lurk` file extension.
+- Library files may contain more than one module.
+- Modules must only make use of macros.
+- Modules may import other modules, but cannot do circular imports.
+- All top level functions and variables defined in the macro are exported.
+
+The preprocessor takes in a dependency directory as an argument. The dependency directory may have sub-directories.
+
+```
+/deps
+  |-- /std
+  |   |-- mod.lurk
+  |-- /utils
+  |   |-- mod.lurk
+```
+
+Assume the `math` module defined above was inside `/deps/std/mod.lurk`, you would import it as follows:
+
+```lisp
+!(import std/math)
+
+(plus-two (plus-three 5))
+```
+
+Macro expands to:
+```lisp
+(letrec ((plus-two (lambda (x) (+ x 2))))
+        (letrec ((plus-three (lambda (x) (+ x 3))))
+                (plus-two (plus-three 5)) 
+        )
+)
+```
+Evaluates to: `10`
