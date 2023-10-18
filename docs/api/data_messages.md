@@ -109,6 +109,10 @@ message PrivateInput {
     // The txo proof linking the input
     // commitment to the accumulator
     TxoProof txo_proof              = 7;
+    // Optional parameters used as inputs
+    // to unlocking script. This is only
+    // necessary for watch-only utxos.
+    repeated bytes unlocking_params = 8;
 }
 
 message PrivateOutput {

@@ -285,7 +285,7 @@ message CreateMultiSignatureResponse {
 message ProveMultisigRequest {
     // A transaction to prove. This RPC requires there to be only one
     // input and that the input be a multisig script.
-    RawTransaction tx   = 1;
+    RawTransaction raw_tx   = 1;
 
     // A list of signatures. Each one must cover the transaction's sighash.
     repeated bytes sigs = 2;
