@@ -21,7 +21,7 @@ scritHash = hash(lurkCommitment || params)
 ```
 
 The `params` that are committed to will ultimately get passed in to the unlocking function when the utxo is being
-spent and the script will have an opportunity to evaluate the paramters.
+spent and the script will have an opportunity to evaluate the arguments.
 
 Consider the following script:
 

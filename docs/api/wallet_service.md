@@ -359,7 +359,7 @@ message CreateRawTransactionRequest {
 }
 message CreateRawTransactionResponse {
     // Raw transaction response
-    RawTransaction tx = 1;
+    RawTransaction raw_tx = 1;
 }
 
 message CreateRawStakeTransactionRequest {
@@ -379,12 +379,12 @@ message CreateRawStakeTransactionRequest {
 }
 message CreateRawStakeTransactionResponse {
     // Raw transaction response
-    RawTransaction tx = 1;
+    RawTransaction raw_tx = 1;
 }
 
 message ProveRawTransactionRequest {
     // The raw transaction to prove
-    RawTransaction tx = 1;
+    RawTransaction raw_tx = 1;
 }
 message ProveRawTransactionResponse {
     // A full transaction with the proof attached
