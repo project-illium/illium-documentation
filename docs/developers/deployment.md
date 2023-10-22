@@ -56,7 +56,7 @@ func main() {
 	binary.BigEndian.PutUint64(locktimeBytes, uint64(lockUntil.Unix()))
 	
 	// Generate a key pair to use to sign the transaction
-	spendPriv, spendPub, err := crypto.GenerateLurkKey(rand.Reader)
+	spendPriv, spendPub, err := crypto.GenerateNovaKey(rand.Reader)
 	if err != nil {
 		log.Fatal(err)
 	}
