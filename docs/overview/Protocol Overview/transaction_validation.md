@@ -205,16 +205,13 @@ func ProveTransactionValidity(priv PrivateParams, pub PublicParams) bool {
 			    return false
 		}
 		
-		if !ValidateUnlockingScript(unlockingScript, input.UnlockingParams, i, priv, pub) {
+		if !ValidateUnlockingScript(unlockingScript, input.UnlockingParams, i) {
 			    return false
 		}
 	}
 	return true
 }
 ```
-
-Note that the `ValidateUnlockingScript()` function also takes in the transaction's private and public parameters. This
-allows scripts to inspect the transaction and make decision to unlock based on that data. 
 
 ### Proving Amounts are Correct
 
@@ -245,7 +242,7 @@ func ProveTransactionValidity(priv PrivateParams, pub PublicParams) bool {
                 return false
         }
 
-        if !ValidateUnlockingScript(unlockingScript, input.UnlockingParams, i, priv, pub) {
+        if !ValidateUnlockingScript(unlockingScript, input.UnlockingParams, i) {
                 return false
         }
 		
@@ -281,7 +278,7 @@ func ProveTransactionValidity(priv PrivateParams, pub PublicParams) bool {
                 return false
         }
 
-        if !ValidateUnlockingScript(unlockingScript, input.UnlockingParams, i, priv, pub) {
+        if !ValidateUnlockingScript(unlockingScript, input.UnlockingParams, i) {
                 return false
         }
 		
@@ -325,7 +322,7 @@ func ProveTransactionValidity(priv PrivateParams, pub PublicParams) bool {
                 return false
         }
 
-        if !ValidateUnlockingScript(unlockingScript, input.UnlockingParams, i, priv, pub) {
+        if !ValidateUnlockingScript(unlockingScript, input.UnlockingParams, i) {
                 return false
         }
 		
@@ -393,7 +390,7 @@ inputTotal := 0
                 return false
         }
 
-        if !ValidateUnlockingScript(unlockingScript, input.UnlockingParams, i, priv, pub) {
+        if !ValidateUnlockingScript(unlockingScript, input.UnlockingParams, i) {
                 return false
         }
 		

@@ -45,7 +45,7 @@ func ProveTransactionValidity(priv PrivateParams, pub PublicParams) bool {
                 return false
         }
 
-        if !ValidateUnlockingScript(unlockingScript, input.UnlockingParams, pub.Locktime) {
+        if !ValidateUnlockingScript(unlockingScript, input.UnlockingParams, i, priv, pub) {
                 return false
         }
 
