@@ -187,7 +187,7 @@ Finally, we will validate the unlocking script using the provided private script
 
 ```go
 func ProveTransactionValidity(priv PrivateParams, pub PublicParams) bool {
-	for _, input := range priv.Inputs {
+	for i, input := range priv.Inputs {
 		
 		h := blake2s(append(input.Index, input.Commitment...))
 		
@@ -205,7 +205,7 @@ func ProveTransactionValidity(priv PrivateParams, pub PublicParams) bool {
 			    return false
 		}
 		
-		if !ValidateUnlockingScript(unlockingScript, input.UnlockingParams, pub.Locktime) {
+		if !ValidateUnlockingScript(unlockingScript, input.UnlockingParams, i, priv, pub) {
 			    return false
 		}
 	}
@@ -213,9 +213,8 @@ func ProveTransactionValidity(priv PrivateParams, pub PublicParams) bool {
 }
 ```
 
-Note that the `ValidateUnlockingScript()` function also takes in the transaction's `locktime` as a parameter. This is so
-unlocking scripts can make time based decisions if they want to. When validating blocks, full nodes validate that a 
-transaction's locktime is less than or equal to the block timestamp.
+Note that the `ValidateUnlockingScript()` function also takes in the transaction's private and public parameters. This
+allows scripts to inspect the transaction and make decision to unlock based on that data. 
 
 ### Proving Amounts are Correct
 
@@ -246,7 +245,7 @@ func ProveTransactionValidity(priv PrivateParams, pub PublicParams) bool {
                 return false
         }
 
-        if !ValidateUnlockingScript(unlockingScript, input.UnlockingParams, pub.Locktime) {
+        if !ValidateUnlockingScript(unlockingScript, input.UnlockingParams, i, priv, pub) {
                 return false
         }
 		
@@ -282,7 +281,7 @@ func ProveTransactionValidity(priv PrivateParams, pub PublicParams) bool {
                 return false
         }
 
-        if !ValidateUnlockingScript(unlockingScript, input.UnlockingParams, pub.Locktime) {
+        if !ValidateUnlockingScript(unlockingScript, input.UnlockingParams, i, priv, pub) {
                 return false
         }
 		
@@ -326,7 +325,7 @@ func ProveTransactionValidity(priv PrivateParams, pub PublicParams) bool {
                 return false
         }
 
-        if !ValidateUnlockingScript(unlockingScript, input.UnlockingParams, pub.Locktime) {
+        if !ValidateUnlockingScript(unlockingScript, input.UnlockingParams, i, priv, pub) {
                 return false
         }
 		
@@ -394,7 +393,7 @@ inputTotal := 0
                 return false
         }
 
-        if !ValidateUnlockingScript(unlockingScript, input.UnlockingParams, pub.Locktime) {
+        if !ValidateUnlockingScript(unlockingScript, input.UnlockingParams, i, priv, pub) {
                 return false
         }
 		
