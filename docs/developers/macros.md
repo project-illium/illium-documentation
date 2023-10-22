@@ -101,7 +101,7 @@ Macro expands to:
 
 ### Assert-eq
 ```lisp
-!(assert (cons 1 2) (cons 1 2))
+!(assert-eq (cons 1 2) (cons 1 2))
 <expression>
 ```
 Macro expands to:
