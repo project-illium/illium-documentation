@@ -60,6 +60,7 @@ the following:
   - Verify the inclusion proof hashes link to the current contract state root
   - Compute the new contract state root
   - Enforce a covenant saving the new state root
+- All other users of the contract insert the new data into their local databases to track the updated state.
 
 ```
 unlocking-params = (<data> <merkle-proof>)

@@ -119,7 +119,7 @@ For example:
 )
 ````
 
-### Asset-IDs
+### Asset IDs
 
 The transaction validation program only validates that:
 

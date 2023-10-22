@@ -83,7 +83,7 @@ message StakeTransaction {
     uint64 amount      = 2;
     bytes nullifier    = 3;
     bytes txoc_root    = 4;
-    int64 locktime     = 5;
+    int64 locked_until = 5;
     bytes signature    = 6;
     bytes proof        = 7;
 }
