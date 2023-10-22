@@ -43,7 +43,7 @@ transaction.
 
 ![Utxos](/img/utxo.jpg)
 
-Outputs which have been created but not yet spent are call ― unspent transaction outputs or UTXOs.
+Outputs which have been created but not yet spent are called ― unspent transaction outputs or UTXOs.
 
 ## Output Commitments
 

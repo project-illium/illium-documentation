@@ -129,12 +129,12 @@ The param macro serves as a helpful shortcut for accessing the parameters of the
 forms:
 
 ```lisp
-!(param txo-root)                                     ;;expands to: (nth 1 public-params)
-!(param fee)                                          ;;expands to: (nth 2 public-params)
-!(param coinbase)                                     ;;expands to: (nth 3 public-params)
-!(param mint-id)                                      ;;expands to: (nth 4 public-params)
-!(param mint-amount)                                  ;;expands to: (nth 5 public-params)
-!(param sighash)                                      ;;expands to: (nth 7 public-params)
+!(param txo-root)                                     ;; expands to: (nth 1 public-params)
+!(param fee)                                          ;; expands to: (nth 2 public-params)
+!(param coinbase)                                     ;; expands to: (nth 3 public-params)
+!(param mint-id)                                      ;; expands to: (nth 4 public-params)
+!(param mint-amount)                                  ;; expands to: (nth 5 public-params)
+!(param sighash)                                      ;; expands to: (nth 7 public-params)
 !(param locktime)                                     ;; expands to: (nth 8 public-params)
 !(param locktime-precision)                           ;; expands to: (nth 9 public-params)
 
