@@ -37,13 +37,18 @@ message Transaction {
     repeated Output outputs =   1;
     repeated bytes nullifiers = 2;
     bytes txoc_root           = 3;
-    int64 locktime            = 4;
+    Locktime locktime         = 4;
     uint64 fee                = 5;
     bytes proof               = 6;
 
     message Output {
         bytes commitment       = 1;
         bytes ciphertext       = 2;
+    }
+
+    message Locktime {
+        int64 timestamp = 1;
+        int64 precision = 2;
     }
 }
 ```
