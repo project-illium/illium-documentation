@@ -86,4 +86,4 @@ script = `(lambda (script-params unlocking-params input-index private-params pub
 lurkCommitment = commit(script)          
 ```
 
-Ultimately illium addresses are a type of Pay-Script-Hash (P2SH) address (if you're familiar with that term from Bitcoin).
+Ultimately illium addresses are a type of Pay-to-Script-Hash (P2SH) address (if you're familiar with that term from Bitcoin).

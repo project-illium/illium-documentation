@@ -13,8 +13,8 @@ end of the 10-year period following the genesis block.
 
 Of the 2<sup>60</sup> coins, 20% or 230,584,300,921,369,395 coins are created in the genesis block. 
 
-- Half of that 20% or 115,292,150,500,000,000 coins is earmarked for a founders reward.
-- The other half or 115,292,150,500,000,000 coins is earmarked for donations, giveaways, marketing, faucets, and grants. 
+- A quarter of that 20% or 57,646,075,230,000,000 coins is earmarked for a founders reward.
+- The other three-quarters or 17,293,822,257,000,000 coins will be distributed via faucets, puzzle scripts, grants, and donations to dependency developers.  
 The full list of recipients of this distribution with amounts will be published here when available.
 
 A technical note: The consensus algorithm *requires* some coins be created up front in the genesis block so that they can be staked 
