@@ -5,8 +5,6 @@ description: Marco extensions
 
 # Storage
 
-[**NOTE** Nothing in this section has been implemented yet and may change.]
-
 Illium only gives you 128 bytes to use for each contract's state field. For a lot of applications this is enough space.
 For other's it's not.
 
@@ -16,17 +14,29 @@ and store the root hash of the database in state.
 Here's the interface for an offchain database written in Go:
 ```go
 type MerkleDB interface {
-        // Put a new key-value pair into the local db or update the value for an existing key. 
-        // This operation should update the root hash.
-        Put(key, value []byte) (err error) 
+        // Put a new key/value pair into the database. This operation
+        // will update the database's merkle root. It will also override
+        // any value that is currently stored in the database at this
+        // key.
+        Put(key types.ID, value []byte) error
 
-        // Get the value for a given key.
-        // Nil is returned if the key is not in the db.
-        // And inclusion (or exclusion in case of nil value) proof is returned linking to the root.
-        Get(key []byte) (value []byte, proof [][]byte, err error)
-	
-	    // Returns the root hash of the db.
-        Root() (hash []byte, err error) 
+        // Get returns a value from the database for a given key along with
+        // a merkle proof linking the value to the database's root hash. This
+        // method with not return an exclusion proof if the value does not exist
+        // just an error.
+        Get(key types.ID) ([]byte, MerkleProof, error)
+
+        // Exists returns whether the key exists in the database along with
+        // a merkle inclusion or exclusion proof which links either the value,
+        // or nil, to the database's merkle root.
+        Exists(key types.ID) (bool, MerkleProof, error)
+
+        // Delete removes a key/value pair from the database. In the tree
+        // structure the value will be set to the nil hash.
+        Delete(key types.ID) error
+
+        // Root returns the database's root hash.
+        Root() (types.ID, error)
 }
 ```
 
