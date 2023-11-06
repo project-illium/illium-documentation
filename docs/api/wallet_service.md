@@ -127,6 +127,13 @@ service WalletService {
     //
     // **Requires wallet to be unlocked**
     rpc SweepWallet(SweepWalletRequest) returns (SweepWalletResponse) {}
+
+    // SubscribeWalletTransactions subscribes to a stream of WalletTransactionsNotifications that return
+    // whenever a transaction belonging to the wallet finalizes.
+    rpc SubscribeWalletTransactions(SubscribeWalletTransactionsRequest) returns (stream WalletTransactionNotification) {}
+
+    // SubscribeWalletSyncNotifications streams notifications about the status of the wallet sync.
+    rpc SubscribeWalletSyncNotifications(SubscribeWalletSyncNotificationsRequest) returns (stream WalletSyncNotification) {}
 }
 ```
 
@@ -463,4 +470,6 @@ message SweepWalletResponse {
     // If submission was unsuccessful and error will be returned.
     bytes transaction_ID = 1;
 }
+message SubscribeWalletTransactionsRequest {}
+message SubscribeWalletSyncNotificationsRequest {}
 ```
