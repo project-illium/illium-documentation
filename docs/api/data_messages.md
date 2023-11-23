@@ -151,14 +151,40 @@ message Peer {
     string user_agent     = 2;
     // Multiaddrs
     repeated string addrs = 3;
+}
+
+message WalletTransaction {
+    // Transaction ID
+    bytes transaction_ID = 1;
+    // The net number of coins coming into the wallet
+    // Positive = receive
+    // Negative = send
+    int64 netCoins      = 2;
+    // The address and amount of each input if known
+    // to the wallet.
+    repeated IO inputs  = 3;
+    // The address and amount of each output if known
+    // to the wallet.
+    repeated IO outputs = 4;
+    
+    message IO {
+        // Either address/amount information or unknown
+        // if input or output did not belong to this wallet
+        // and can't be decrypted.
+        oneof io_type {
+            TxIO tx_io      = 1;
+            Unknown unknown = 2;
     }
     
-    message WalletTransaction {
-        // Transaction ID
-        bytes transaction_ID = 1;
-        // The net number of coins coming into the wallet
-        // Positive = receive
-        // Negative = send
-        int64 netCoins      = 2;
+    message TxIO {
+        // Address associated with the input or output
+        string address = 1;
+        // Amount of coins associated with the input or output
+        uint64 amount  = 2;
     }
+    
+    // Represents an input or output not belonging to
+    // the wallet.
+    message Unknown {}
+}
 ```

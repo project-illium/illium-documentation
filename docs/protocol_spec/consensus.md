@@ -18,8 +18,7 @@ network is being used.
 ```go
 message MsgAvaRequest {
 	// The request ID
-	uint32 request_ID       = 1; 
-	
+	uint32 request_ID       = 1;
 	// A list of one or more block heights
 	// we want the peer to vote on.
 	repeated uint32 heights = 2;
