@@ -115,7 +115,7 @@ The unlocking params contains a list of booleans which controls which public key
 enough signatures to meet the threshold.
 
 ```
-script-params = (<threshold> <pubkey0> <pubkey1> <pubkey2>)
+script-params = (<threshold> <pubkey0-x> <pubkey0-y> <pubkey1-x> <pubkey1-y> <pubkey2-x> <pubkey2-y>)
                  
 unlocking-params ((1 0 1) <sig0> <sig2>)
                  
@@ -123,24 +123,26 @@ unlocking-params ((1 0 1) <sig0> <sig2>)
 
 ```lisp
 (lambda (script-params unlocking-params input-index private-params public-params)
+        !(import std/crypto)
+
         !(def threshold (car script-params))
         !(def key-selector (car unlocking-params))
         !(def pubkeys (cdr script-params))
         !(def sigs (cdr unlocking-params))
-        
-        !(defun validate-sigs (selector, key-idx, sig-idx, valid-sigs) (
+
+        !(defun validate-sigs (selector key-idx sig-idx valid-sigs) (
                 (if (= (car selector) 1)
-                    (if (check-sig (nth sig-idx sigs) (nth key-idx pubkeys) !(param sighash))
-                        (validate-sigs (cdr selector) (+ key-idx 1) (+ sig-idx 1) (+ valid-sigs 1))
+                    (if (check-sig (nth sig-idx sigs) (cons (nth key-idx pubkeys) (nth (+ key-idx 1) pubkeys)) !(param sighash))
+                        (validate-sigs (cdr selector) (+ key-idx 2) (+ sig-idx 1) (+ valid-sigs 1))
                         nil
                     )
                     (if (cdr selector)
-                        (validate-sigs (cdr selector) (+ key-idx 1) sig-idx valid-sigs)
+                        (validate-sigs (cdr selector) (+ key-idx 2) sig-idx valid-sigs)
                         (>= valid-sigs threshold)
                     )
                 )
         ))
-         
+
         (validate-sigs key-selector 0 0 0)
 )
 ```
