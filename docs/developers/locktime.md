@@ -40,15 +40,16 @@ timestamp and can enforce their desired level of precision. This allows scripts 
 
 For example, the timelock script mentioned earlier:
 ```
-script-params = (<lock-until-timestamp> <pubkey>)
+locking-params = (<lock-until-timestamp> <pubkey>)
 unlocking-params = (<signature>)
 ```
 
 ```lisp
-(lambda (script-params unlocking-params input-index private-params public-params)
+(lambda (locking-params unlocking-params input-index private-params public-params)
+        !(import std/crypto/checksig)
         !(assert (<= !(param locktime-precision) 120))
-        !(assert (> !(param locktime) (car script-params))
-        !(assert (check-sig (car unlocking-params) (car (cdr script-params)) !(param sighash)))
+        !(assert (> !(param locktime) (car locking-params))
+        !(assert (checksig unlocking-params (cdr locking-params) !(param sighash)))
         t
 )
 ```
@@ -61,15 +62,15 @@ This can be done in illium scripts by encoding the current timestamp into the st
 transaction read this timestamp from the input state and compare its own timestamp.
 
 ```
-script-params = (<relative-timelock> <pubkey>)
+locking-params = (<relative-timelock> <pubkey>)
 unlocking-params = (<signature>)
 ```
 
 ```lisp
-(lambda (script-params unlocking-params input-index private-params public-params)
+(lambda (locking-params unlocking-params input-index private-params public-params)
         !(assert (<= !(param locktime-precision) 120))
-        !(assert (> !(param locktime) (+ (car script-params) !(param priv-in input-index state))))
-        !(assert (check-sig (car unlocking-params) (car (cdr script-params)) !(param sighash)))
+        !(assert (> !(param locktime) (+ (car locking-params) !(param priv-in input-index state))))
+        !(assert (checksig unlocking-params (cdr locking-params) !(param sighash)))
         t
 )
 ```

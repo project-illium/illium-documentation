@@ -31,6 +31,11 @@ message Output {
     bytes commitment = 1;
     bytes ciphertext = 2;
 }
+
+message Locktime {
+  int64 timestamp = 1;
+  int64 precision = 2;
+}
 ```
 
 It's pretty easy to spot the outputs. There's an explicit `outputs` field. However, the inputs are a little less obvious. 
@@ -61,7 +66,7 @@ message Output {
 The `commitment` is a hash of the concatenation of five values:
 
 ```
-commitment = hash(scriptHash || amount || assetID || state || salt)
+commitment = hash(scriptHash || amount || assetID || salt || state)
 ```
 
 The `scriptHash` is found inside each illium payment address and senders use it when constructing their outputs.
@@ -70,20 +75,21 @@ The `scriptHash` is found inside each illium payment address and senders use it 
 address = serialize(scriptHash || viewKey)
 ```
 
-The `scriptHash` itself is the hash of a `lurkCommitment` and some `params`. 
+The `scriptHash` itself is the hash of a `scriptCommitment` and some user-defined `lockingParams`. 
 
 ```
-scriptHash = hash(lurkCommitment || params)
+scriptHash = hash(scriptCommitment || lockingParams)
 ```
 
-And finally the `lurkCommitment` is computed as the hash of unlocking script.
+And finally the `scriptCommitment` is computed as the hash of unlocking script.
 
 ```
-script = `(lambda (script-params unlocking-params input-index private-params public-params)
-                  (check-sig (car unlocking-params) (car script-params) (nth 7 public-params))
+script = `(lambda (locking-params unlocking-params input-index private-params public-params)
+             !(import std/crypto/checksig)
+             (checksig unlocking-params locking-params (car public-params))
           )`
 
-lurkCommitment = commit(script)          
+scriptCommitment = hash(script)          
 ```
 
 Ultimately illium addresses are a type of Pay-to-Script-Hash (P2SH) address (if you're familiar with that term from Bitcoin).
