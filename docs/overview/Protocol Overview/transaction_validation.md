@@ -63,7 +63,7 @@ Let's see how we do it.
 
 ### Proving the Commitment Exists
 
-The first thing that we need to prove is that the output commitments that our inputs are spending from actually exist in 
+The first thing that we need to prove is that the output commitments that our inputs are spending actually exist in 
 the txoc set. Remember that txoc accumulator? We're going to use it here. 
 
 Below is an example of what the transaction validation lurk program look like. Instead of writing it in lurk here we will 
@@ -76,18 +76,15 @@ write it in Go for easier readability. Just remember that in the illium codebase
 // them publicly to the network.
 type PrivateParams struct {
 	Inputs []struct{
-		Commitment       []byte
 		Index            uint64
 		InclusionProof   struct{
             Hashes      [][]byte
             Flags       uint64
-            Accumulator [][]byte
         }       
-		ScriptHash       []byte
 		Amount           uint64
 		Salt             []byte
-		ScriptCommitment []byte
-		ScriptParams     [][]byte
+		Script           string
+		LockingParams    [][]byte
 		UnlockingParams  [][]byte
 	}
 	Outputs []struct{
@@ -107,19 +104,21 @@ type PublicParams struct {
 	Nullifies [][]byte
 	TxocRoot  []byte
 	Locktime  int64
+	Precision uint64
 	Fee       uint64
 }
 
 func ProveTransactionValidity(priv PrivateParams, pub PublicParams) bool {
-	for _, input := range priv.Inputs {
-		
-		h := blake2s(append(input.Index, input.Commitment...))
-		
-		if !ValidateInclusionProof(h, input.InclusionProof, pub.TxocRoot) {
-			return false
-		}
-	}
-	return true
+    for _, input := range priv.Inputs {
+        scriptCommitment := hash(input.Script)
+        scriptHash := hash(scriptCommitment, input.LockingParams...)
+        commitment := hash(scriptHash, input.Amount, input.Salt)
+        
+        if !ValidateInclusionProof(commitment, input.index, input.InclusionProof, pub.TxocRoot) {
+            return false
+        }
+    }
+    return true
 }
 ```
 
@@ -136,80 +135,25 @@ exists in the set of all commitments, *without* actually revealing the specific 
 
 ### Proving Spend Authorization
 
-Next we need to prove that we're actually *authorized* to spend this commitment. To do this we will first prove that 
-we know the preimage to the output commitment:
+Next we need to prove that we're actually *authorized* to spend this commitment. To do this we will execute the users
+locking script with the provided unlocking parameters. For a basic transfer the UnlockignParams will usually contain a signature.
 
 ```go
 func ProveTransactionValidity(priv PrivateParams, pub PublicParams) bool {
-	for _, input := range priv.Inputs {
-		
-		h := blake2s(append(input.Index, input.Commitment...))
-		
-		if !ValidateInclusionProof(h, input.InclusionProof, pub.TxocRoot) {
-			return false
-		}
-		
-		preimage := append(input.ScriptHash, input.Amount, input.Salt)
-		if !bytes.Equal(input.Commitment, blake2s(preimage)) {
-			return false
-		}
-	}
-	return true
-}
-```
-
-Next we'll prove that we know the unlocking script that produced the `ScriptHash` in the preimage. 
-
-```go
-func ProveTransactionValidity(priv PrivateParams, pub PublicParams) bool {
-	for _, input := range priv.Inputs {
-		h := blake2s(append(input.Index, input.Commitment...))
-		
-		if !ValidateInclusionProof(h, input.InclusionProof, pub.TxocRoot)
-		        return false
-		}
-		
-		preimage := append(input.ScriptHash, input.Amount, input.Salt)
-		if !bytes.Equal(input.Commitment, blake2s(preimage)) {
-			    return false
-		}
-
-        unlockingScript := append(input.ScriptCommitment, input.ScriptParams...)
-        if !bytes.Equal(input.ScriptHash, blake2s(unlockingScript)) {
-                return false
+    for i, input := range priv.Inputs {
+        scriptCommitment := hash(input.Script)
+        scriptHash := hash(scriptCommitment, input.LockingParams...)
+        commitment := hash(scriptHash, input.Amount, input.Salt)
+        
+        if !ValidateInclusionProof(commitment, input.index, input.InclusionProof, pub.TxocRoot) {
+            return false
         }
-	}
-	return true
-}
-```
-
-Finally, we will validate the unlocking script using the provided private script parameters.
-
-```go
-func ProveTransactionValidity(priv PrivateParams, pub PublicParams) bool {
-	for i, input := range priv.Inputs {
-		
-		h := blake2s(append(input.Index, input.Commitment...))
-		
-		if !ValidateInclusionProof(h, input.InclusionProof, pub.TxocRoot) {
-			    return false
-		}
-		
-		preimage := append(input.ScriptHash, input.Amount, input.Salt)
-		if !bytes.Equal(input.Commitment, blake2s(preimage)) {
-			    return false
-		}
-		
-		unlockingScript := append(input.ScriptCommitment, input.ScriptParams...)
-		if !bytes.Equal(input.ScriptHash, blake2s(unlockingScript)) {
-			    return false
-		}
-		
-		if !ValidateUnlockingScript(unlockingScript, input.UnlockingParams, i) {
-			    return false
-		}
-	}
-	return true
+        
+        if !ValidateScript(input.Script, input.LockingParams, input.UnlockingParams, i) {
+            return false
+        }
+    }
+    return true
 }
 ```
 
@@ -223,32 +167,21 @@ First let's add up the input amounts:
 ```go
 func ProveTransactionValidity(priv PrivateParams, pub PublicParams) bool {
 	inputTotal := 0
-	
-	for _, input := range priv.Inputs {
-		
-		h := blake2s(append(input.Index, input.Commitment...))
-		
-		if !ValidateInclusionProof(h, input.InclusionProof, pub.TxocRoot) {
-			    return false
-		}
-		
-		preimage := append(input.ScriptHash, input.Amount, input.Salt)
-		if !bytes.Equal(input.Commitment, blake2s(preimage)) {
-			    return false
-		}
-
-        unlockingScript := append(input.ScriptCommitment, input.ScriptParams...)
-        if !bytes.Equal(input.ScriptHash, blake2s(unlockingScript)) {
-                return false
+    for i, input := range priv.Inputs {
+        scriptCommitment := hash(input.Script)
+        scriptHash := hash(scriptCommitment, input.LockingParams...)
+        commitment := hash(scriptHash, input.Amount, input.Salt)
+        
+        if !ValidateInclusionProof(commitment, input.index, input.InclusionProof, pub.TxocRoot) {
+            return false
         }
-
-        if !ValidateUnlockingScript(unlockingScript, input.UnlockingParams, i) {
-                return false
+        
+        if !ValidateScript(input.Script, input.LockingParams, input.UnlockingParams, i) {
+            return false
         }
-		
 		inputTotal += input.Amount
-	}
-	return true
+    }
+    return true
 }
 ```
 
@@ -258,43 +191,32 @@ private parameters and validate that they do in fact hash to the commitments fou
 
 ```go
 func ProveTransactionValidity(priv PrivateParams, pub PublicParams) bool {
-	inputTotal := 0
-	
-	for _, input := range priv.Inputs {
-		
-		h := blake2s(append(input.Index, input.Commitment...))
-		
-		if !ValidateInclusionProof(h, input.InclusionProof, pub.TxocRoot) {
-			    return false
-		}
-		
-		preimage := append(input.ScriptHash, input.Amount, input.Salt)
-		if !bytes.Equal(input.Commitment, blake2s(preimage)) {
-			    return false
-		}
-
-        unlockingScript := append(input.ScriptCommitment, input.ScriptParams...)
-        if !bytes.Equal(input.ScriptHash, blake2s(unlockingScript)) {
-                return false
+    inputTotal := 0
+    for i, input := range priv.Inputs {
+        scriptCommitment := hash(input.Script)
+        scriptHash := hash(scriptCommitment, input.LockingParams...)
+        commitment := hash(scriptHash, input.Amount, input.Salt)
+        
+        if !ValidateInclusionProof(commitment, input.index, input.InclusionProof, pub.TxocRoot) {
+            return false
         }
-
-        if !ValidateUnlockingScript(unlockingScript, input.UnlockingParams, i) {
-                return false
+        
+        if !ValidateScript(input.Script, input.LockingParams, input.UnlockingParams, i) {
+            return false
         }
-		
-		inputTotal += input.Amount
-	}
+        inputTotal += input.Amount
+    }
 	
-	outputTotal := 0
-	
-	for i, output : range priv.Outputs {
-		    preimage := append(output.ScriptHash, output.Amount, output.Salt)
-		    if !bytes.Equal(pub.Outputs[i].Commitment, blake2s(preimage)) {
-			        return false
-		    }
-		    outputTotal += output.Amount
-	}
-	return true
+    outputTotal := 0
+    
+    for i, output : range priv.Outputs {
+            preimage := append(output.ScriptHash, output.Amount, output.Salt)
+            if !bytes.Equal(pub.Outputs[i].Commitment, hash(preimage)) {
+                    return false
+            }
+            outputTotal += output.Amount
+    }
+    return true
 }
 ```
 
@@ -302,48 +224,37 @@ Finally, we can verify that the output amount plus the transaction fee does not 
 
 ```go
 func ProveTransactionValidity(priv PrivateParams, pub PublicParams) bool {
-	inputTotal := 0
-	
-	for _, input := range priv.Inputs {
-		
-		h := blake2s(append(input.Index, input.Commitment...))
-		
-		if !ValidateInclusionProof(h, input.InclusionProof, pub.TxocRoot) {
-			    return false
-		}
-		
-		preimage := append(input.ScriptHash, input.Amount, input.Salt)
-		if !bytes.Equal(input.Commitment, blake2s(preimage)) {
-			    return false
-		}
-
-        unlockingScript := append(input.ScriptCommitment, input.ScriptParams...)
-        if !bytes.Equal(input.ScriptHash, blake2s(unlockingScript)) {
-                return false
+    inputTotal := 0
+    for i, input := range priv.Inputs {
+        scriptCommitment := hash(input.Script)
+        scriptHash := hash(scriptCommitment, input.LockingParams...)
+        commitment := hash(scriptHash, input.Amount, input.Salt)
+        
+        if !ValidateInclusionProof(commitment, input.index, input.InclusionProof, pub.TxocRoot) {
+            return false
         }
-
-        if !ValidateUnlockingScript(unlockingScript, input.UnlockingParams, i) {
-                return false
+        
+        if !ValidateScript(input.Script, input.LockingParams, input.UnlockingParams, i) {
+            return false
         }
-		
-		inputTotal += input.Amount
-	}
+        inputTotal += input.Amount
+    }
+    
+    outputTotal := 0
+    
+    for i, output : range priv.Outputs {
+        preimage := append(output.ScriptHash, output.Amount, output.Salt)
+        if !bytes.Equal(pub.Outputs[i].Commitment, hash(preimage)) {
+            return false
+        }
+        outputTotal += output.Amount
+    }   
 	
-	outputTotal := 0
+    if outputTotal + pub.Fee > inputTotal {
+        return false
+    }
 	
-	for i, output : range priv.Outputs {
-		    preimage := append(output.ScriptHash, output.Amount, output.Salt)
-		    if !bytes.Equal(pub.Outputs[i].Commitment, blake2s(preimage)) {
-			        return false
-		    }
-		    outputTotal += output.Amount
-	}
-	
-	if outputTotal + pub.Fee > inputTotal {
-		    return false
-	}
-	
-	return true
+    return true
 }
 ```
 
@@ -370,54 +281,42 @@ We'll again do this inside the transaction validation lurk program:
 
 ```go
 func ProveTransactionValidity(priv PrivateParams, pub PublicParams) bool {
-inputTotal := 0
-
-	for i, input := range priv.Inputs {
-		
-		h := blake2s(append(input.Index, input.Commitment...))
-		
-		if !ValidateInclusionProof(h, input.InclusionProof, pub.TxocRoot) {
-			    return false
-		}
-		
-		preimage := append(input.ScriptHash, input.Amount, input.Salt)
-		if !bytes.Equal(input.Commitment, blake2s(preimage)) {
-			    return false
-		}
-	
-		unlockingScript := append(input.ScriptCommitment, input.ScriptParams...)
-        if !bytes.Equal(input.ScriptHash, blake2s(unlockingScript)) {
-                return false
+    inputTotal := 0
+    for i, input := range priv.Inputs {
+        scriptCommitment := hash(input.Script)
+        scriptHash := hash(scriptCommitment, input.LockingParams...)
+        commitment := hash(scriptHash, input.Amount, input.Salt)
+        
+        if !ValidateInclusionProof(commitment, input.index, input.InclusionProof, pub.TxocRoot) {
+            return false
         }
-
-        if !ValidateUnlockingScript(unlockingScript, input.UnlockingParams, i) {
-                return false
+        
+        if !ValidateScript(input.Script, input.LockingParams, input.UnlockingParams, i) {
+            return false
         }
-		
-		inputTotal += input.Amount
-		
-		nullifier := blake2s(append(input.Index, input.Salt, unlockingScript))
-		
-		if !bytes.Equal(pub.Nullifiers[i], nullifier) {
-			    return false
-		}
-	}
-	
-	outputTotal := 0
-	
-	for i, output : range priv.Outputs {
-		preimage := append(output.ScriptHash, output.Amount, output.Salt)
-		if !bytes.Equal(pub.Outputs[i].Commitment, blake2s(preimage)) {
-			    return false
-		}
-		outputTotal += output.Amount
-	}
-	
-	if outputTotal + pub.Fee > inputTotal {
-		    return false
-	}
-	
-	return true
+        inputTotal += input.Amount
+
+        nullifier := hash(input.Index, input.Salt, scriptCommitment, input.LockingParams...)
+        if !bytes.Equal(nullifier, pub.Nullifiers[i]) {
+            return false
+        }
+    }
+    
+    outputTotal := 0
+    
+    for i, output : range priv.Outputs {
+        preimage := append(output.ScriptHash, output.Amount, output.Salt)
+        if !bytes.Equal(pub.Outputs[i].Commitment, hash(preimage)) {
+            return false
+        }
+        outputTotal += output.Amount
+    }
+    
+    if outputTotal + pub.Fee > inputTotal {
+        return false
+    }
+    
+    return true
 }
 ```
 

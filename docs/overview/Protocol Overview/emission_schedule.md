@@ -4,6 +4,10 @@ sidebar_position: 11
 
 # Coin Distribution
 
+!!THIS SECTION IS  A WORK IN PROGRESS!!
+
+Check back later or offer some feedback!
+
 ## 10 Year Distribution Target
 
 The protocol aims to have distributed a total of 2<sup>60</sup> = 1,152,921,504,606,846,976 coins by the 

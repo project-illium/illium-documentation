@@ -39,7 +39,7 @@ It works as follows. First, when we insert a new output commitment into the tree
 hashing:
 
 ```go
-hash := blake2s(index, outputCommitment)
+hash := hash(index, outputCommitment)
 ```
 
 This ensures that each hash in the tree is unique, even if the output commitment is not. 
@@ -52,10 +52,11 @@ If we were to add a fifth output commitment we would simply leave that output lo
 
 ![Merkle-Tree-3](/img/Merkle-Tree-3.png)
 
-Now we have a tree with two "peaks". The "root" in this case would be hash of all the peaks:
+Now we have a tree with two "peaks". We can compute the merkle root for the txoc set as the
+merkle root of the set of peaks. In this case:
 
 ```go
-root := blake2s(peak1, peak2)
+root := hash(peak1, peak2)
 ```
 
 If we add a sixth output commitment the second tree grows in size:
@@ -66,10 +67,12 @@ After a seventh output commitent we now have three peaks:
 
 ![Merkle-Tree-5](/img/Merkle-Tree-5.png)
 
-Again, the root would be:
+Again, we compute the txoc root by building a regular merkle tree out of the peaks:
 
 ```go
-root := blake2s(peak1, peak2, peak3)
+h1 := hash(peak1, peak2)
+h2 := hash(peak3, peak3) // As in bitcoin, an unpaired element gets hashed with itself.
+root := hash(h1, h2)
 ```
 
 After adding an eighth output commitment into the tree, all the peaks merge back into a single peak:

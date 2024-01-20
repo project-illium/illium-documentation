@@ -12,7 +12,7 @@ To enable the token protocol we are going to once again modify our output commit
 `assetID` field.
 
 ```go
-outputCommitment := blake2s(scriptHash, amount, assetID, state, salt)
+outputCommitment := hash(scriptHash, amount, assetID, salt, state)
 ```
 
 For regular illium (ILX) transfers the `assetID` is just a zero byte array. For all other transfers it's the unique 
@@ -24,70 +24,56 @@ between illium (ILX) coins and other assets and to verify that neither are being
 
 ```go
 func ProveTransactionValidity(priv PrivateParams, pub PublicParams) bool {
-	ilxInputTotal := 0
-	assetInputTotals := make(map[[32]byte]uint64)
-
-	for i, input := range priv.Inputs {
-		
-		h := blake2s(append(input.Index, input.Commitment...))
-		
-		if !ValidateInclusionProof(h, input.InclusionProof, pub.TxocRoot) {
-			    return false
-		}
-		
-		preimage := append(input.ScriptHash, input.Amount, in.AssetID, in.State, input.Salt)
-		if !bytes.Equal(input.Commitment, blake2s(preimage)) {
-			    return false
-		}
-
-        unlockingScript := append(input.ScriptCommitment, input.ScriptParams...)
-        if !bytes.Equal(input.ScriptHash, blake2s(unlockingScript)) {
-                return false
+    inputTotal := 0
+    inAssetMap := make(map[string]uint64)
+    for i, input := range priv.Inputs {
+        scriptCommitment := hash(input.Script)
+        scriptHash := hash(scriptCommitment, input.LockingParams...)
+        commitment := hash(scriptHash, input.Amount, input.AssetID, input.Salt, input.State)
+    
+        if !ValidateInclusionProof(commitment, input.index, input.InclusionProof, pub.TxocRoot) {
+            return false
         }
-
-        if !ValidateUnlockingScript(unlockingScript, input.UnlockingParams, i, priv, pub) {
-                return false
+        
+        if !ValidateScript(input.Script, input.LockingParams, input.UnlockingParams, i, priv, pub) {
+            return false
         }
-
-        if input.AssetID == ILX_ASSET_ID {
-                ilxInputTotal += input.Amount
+        
+        nullifier := hash(input.Index, input.Salt, scriptCommitment, input.LockingParams...)
+        if !bytes.Equal(nullifier, pub.Nullifiers[i]) {
+            return false
+        }
+        if input.AssetID = ILXID {
+            inputTotal += input.Amount
         } else {
-                assetInputTotals[input.AssetID] += input.Amount
+            inAssetMap[input.AssetID] += input.Amount
         }
-
-        nullifier := blake2s(append(input.Index, input.Salt, unlockingScript))
-		
-		if !bytes.Equal(pub.Nullifiers[i], nullifier) {
-			    return false
-		}
-	}
-	
-	ilxOutputTotal := 0
-    assetOutputTotals := make(map[[32]byte]uint64)
-	
-	for i, output : range priv.Outputs {
-		preimage := append(output.ScriptHash, output.Amount, output.AssetID, output.State, output.Salt)
-		if !bytes.Equal(pub.Outputs[i].Commitment, blake2s(preimage)) {
-			    return false
-		}
-		if output.AssetID == ILX_ASSET_ID {
-                ilxOutputTotal += output.Amount
+    }
+    
+    outputTotal := 0
+    outAssetMap := make(map[string]uint64)
+    for i, output : range priv.Outputs {
+        preimage := append(output.ScriptHash, output.Amount, output.AssetID, output.Salt, output.State)
+        if !bytes.Equal(pub.Outputs[i].Commitment, hash(preimage)) {
+            return false
+        }
+        if output.AssetID = ILXID {
+            outputTotal += output.Amount
         } else {
-                assetOutputTotals[output.AssetID] += output.Amount
+            outAssetMap[output.AssetID] += output.Amount
         }
-	}
-	
-	if ilxOutputTotal + pub.Fee > ilxInputTotal {
-		    return false
-	}
-	
-	for assetID, total := range assetOutputTotals {
-		if total > assetInputTotals[assetID] {
-			    return false
+    }
+        
+    if outputTotal + pub.Fee > inputTotal {
+        return false
+    }
+    for assetID, amount := range outAssetMap {
+        if inAssetMap[assetID] < amount {
+            return false
         }
-	}
-	
-	return true
+    }
+    
+    return true
 }
 ```
 
@@ -95,22 +81,22 @@ And to go along with this we will need a new transaction type to mint new assets
 
 ```protobuf
 message MintTransaction {
-    AssetType type            = 1;
-    bytes asset_ID            = 2;
-    bytes document_hash       = 3;
-    uint64 new_tokens         = 4;
-    repeated Output outputs   = 5;
-    uint64 fee                = 6;
-    repeated bytes nullifiers = 7;
-    bytes txoc_root           = 8;
-    bytes mint_key            = 9;
-    int64 locktime            = 10;
-    bytes signature           = 11;
-    bytes proof               = 12;
+  AssetType type            = 1;
+  bytes asset_ID            = 2;
+  bytes document_hash       = 3;
+  uint64 new_tokens         = 4;
+  repeated Output outputs   = 5;
+  uint64 fee                = 6;
+  repeated bytes nullifiers = 7;
+  bytes txo_root            = 8;
+  bytes mint_key            = 9;
+  Locktime locktime         = 10;
+  bytes signature           = 11;
+  bytes proof               = 12;
 
-    enum AssetType {
-        FIXED_SUPPLY    = 0;
-        VARIABLE_SUPPLY = 1;
-    }
+  enum AssetType {
+    FIXED_SUPPLY    = 0;
+    VARIABLE_SUPPLY = 1;
+  }
 }
 ```

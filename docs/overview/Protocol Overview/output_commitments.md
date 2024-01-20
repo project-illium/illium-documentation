@@ -10,10 +10,10 @@ If you recall Bitcoin has multiple types of addresses: pay-to-pubkeyhash, pay-to
 
 Let's focus on the pay-to-scripthash as this one most closely relates to Illium. 
 
-In a pay-to-scripthash address the address is a serialized hash of a custom, user-defined, unlocking script. 
+In a pay-to-scripthash address the address is a serialized hash of a custom, user-defined, locking script. 
 
 ```go
-scriptHash := hash160(unlockingScript)
+scriptHash := hash160(lockingScript)
 address := serialize(scriptHash)
 ```
 
@@ -71,7 +71,7 @@ For example, Illium transactions look like:
 The commitment hash is calculated as:
 
 ```go
-commitment := blake2s(scriptHash, amount)
+commitment := hash(scriptHash, amount)
 ```
 
 If you're quick on your feet you might notice a potential attack here. If you know someone's scriptHash you can try brute
@@ -82,19 +82,19 @@ To combat this the sender of transaction generates a random number, which we cal
 to the `scriptHash` and `amount`. This effectively randomizes the commitment and prevents the brute force attack.
 
 ```go
-commitment := blake2s(scriptHash, amount, salt)
+commitment := hash(scriptHash, amount, salt)
 ```
 
 But if the outputs are hashed with a random salt, how does the recipient know the transaction is intended for them? 
 
 ## Illium Addresses
 
-Like pay-to-scripthash Bitcoin address, Illium address also include a hash of a custom, user-defined unlocking script.
-As we'll see later the "unlocking script" is actually a custom zk-snark function. The address also includes the user's 
+Like pay-to-scripthash Bitcoin addresses, Illium addresses also include a hash of a custom, user-defined locking script.
+As we'll see later the "locking script" is actually a custom zk-snark function. The address also includes the user's 
 "view" public key.
 
 ```go
-scriptHash := blake2s(unlockingScript)
+scriptHash := hash(lockingScript)
 address := serialize(scriptHash, viewPublicKey)
 ```
 
