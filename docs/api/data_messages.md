@@ -49,23 +49,22 @@ message Validator {
     uint64 unclaimed_coins    = 5;
     // The number of blocks this validator has created this epoch.
     uint32 epoch_blocks       = 6;
-    
+
     message Stake {
-	    // The nullifier that is staked
+        // The nullifier that is staked
         bytes nullifier           = 1;
-	    // The amount staked
+        // The amount staked
         uint64 amount             = 2;
-	    // The timestamp that this utxo is timelocked until
+        // The timestamp that this utxo is timelocked until
         int64 timelocked_until    = 3;
-	    // When this nullifier will expire and be removed from
-	    // the validator set.
+        // When this nullifier will expire and be removed from
+        // the validator set.
         int64 expiration          = 4;
-	    // The earliest date at which this nullifier can be restaked.
-	    // One week before expiration.
+        // The earliest date at which this nullifier can be restaked.
+        // One week before expiration.
         int64 restake_eligibility = 5;
     }
 }
-
 
 message Utxo {
     // The commitment associated with the output
@@ -95,53 +94,51 @@ message RawTransaction {
 
 message PrivateInput {
     // The amount of the input
-    uint64 amount                = 1;
-    // Input salt
-    bytes salt                   = 2;
+    uint64 amount                 = 1;
     // Input asset ID
-    bytes asset_ID               = 3;
+    bytes asset_ID                = 2;
+    // Input salt
+    bytes salt                    = 3;
     // Input state
-    bytes state                  = 4;
-    // The unlocking function commitment
-    bytes script_commitment      = 5;
-    // The unlocking function parameters
-    repeated bytes script_params = 6;
+    bytes state                   = 4;
     // The txo proof linking the input
     // commitment to the accumulator
-    TxoProof txo_proof           = 7;
-    // Optional lurk expression used as 
-    // input to unlocking script. This is 
+    TxoProof txo_proof            = 5;
+    // The locking script
+    string script                 = 6;
+    // The locking function parameters
+    repeated bytes locking_params = 7;
+    // Optional lurk expression used as
+    // input to locking script. This is
     // only necessary for watch-only utxos.
-    string unlocking_params      = 8;
-    }
+    string unlocking_params       = 8;
+}
 
 message PrivateOutput {
-    // Output amount
-    uint64 amount     = 1;
-    // Output salt
-    bytes salt        = 2;
-    // Output asset ID
-    bytes asset_ID    = 3;
-    // Output state
-    bytes state       = 4;
     // Output scriptHash
-    bytes script_hash = 5;
+    bytes script_hash = 1;
+    // Output amount
+    uint64 amount     = 2;
+    // Output salt
+    bytes salt        = 3;
+    // Output asset ID
+    bytes asset_ID    = 4;
+    // Output state
+    bytes state       = 5;
 }
 
 message TxoProof {
     // The commitment this inclusion proof is for
-    bytes commitment           = 1;
+    bytes commitment      = 1;
     // The hashes that form the root preimage
-    repeated bytes accumulator = 2;
-    // The merkle hashes linking the commitment to the accumulator
-    repeated bytes hashes      = 3;
+    repeated bytes hashes = 2;
     // Flags indicate whether a hash in the hash list is left or right.
     // 0 == left, 1 == right.
-    uint64 flags               = 4;
+    uint64 flags          = 3;
     // The index of this commitment in the tree
-    uint64 index               = 5;
+    uint64 index          = 4;
     // The txoRoot this proof links to. This is found in the block header.
-    bytes txoRoot              = 6;
+    bytes txoRoot         = 5;
 }
 
 message Peer {
@@ -159,13 +156,13 @@ message WalletTransaction {
     // The net number of coins coming into the wallet
     // Positive = receive
     // Negative = send
-    int64 netCoins      = 2;
+    int64 netCoins       = 2;
     // The address and amount of each input if known
     // to the wallet.
-    repeated IO inputs  = 3;
+    repeated IO inputs   = 3;
     // The address and amount of each output if known
     // to the wallet.
-    repeated IO outputs = 4;
+    repeated IO outputs  = 4;
     
     message IO {
         // Either address/amount information or unknown
@@ -174,17 +171,18 @@ message WalletTransaction {
         oneof io_type {
             TxIO tx_io      = 1;
             Unknown unknown = 2;
-    }
+        }
     
-    message TxIO {
-        // Address associated with the input or output
-        string address = 1;
-        // Amount of coins associated with the input or output
-        uint64 amount  = 2;
+        message TxIO {
+            // Address associated with the input or output
+            string address = 1;
+            // Amount of coins associated with the input or output
+            uint64 amount  = 2;
+        }
+        
+        // Represents an input or output not belonging to
+        // the wallet.
+        message Unknown {}
     }
-    
-    // Represents an input or output not belonging to
-    // the wallet.
-    message Unknown {}
 }
 ```

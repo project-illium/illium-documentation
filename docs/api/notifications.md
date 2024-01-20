@@ -17,7 +17,7 @@ message WalletTransactionNotification {
 }
 
 message WalletSyncNotification {
-	// The current height the wallet is synced up to
+    // The current height the wallet is synced up to
     uint32 current_height = 1;
     // The height of the chain that the wallet is syncing to
     uint32 best_height    = 2;

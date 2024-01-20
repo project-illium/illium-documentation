@@ -65,7 +65,7 @@ service BlockchainService {
     // SubscribeBlocks returns a stream of notifications when new blocks are finalized and
     // connected to the chain.
     rpc SubscribeBlocks(SubscribeBlocksRequest) returns (stream BlockNotification) {}
-    
+
     // SubscribeCompressedBlocks returns a stream of CompressedBlock notifications when new
     // blocks are finalized and connected to the chain.
     rpc SubscribeCompressedBlocks(SubscribeCompressedBlocksRequest) returns (stream CompressedBlockNotification) {}
@@ -103,24 +103,26 @@ message GetBlockchainInfoResponse {
         // A public environment where monetary value is agreed to be zero,
         // and some checks for transaction conformity are disabled.
         TESTNET  = 2;
+        // Alpha testnet
+        ALPHANET = 3;
     }
 
     // Which network the node is operating on
-    Network network          = 1;
+    Network network           = 1;
     // The current number of blocks in the chain
     uint32 best_height        = 2;
     // The hash of the best (tip) block in the chain
-    bytes best_block_ID      = 3;
+    bytes best_block_ID       = 3;
     // The timestamp of the best block
-    int64 block_time         = 4;
+    int64 block_time          = 4;
     // When `tx_index` is true, the node has full transaction index enabled
-    bool tx_index            = 5;
+    bool tx_index             = 5;
     // The total number of coins in circulation
     uint64 circulating_supply = 6;
     // The total number of coins staked
-    uint64 total_staked      = 7;
+    uint64 total_staked       = 7;
     // The balance of the treasury
-    uint64 treasury_balance  = 8;
+    uint64 treasury_balance   = 8;
 }
 
 message GetBlockInfoRequest {
@@ -154,7 +156,7 @@ message GetCompressedBlockRequest {
         // The block hash as a byte array
         bytes block_ID = 1;
         // The block number
-        uint32 height   = 2;
+        uint32 height  = 2;
     }
 }
 message GetCompressedBlockResponse {
@@ -209,7 +211,7 @@ message GetMerkleProofRequest {
 }
 message GetMerkleProofResponse {
     // Block header information for the corresponding transaction
-    BlockInfo block       = 1;
+    BlockInfo block        = 1;
     // Is the proof hashes corresponding to the witness hash tree.
     repeated bytes Uhashes = 2;
     // Is the proof hashes corresponding to the witness hash tree.
@@ -233,8 +235,10 @@ message GetValidatorSetInfoRequest{}
 message GetValidatorSetInfoResponse{
     // The total number of coins staked on the network
     uint64 total_staked   = 1;
+    // The total stake weighted by time locks.
+    uint64 stake_weight   = 2;
     // The total number of validators on the network
-    uint32 num_validators = 2;
+    uint32 num_validators = 3;
 }
 
 message GetValidatorSetRequest{}
@@ -252,7 +256,7 @@ message GetAccumulatorCheckpointRequest{
         // An error will be returned if there is no checkpoint before
         // the provided height.
         uint32 height   = 1;
-    
+        
         // The timestamp of the accumulator checkpoint to return.
         // If there is no checkpoint at that timestamp, the *prior*
         // checkpoint found in the chain will be returned.
@@ -261,7 +265,6 @@ message GetAccumulatorCheckpointRequest{
         // the provided timestamp.
         int64 timestamp = 2;
     }
-
 }
 message GetAccumulatorCheckpointResponse{
     // The height of the checkpoint
@@ -287,7 +290,7 @@ message SubscribeBlocksRequest {
     // When full_block is true, a complete marshaled block is sent.
     // Default is false, block metadata is sent. See `BlockInfo`.
     bool full_block        = 1;
-
+    
     // When full_transactions is true, provide full transaction info
     // for a marshaled block.
     //
@@ -297,4 +300,5 @@ message SubscribeBlocksRequest {
 }
 
 message SubscribeCompressedBlocksRequest {}
+
 ```

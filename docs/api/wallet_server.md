@@ -9,7 +9,7 @@ service WalletServerService {
     // attempting to decrypt each output. If outputs decrypt, they will be indexed so the client
     // can fetch them later.
     //
-    // To free up resources keys will automatically unregister if the wallet has not connected 
+    // To free up resources keys will automatically unregister if the wallet has not connected
     // in some time.
     rpc RegisterViewKey(RegisterViewKeyRequest) returns (RegisterViewKeyResponse) {}
 
@@ -31,21 +31,21 @@ service WalletServerService {
 ```go
 message RegisterViewKeyRequest {
     // A view key to register with the server.
-    bytes view_key                  = 1;
-
-    // The unlocking script associated with the address belonging
-    // to the view key serialized as <scriptCommitment><scriptParams...>
+    bytes view_key                = 1;
+    
+    // The locking script associated with the address belonging
+    // to the view key serialized as <scriptCommitment><lockingParams...>
     //
     // The server needs this in order to compute the nullifier and detect
     // spend transactions.
-    bytes serializedUnlockingScript = 2;
-
+    bytes serializedLockingScript = 2;
+    
     // The date the address was created. The server will scan historical blocks
     // for matching transactions from the birthday forward. Please don't use an
     // earlier birthday than needed as it puts more stress on the server.
     //
     // A zero value will not trigger a rescan.
-    int64 birthday                  = 3;
+    int64 birthday                 = 3;
 }
 message RegisterViewKeyResponse {}
 
@@ -56,15 +56,14 @@ message SubscribeTransactionsRequest {
 
 message GetWalletTransactionsRequest{
     // The view key to query transactions
-    bytes view_key = 1;
-
+    bytes view_key  = 1;
+    
     // The number of transactions to skip, starting with the oldest first.
     // Does not affect results of unconfirmed transactions.
-    uint32 nb_skip = 2;
+    uint32 nb_skip  = 2;
     // Specify the number of transactions to fetch.
     uint32 nb_fetch = 3;
-
-
+	
     oneof start_block {
         // Recommended. Only get transactions after (or within) a
         // starting block identified by hash.
@@ -75,8 +74,10 @@ message GetWalletTransactionsRequest{
     }
 }
 message GetWalletTransactionsResponse {
+    // The height of the chain as of this query
+    uint32 chain_height               = 1;
     // A list of transactions as the response
-    repeated Transaction transactions = 1;
+    repeated Transaction transactions = 2;
 }
 
 message GetTxoProofRequest {

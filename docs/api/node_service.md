@@ -76,7 +76,7 @@ message GetHostInfoResponse {
     // A list of multiaddrs that this node is listening on
     repeated string addrs = 2;
     // The number of peers this node is connected to
-    uint32 peers    = 3;
+    uint32 peers          = 3;
     // Is tx index enabled
     bool tx_index         = 4;
     // Is the wallet server enabled
@@ -117,15 +117,14 @@ message UnblockPeerResponse {}
 message SetLogLevelRequest {
     // The debug level to set the logging to
     Level level = 1;
-
+    
     enum Level {
-       DEBUG     = 0;
-       INFO      = 1;
-       WARNING   = 2;
-       ERROR     = 3;
-       CRITICAL  = 4;
-       ALERT     = 5;
-       EMERGENCY = 6;
+        TRACE   = 0;
+        DEBUG   = 1;
+        INFO    = 2;
+        WARNING = 3;
+        ERROR   = 4;
+        FATAL   = 5;
     }
 }
 message SetLogLevelResponse {}
@@ -183,7 +182,7 @@ message UpdateTreasuryWhitelistResponse {}
 message ReconsiderBlockRequest {
     // Block ID to reconsider.
     bytes block_ID = 1;
-
+    
     // We likely don't have the block and will have to download it from
     // another peer. You can set the peer here. If empty we will try to find
     // it form a few random peers.
