@@ -45,7 +45,7 @@ Ilxd has built-in functionality to make offline signing easy.
    
    {
       "addr": "`reg1p6fyg6w5lvrw5ku7v55d6ctv4qsnyxflvaejfm4dzuwu05ln6mjjccgzrvkfc07gj90xrz9j499ma4348jq2h2zh5tgrn0tkpfdqfqqqcnxz3q`",
-      "unlockingScript": "d429d65fab713c3e8d9984b8f0a93fd1639eee4e7ad8ffca67e0ce68e4fbf903sha256sum9b7d6f12e550328dabe399c7c89c807145e3c247abf4e0a5f42c7c5908e5a0fa"
+      "lockingScript": "d429d65fab713c3e8d9984b8f0a93fd1639eee4e7ad8ffca67e0ce68e4fbf903sha256sum9b7d6f12e550328dabe399c7c89c807145e3c247abf4e0a5f42c7c5908e5a0fa"
       "viewPrivateKey": "08041240362dc1a3650633ed0af4ce46e90cd7ac2a195a3b92ed416f5e0845cad51f0f07a478e8908a7c37b9ff72e6920b5d83e2dc3e989c5c3a81ea44865620b15bf02e",
       "watchOnly": false,
    }
@@ -59,7 +59,7 @@ Ilxd has built-in functionality to make offline signing easy.
 
    ```
    $ ilxcli importaddress --addr=08041240362dc1a3650633ed0af4ce46e90cd7ac2a195a3b92ed416f5e0845cad51f0f07a478e8908a7c37b9ff72e6920b5d83e2dc3e989c5c3a81ea44865620b15bf02e \
-                          --unlockingscript=d429d65fab713c3e8d9984b8f0a93fd1639eee4e7ad8ffca67e0ce68e4fbf903sha256sum9b7d6f12e550328dabe399c7c89c807145e3c247abf4e0a5f42c7c5908e5a0fa \
+                          --lockingscript=d429d65fab713c3e8d9984b8f0a93fd1639eee4e7ad8ffca67e0ce68e4fbf903sha256sum9b7d6f12e550328dabe399c7c89c807145e3c247abf4e0a5f42c7c5908e5a0fa \
                           --viewkey=08041240362dc1a3650633ed0af4ce46e90cd7ac2a195a3b92ed416f5e0845cad51f0f07a478e8908a7c37b9ff72e6920b5d83e2dc3e989c5c3a81ea44865620b15bf02e
    
    success

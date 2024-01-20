@@ -40,6 +40,9 @@ If you want to set any of the options remove the `;` from the start of the line.
 ; Otherwise it will use random keys.
 ; regtestval=1
 
+;; Set the node to use mock proofs instead of full proofs. This option is only available for regtest.
+;; mock=1
+
 ; Universal Plug and Play (UPnP) automatically opens the listen port obtains
 ; the external IP address from supported devices. This option disables it.
 ; noupnp=1
@@ -60,7 +63,7 @@ If you want to set any of the options remove the `;` from the start of the line.
 ; useragent=Custom_User_Agent
 
 ; Debug logging level.
-; Valid levels are {debug, info, notice, warning, error, critical}
+; Valid levels are [trace, debug, info, warning, error, fatal]
 ; loglevel=info
 
 ; The directory to store log files
@@ -72,11 +75,21 @@ If you want to set any of the options remove the `;` from the start of the line.
 ; Write libp2p logs to the terminal
 ; debug=1
 
+; Delete the blockchain from disk.
+; The node will store just the date needed to validate new blocks.
+; prune=1
+
 ; Disable the transaction index
 ; notxindex=1
 
 ; Delete the tx index
 ; droptxindex=1
+
+; Enable the wallet server index to serve lite wallets
+; wsindex=1
+
+; Delete the wallet server index from the database
+; dropwsindex=1
 
 ; The max ban threshold. Overwhich nodes will be banned.
 ; maxbanscore=100
@@ -133,4 +146,6 @@ If you want to set any of the options remove the `;` from the start of the line.
 ; Disable the wallet rpc service
 ; disablewalletservice=1
 
+; Disable the wallet server RPC service. This will automatically be disable if wsindex is disabled.
+; disablewalletserverservic
 ```

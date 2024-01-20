@@ -61,8 +61,8 @@ Available commands:
   createmultisignature        Generates and returns a signature for use when proving a multisig transaction
   createmultisigspendkeypair  Generates a spend keypair for use in a multisig address
   createmultisigviewkeypair   Generates a view keypair for use in a multisig address
-  createrawtransaction        Creates a new, unsigned (unproven) transaction using the given parameters
   createrawstaketransaction   Creates a new, unsigned (unproven) stake transaction using the given parameters
+  createrawtransaction        Creates a new, unsigned (unproven) transaction using the given parameters
   deleteprivatekeys           Deletes the wallet's private keys and seed from disk
   getaccumulatorcheckpoint    Returns the accumulator at the requested height
   getaddress                  Returns the most recent address of the wallet
@@ -94,7 +94,6 @@ Available commands:
   getvalidatorsetinfo         Returns information about the validator set
   getwalletseed               Returns the mnemonic seed for the wallet
   importaddress               Imports a watch address into the wallet
-  provemultisig               Creates a proof for a transaction with a multisig input
   proverawtransaction         Creates the zk-proof for the transaction
   recomputechainstate         Rebuilds the entire chain state from genesis
   reconsiderblock             Tries to reprocess the given block
