@@ -189,6 +189,10 @@ We'll do this using the gRPC interface.
     // formatted as a lurk expression in the same format our locking script
     // expects it to be. In this case a list.
     createRawResp.RawTx.Inputs[0].UnlockingParams = fmt.Sprintf("(cons 0x%x (cons 0x%x (cons 0x%x nil)))", sigRx, sigRy, sigS)
+	
+    // We also need to provide the script because the wallet only know of the
+    // script-commitment but not the actual script.
+    createRawResp.RawTx.Inputs[0].Script = script
     
     // Create the proof for the transaction
     provedResp, err := walletClient.ProveRawTransaction(context.Background(), &pb.ProveRawTransactionRequest{
