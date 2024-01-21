@@ -23,6 +23,7 @@ import (
 	"github.com/project-illium/ilxd/params"
 	"github.com/project-illium/ilxd/types"
 	"github.com/project-illium/ilxd/zk"
+	"github.com/project-illium/ilxd/zk/lurk/macros"
 	"github.com/project-illium/walletlib"
 	"github.com/project-illium/ilxd/repo"
 	"github.com/project-illium/ilxd/rpc/pb"
@@ -43,6 +44,17 @@ func main() {
                 t
             )	
     `
+
+    // Run the script through the preprocessor to expand the macros
+    mp, err := macros.NewMacroPreprocessor(macros.WithStandardLib(), macros.RemoveComments())
+    if err != nil {
+        log.Fatal(err)
+    }
+	
+    script, err = mp.Preprocess(script)
+    if err != nil {
+        log.Fatal(err)
+    }
     
     // Compute the script commitment of the script
     scriptCommitment, err := zk.LurkCommit(script)
