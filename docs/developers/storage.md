@@ -77,9 +77,10 @@ unlocking-params = (<data> <merkle-proof>)
 ```
 
 ```lisp
-(lambda (script-params unlocking-params input-index private-params public-params)
+(lambda (locking-params unlocking-params input-index private-params public-params)
     !(import std/merkle-db)
-    !(import std/crypto)
+    !(import std/crypto/encrypt)
+    !(import std/collections/nth
     
     !(def data (nth 0 unlocking-params))
     !(def merkle-proof (nth 1 unlocking-params))
@@ -90,18 +91,18 @@ unlocking-params = (<data> <merkle-proof>)
 
     ;; Compute the required output
     !(def required-output !(list
-                            !(param priv-in input-index script-hash)
+                            script-hash
                             new-amount
                             !(param priv-in input-index asset-id)
                             new-state-root
-                            (hash !(param priv-in input-index salt))))
+                            (num (commit !(param priv-in input-index salt)))))
     
     ;; Enforce covenant requring output 0 to be of the required form                  
     !(assert-eq required-output !(param priv-out 0))
     
     ;; Enforce  a covenant requring that the ciphertext contains (required-output data-to-store)
     ;; and is encrypted with the hash of the input-salt. 
-    !(assert-eq !(param pub-out 0 ciphertext) (encrypt !(list required-output data-to-store) (hash !(param priv-in input-index salt))))
+    !(assert-eq !(param pub-out 0 ciphertext) (encrypt !(list required-output data-to-store) (num (commit !(param priv-in input-index salt)))))
     
     t
 )

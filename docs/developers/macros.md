@@ -129,39 +129,36 @@ The param macro serves as a helpful shortcut for accessing the parameters of the
 forms:
 
 ```lisp
-!(param txo-root)                                     ;; expands to: (nth 1 public-params)
-!(param fee)                                          ;; expands to: (nth 2 public-params)
-!(param coinbase)                                     ;; expands to: (nth 3 public-params)
-!(param mint-id)                                      ;; expands to: (nth 4 public-params)
-!(param mint-amount)                                  ;; expands to: (nth 5 public-params)
-!(param sighash)                                      ;; expands to: (nth 7 public-params)
-!(param locktime)                                     ;; expands to: (nth 8 public-params)
-!(param locktime-precision)                           ;; expands to: (nth 9 public-params)
+!(param sighash)                                    
+!(param txo-root)                                     
+!(param fee)                                         
+!(param mint-id)                                     
+!(param mint-amount)                                 
+!(param locktime)                                     
+!(param locktime-precision)                           
 
-!(param nullifiers <index>)                           ;; expands to: (nth <index> (nth 0 public-params))
-!(param pub-out <index>)                              ;; expands to: (nth <index> (nth 6 public-params))
-!(param pub-out <index> commitment)                   ;; expands to: (nth 0 (nth <index> (nth 6 public-params)))
-!(param pub-out <index> ciphertext)                   ;; expands to: (nth 1 (nth <index> (nth 6 public-params)))
+!(param nullifiers <index>)                           
+!(param pub-out <index>)                             
+!(param pub-out <index> commitment)                  
+!(param pub-out <index> ciphertext)                   
 
-!(param priv-in <index>)                              ;; expands to: (nth <index> (car private-params))
-!(param priv-in <index> scirpt-commitment)            ;; expands to: (nth 0 (nth <index> (car private-params)))
-!(param priv-in <index> amount)                       ;; expands to: (nth 1 (nth <index> (car private-params)))
-!(param priv-in <index> asset-id)                     ;; expands to: (nth 2 (nth <index> (car private-params)))
-!(param priv-in <index> script-params)                ;; expands to: (nth 3 (nth <index> (car private-params)))
-!(param priv-in <index> commitment-index              ;; expands to: (nth 4 (nth <index> (car private-params)))
-!(param priv-in <index> state)                        ;; expands to: (nth 5 (nth <index> (car private-params)))
-!(param priv-in <index> salt)                         ;; expands to: (nth 6 (nth <index> (car private-params)))
-!(param priv-in <index> unlocking-params)             ;; expands to: (nth 7 (nth <index> (car private-params)))
-!(param priv-in <index> inclusion-proof-hashes)       ;; expands to: (nth 8 (nth <index> (car private-params)))
-!(param priv-in <index> inclusion-proof-accumulator)  ;; expands to: (nth 9 (nth <index> (car private-params)))
-!(param priv-in <index> script-hash)                  ;; expands to: (hash (cons ((car (nth <index> (car private-params))) (cons (nth 3 (nth <index> (car private-params))) nil)))
+!(param priv-in <index>)                              
+!(param priv-in <index> amount)                    
+!(param priv-in <index> asset-id)                                           
+!(param priv-in <index> salt)    
+!(param priv-in <index> state)           
+!(param priv-in <index> commitment-index             
+!(param priv-in <index> inclusion-proof) 
+!(param priv-in <index> script) 
+!(param priv-in <index> locking-params) 
+!(param priv-in <index> unlocking-params)                
 
-!(param priv-out <index>)                             ;; expands to: (nth <index> (car (cdr private-params)))
-!(param priv-out <index> script-hash)                 ;; expands to: (nth 0 (nth <index> (car (cdr private-params))))
-!(param priv-out <index> amount)                      ;; expands to: (nth 1 (nth <index> (car (cdr private-params))))
-!(param priv-out <index> asset-id)                    ;; expands to: (nth 2 (nth <index> (car (cdr private-params))))
-!(param priv-out <index> state)                       ;; expands to: (nth 3 (nth <index> (car (cdr private-params))))
-!(param priv-out <index> salt)                        ;; expands to: (nth 4 (nth <index> (car (cdr private-params))))
+!(param priv-out <index>)                            
+!(param priv-out <index> script-hash)                 
+!(param priv-out <index> amount)                     
+!(param priv-out <index> asset-id)                    
+!(param priv-out <index> state)                       
+!(param priv-out <index> salt)                      
 ```
 
 ## Import
@@ -191,7 +188,7 @@ The preprocessor takes in a dependency directory as an argument. The dependency 
   |   |-- mod.lurk
 ```
 
-Assume the `math` module defined above was inside `/deps/std/mod.lurk`, you would import it as follows:
+Assume the `math` module defined above was inside `/deps/std/mod.lurk`, you can import the entire modules as follows:
 
 ```lisp
 !(import std/math)
@@ -208,3 +205,22 @@ Macro expands to:
 )
 ```
 Evaluates to: `10`
+
+Alternatively, you can just import a single function from a module:
+
+```lisp
+!(import std/math/plus-two)
+
+(plus-two 5)
+```
+
+Macro expands to:
+```lisp
+(letrec ((plus-two (lambda (x) (+ x 2))))
+        (plus-two 5) 
+)
+```
+Evaluates to: `7`
+
+Keep in mind, if a function depends on another function in the module you'll need to import the entire
+module to use that function.

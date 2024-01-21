@@ -34,8 +34,9 @@ script. The funds can only be sent back into the same script-hash.
 
 ```lisp
 (lambda (locking-params unlocking-params input-index private-params public-params)
+      !(import std/inputs/script-hash)
       !(assert-eq !(param priv-out 0 amount) (!praram priv-in input-index amount))
-      (= !(param priv-out 0 script-hash) script-hash)
+      (= !(param priv-out 0 script-hash) (script-hash !(params priv-in input-index)))
 )
 ```
 
@@ -45,8 +46,9 @@ output.
 
 ```lisp
 (lambda (locking-params unlocking-params input-index private-params public-params)
+      !(import std/inputs/script-hash)
       !(assert-eq !(param priv-out 0 amount) (!praram priv-in input-index amount))
-      !(assert-eq !(param priv-out 0 script-hash) script-hash)
+      !(assert-eq !(param priv-out 0 script-hash) (script-hash !(params priv-in input-index)))
       
       (= !(param priv-out 0 state) (+ !(param priv-in input-index state) 1))
 )
@@ -73,6 +75,8 @@ unlocking-params = (nil <output-index> <hot-signature> )
 ```lisp
 (lambda (locking-params unlocking-params input-index private-params public-params))
       !(import std/crypto/checksig)
+      !(import std/collections/nth)
+      !(import std/inputs/script-hash)
 
       ;; cold-spend allows the funds to be spent any time using the cold key
       !(defun cold-spend () (
@@ -102,7 +106,7 @@ unlocking-params = (nil <output-index> <hot-signature> )
                       !(assert-eq !(param priv-out output-index amount) !(param priv-in input-index amount))
                       
                       ;; Require funds are sent back into the same script-hash
-                      !(assert-eq !(param priv-out output-index script-hash) script-hash)
+                      !(assert-eq !(param priv-out output-index script-hash) (script-hash !(params priv-in input-index)))
                       
                       ;; Require the new state contains the current timestamp
                       !(assert-eq !(params priv-out output-index state) locktime)

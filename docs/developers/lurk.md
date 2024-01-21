@@ -316,6 +316,35 @@ Evaluates to: `7`
 
 Or just build out the list using the cons/nil format defined above.
 
+### Strings
+
+```lisp
+(let ((x "hello"))
+      x)
+```
+Evaluates to `"hello"`
+
+The `car` of a string returns a `char`:
+```lisp
+(let ((x "hello"))
+      (car x))
+```
+Evaluates to `'h'`
+
+A char can be prepended to a string with `strcons`:
+```lisp
+(strcons 'h' "ello")
+```
+Evaluates to `"hello"`
+
+Notice the single quotes for a char and double quotes for a string.
+
+A list of `chars` built with `strcons` returns a string:
+```list
+(strcons 'h' (strcons 'e' (strcons 'l' (strcons 'l' (strcons 'o' "")))))
+```
+Evaluates to `"hello"`
+
 ### If, Then, Else
 
 If expressions take the form:
@@ -352,42 +381,46 @@ Finally, where `=` tests the equality between integers, the `eq` function tests 
 ```
 Evaluates to: `t`
 
+### Hashing
+
+Lurk has a builtin hash function which can hash any expression. This function uses the poseidon hashing algorithm.
+
+```lisp
+(commit 5)
+```
+Evaluates to `(comm 0x06332145e67677b767270ae6f73dd9c104cb50d70452f65e78081113ccff1b8e)`
+
+Notice the output is type `comm` not `num`.
+
+If you want to check the equality you'll need to cast the output to a `num` or cast your `num`
+to a type `comm`
+
+```lisp
+(= (num (commit 5)) 0x06332145e67677b767270ae6f73dd9c104cb50d70452f65e78081113ccff1b8e)
+```
+Evaluates to `t`
+
+You can hash any expression:
+```lisp
+(commit (cons 1 (cons 2 (cons 3 nil))))
+```
+Evaluates to `(comm 0x2b86ff9e0f5845c44096867b82bc9ceb92572b978e62905181d644da4402fba5)`
+
+
 ### Builtins
 
 The following functions are not technically builtin functions in Lurk, however they are functions that are defined in
 the illium validation program and thus are available to be used by unlocking script. Hence, they act like builtin functions.
 
-#### hash
-hash takes in a list of values, concatenates the values then returns the `blake2s` hash of the concatenation.
-If there is only one value in the list then the result is the hash of that single value.
+#### cat-and-hash
+cat-and-hash takes in two values, concatenates the values then returns the `blake2s` hash of the concatenation.
+The two most significant bits of the output are set to zero to fit within the max field element size.
+
+If the values are less than 32 bytes they will be padded before hashing.
 
 ```lisp
-(hash <list>)
+(cat-and-hash 1 2)
 ```
-
-The following types are allowed in the list and are serialized as follows:
-- `num`: <32 bytes>
-- `u64`: <8 bytes>
-- `char`: <1 byte>
-
-Note: a variable can be cast to another type as so:
-```lisp
-(u64 x)
-```
-Evaluates to: `x` (type u64)
-
-#### nth
-
-```
-(nth <index> <list>)
-```
-
-nth returns the value in a list at a given index
-
-```lisp
-(nth 2 '(a b c d))
-```
-Evaluates to: `c`
 
 #### map-update
 
@@ -448,7 +481,7 @@ Evaluates to: `t`
 
 Evaluates to: `nil`
 
-### Illium Unlocking Functions
+### Illium Locking Functions
 
 As we've already seen illium unlocking functions are `lambda` expressions. The entire expression must evaluate
 to a `function` and the body of the function **must** evaluate to either True or False (t or nil). Remember that *any*
@@ -456,28 +489,28 @@ non-nil return value will be treated at True.
 
 Returns True
 ```lisp
-(lambda (script-params unlocking-params input-index private-params public-params)
+(lambda (locking-params unlocking-params input-index private-params public-params)
     t
 )
 ```
 
 Also is True
 ```lisp
-(lambda (script-params unlocking-params input-index private-params public-params)
+(lambda (locking-params unlocking-params input-index private-params public-params)
     7
 )
 ```
 
 Also is True
 ```lisp
-(lambda (script-params unlocking-params input-index private-params public-params)
+(lambda (locking-params unlocking-params input-index private-params public-params)
     (cons 1 2)
 )
 ```
 
 Returns False
 ```lisp
-(lambda (script-params unlocking-params input-index private-params public-params)
+(lambda (locking-params unlocking-params input-index private-params public-params)
     nil
 )
 ```

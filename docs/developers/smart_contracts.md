@@ -56,14 +56,16 @@ Outputs
 ```
 
 ```
-script-params = (<auction-expiration> <asset-id> <recipient-pubkey>)
+locking-params = (<auction-expiration> <asset-id> <recipient-pubkey>)
 unlocking-params = (t <bid-amount> <refund-output>)
 or
 unlocking-params = (nil <signature>)
 ```
 
 ```lisp
-(lambda (script-params unlocking-params input-index private-params public-params)
+(lambda (locking-params unlocking-params input-index private-params public-params)
+	!(import std/collections/nth)
+	
 	;; Grab the locktime fields from the public parameters
 	!(def locktime !(param locktime))
 	!(def locktime-precision !(param locktime-precision))
@@ -77,34 +79,35 @@ unlocking-params = (nil <signature>)
 	;; It will also refund the previous high bidder his money.
 	!(defun bid (bid-amount refund-output) (
 		;; Import the encryption function from the standard library
-		!(import std/crypto)
+		!(import std/crypto/encrypt)
+		!(import std/inputs/script-hash)
 
 		;; Set a bunch of variables based on the input parameters
-		!(def input-script-hash !(param priv-in 0 script-hash))
-		!(def state !(param priv-in 0 state ))
+		!(def input-script-hash (script-hash !(param priv-in 0)))
+		!(def state !(param priv-in 0 state))
 		!(def current-bid (car state))
 		!(def prev-bidder-comm (car (cdr state)))
-		!(def asset-id (car (cdr script-params)))
-		!(def refund-comm (hash refund-output))
+		!(def asset-id (car (cdr locking-params)))
+		!(def refund-comm (num (commit refund-output)))
 		!(def bid-amount (car (cdr unlocking-params)))
 		!(def new-state !(list bid-amount refund-comm))
 		!(def in-salt !(param priv-in 0 salt))
-		!(def new-salt (hash in-salt))
-		!(def new-output !(list input-script-hash bid-amount asset-id new-state new-salt))
+		!(def new-salt (num (commit in-salt)))
+		!(def new-output !(list input-script-hash bid-amount asset-id new-salt new-state))
 
 		;; Assert that input 1's amount is greater than or equal to the bid amount provided
 		;; in the unlocking params.
 		!(assert (>= !(param priv-in 1 amount) bid-amount))
 		
-		;; Assert that input 1's asset-id is the same as the one set in the script-params
+		;; Assert that input 1's asset-id is the same as the one set in the locking-params
 		!(assert (>= !(param priv-in 1 asset-id) asset-id))
 
 		;; Assert that output 0 is constructed as expected
 		;; - script-hash is same as the input script-hash (recursion)
 		;; - amount is equal to the new bid
 		;; - asset-id is equal to the input asset id
-		;; - the new state is of form (bid-amount bidder-comm)
 		;; - the salt is the hash of the previous salt
+		;; - the new state is of form (bid-amount bidder-comm)
 		!(assert-eq !(param priv-out 0) new-output)
 
 		;; Assert that the input 1 amount is greater than the current bid
@@ -121,7 +124,7 @@ unlocking-params = (nil <signature>)
 		!(assert-eq !(param pub-out 0 ciphertext) (encrypt new-salt new-output))
 
 		;; Assert that the tranasction's locktime is less than the auction expiration
-		!(assert (< locktime (car script-params)))
+		!(assert (< locktime (car locking-params)))
 		
 		;; If the current-bid is greater than zero make sure the public output 1 commitment 
 		;; is equal to the prev-bidder-comm. Otherwise we can just return t.
@@ -134,14 +137,14 @@ unlocking-params = (nil <signature>)
 	;; Withdraw is another method. It can be used the by the auction beneficiary to withdraw
 	;; the funds after expiration
 	!(defun withdraw (signature) ( 
-		;; Import the check-sig function from the standard library
-		!(import std/crypto)
+		;; Import the checksig function from the standard library
+		!(import std/crypto/checksig)
 
 		;; Assert that the tranasction's locktime is greater than or equal to the auction expiration
-		!(assert (>= locktime (car script-params)))
+		!(assert (>= locktime (car locking-params)))
 
-		;; Assert that the transaction's sig-hash is signed by the key provided in the script-params
-		!(assert (check-sig signature (car (cdr (cdr script-params))) !(param sighash)))
+		;; Assert that the transaction's sig-hash is signed by the key provided in the locking-params
+		!(assert (checksig signature (cdr (cdr locking-params)) !(param sighash)))
 
 		;; Return true
 		t
@@ -150,7 +153,7 @@ unlocking-params = (nil <signature>)
 	;; Execute one of the two methods based on the selection in the unlocking params
 	(if (car unlocking-params)
 		(bid (nth 1 unlocking-params) (nth 2 unlocking-params))
-		(withdraw (nth 1 unlocking-params))
+		(withdraw (cdr unlocking-params))
     )
 )
 ```
@@ -164,7 +167,7 @@ nobody votes twice.
 And admin is allowed to close the vote.
 
 ```
-script-params = (<admin-pubkey> <len-candidates>)
+locking-params = (<len-candidates> <admin-pubkey>)
 state = (<is_open> <db_root> <vote-records>)
 
 unlocking-params = (<method> <vote> <pubkey> <signature> <merkle-proof>)
@@ -173,18 +176,22 @@ unlocking-params = (<method> <signature>)
 ```
 
 ```lisp
-(lambda (script-params unlocking-params input-index private-params public-params)
+(lambda (locking-params unlocking-params input-index private-params public-params)
+    ;; Import the encryption and checksig functions from the standard library
+    !(import std/crypto)
+    !(import std/inputs/script-hash)
+    
     !(defun close-vote () (
            ;; Verify the admin signature
-           !(assert (check-sig (car (cdr unlockingparams)) (car script-params) !(param sighash)))      
-                       
+           !(assert (checksig (cdr unlocking-params) (cdr (cdr unlocking-params)) !(param sighash)))
+                      
            ;; Set the vote-open flag to 0      
            !(def state !(param priv-in input-index state))
            !(def new-state !(list 0 (cdr state)))
                             
            ;; Enforce a covenant making sure the output commitment is computed correctly
-           !(def new-salt (hash !(param priv-in intput-index salt)))
-           !(def new-output (hash !(list !(param priv-in input-index script-hash) 0 !(param priv-in input-index asset-id) new-state new-salt)))
+           !(def new-salt (num (commit !(param priv-in intput-index salt))))
+           !(def new-output (num (commit !(list (script-hash !(params priv-in input-index)) 0 !(param priv-in input-index asset-id) new-state new-salt))))
            !(assert-eq !(priv-out 0) new-output)
    
            ;; Enforce that the ciphertext is computed correctly.
@@ -195,15 +202,12 @@ unlocking-params = (<method> <signature>)
     ))
   
     !(defun vote () (
-        ;; Import the encryption function from the standard library
-        !(import std/crypto)
-
-        ;; Import the merkle database
         !(import std/merkle-db)
+        !(import std/collections/nth)
 
         !(defun record-vote (candidate vote-records) (
             !(def current-votes (nth candidate vote-records))
-            (list-update vote-records candidate (+ current-votes 1))
+            (map-update vote-records candidate (+ current-votes 1))
         ))
 
         !(defun make-vote-records (n i records) (
@@ -217,7 +221,7 @@ unlocking-params = (<method> <signature>)
 
         !(def vote-records (if (state)
                                 state
-                                (make-vote-records (car (cdr script-params)) 1 !(list 0))
+                                (make-vote-records (car locking-params) 1 !(list 0))
                             ))
 
         !(def pubkey (nth 1 unlocking-params))
@@ -242,7 +246,7 @@ unlocking-params = (<method> <signature>)
 
         ;; Enforce a covenant making sure the output commitment is computed correctly
         !(def new-salt (hash !(param priv-in intput-index salt)))
-        !(def new-output !(list !(param priv-in input-index script-hash) 0 !(param priv-in input-index asset-id) new-state new-salt))
+        !(def new-output !(list (script-hash !(params priv-in input-index)) 0 !(param priv-in input-index asset-id) new-state new-salt))
         !(assert-eq !(priv-out 0) new-output)
 
         ;; Enforce that the ciphertext is computed correctly.
@@ -267,11 +271,13 @@ can call methods in other contracts or even send coins into other contracts.
 Let's change the voting example above create a separate voter registration contract:
 
 ```lisp
-(lambda (script-params unlocking-params input-index private-params public-params)
+(lambda (locking-params unlocking-params input-index private-params public-params)
     !(import std/merkle-db)
-    !(import std/crypto)
+    !(import std/crypto/checksig)
+    !(import std/collections/nth)
+    !(import std/inputs/script-hash)
     
-    !(def pubkey (nth 0 unlocking-params))
+    !(def pubkey (car unlocking-params))
     !(def merkle-proof (nth 2 unlocking-params))
     !(def signature (nth 1 unlocking-params))
     !(def state-root (car !(param priv-in input-index state)))
@@ -291,7 +297,7 @@ Let's change the voting example above create a separate voter registration contr
     ;; Enforce a covenant making sure the output commitment is computed correctly
     !(def new-salt (hash !(param priv-in intput-index salt)))
     !(def new-state !(list instance-id new-state-root))
-    !(def new-output !(list !(param priv-in input-index script-hash) 0 !(param priv-in input-index asset-id) new-state new-salt))
+    !(def new-output !(list (script-hash !(params priv-in input-index)) 0 !(param priv-in input-index asset-id) new-state new-salt))
     !(assert-eq !(priv-out 0) new-output)
 
     ;; Enforce that the ciphertext is computed correctly.
@@ -312,7 +318,7 @@ contract. We're adding these lines in the method:
 ;; get-contract searches the inputs for an input with
 ;; the provided script-commitment and instance-id. 
 ;; Asserts that the input exists.
-!(def registration-contract (get-contract (nth 2 script-params) (nth 3 script-params))
+!(def registration-contract (get-contract (nth 2 locking-params) (nth 3 locking-params))
 
 ;; Grab the root hash of the registration db from the registration contract
 !(def registration-db-root (car (cdr (nth 5 registration-contract))))
