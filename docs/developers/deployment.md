@@ -190,7 +190,7 @@ We'll do this using the gRPC interface.
     // expects it to be. In this case a list.
     createRawResp.RawTx.Inputs[0].UnlockingParams = fmt.Sprintf("(cons 0x%x (cons 0x%x (cons 0x%x nil)))", sigRx, sigRy, sigS)
 	
-    // We also need to provide the script because the wallet only know of the
+    // We also need to provide the script because the wallet only knows of the
     // script-commitment but not the actual script.
     createRawResp.RawTx.Inputs[0].Script = script
     
