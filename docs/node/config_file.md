@@ -22,8 +22,8 @@ If you want to set any of the options remove the `;` from the start of the line.
 
 ```
 ; The directory to store data such as the obx database.
-; The default is ~/.obx on POSIX OSes, $LOCALAPPDATA/obx on Windows,
-; ~/Library/Application Support/obx on Mac OS, and $home/obx on
+; The default is ~/.ilxd on POSIX OSes, $LOCALAPPDATA/ilxd on Windows,
+; ~/Library/Application Support/ilxd on Mac OS, and $home/ilxd on
 ; Plan9.  Environment variables are expanded so they may be used.  NOTE: Windows
 ; environment variables are typically %VARIABLE%, but they must be accessed with
 ; $VARIABLE here.  Also, ~ is expanded to $LOCALAPPDATA on Windows.
@@ -40,8 +40,8 @@ If you want to set any of the options remove the `;` from the start of the line.
 ; Otherwise it will use random keys.
 ; regtestval=1
 
-;; Set the node to use mock proofs instead of full proofs. This option is only available for regtest.
-;; mock=1
+; Set the node to use mock proofs instead of full proofs. This option is only available for regtest.
+; mock=1
 
 ; Universal Plug and Play (UPnP) automatically opens the listen port obtains
 ; the external IP address from supported devices. This option disables it.
@@ -71,6 +71,9 @@ If you want to set any of the options remove the `;` from the start of the line.
 
 ; The directory to store the wallet db
 ; walletdir=~/.ilxd/wallet
+
+; The maximum size, in bytes, of the database memory cache
+; dbcache=256000000
 
 ; Write libp2p logs to the terminal
 ; debug=1
@@ -147,5 +150,5 @@ If you want to set any of the options remove the `;` from the start of the line.
 ; disablewalletservice=1
 
 ; Disable the wallet server RPC service. This will automatically be disable if wsindex is disabled.
-; disablewalletserverservic
+; disablewalletserverservice=1
 ```
