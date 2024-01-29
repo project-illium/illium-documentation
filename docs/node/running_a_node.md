@@ -55,8 +55,6 @@ Node Options:
                                     lite wallets
       --dropwsindex                 Delete the wallet server index from the
                                     database
-      --dbcache=                    The maximum size, in bytes, of the database
-                                    memory cache
       --maxbanscore=                The maximum ban score a peer is allowed to
                                     have before getting banned (default: 100)
       --banduration=                The duration for which banned peers are

@@ -21,7 +21,7 @@ A sample config file is as follows:
 If you want to set any of the options remove the `;` from the start of the line.
 
 ```
-; The directory to store data such as the obx database.
+; The directory to store data such as the ilxd database.
 ; The default is ~/.ilxd on POSIX OSes, $LOCALAPPDATA/ilxd on Windows,
 ; ~/Library/Application Support/ilxd on Mac OS, and $home/ilxd on
 ; Plan9.  Environment variables are expanded so they may be used.  NOTE: Windows
@@ -71,9 +71,6 @@ If you want to set any of the options remove the `;` from the start of the line.
 
 ; The directory to store the wallet db
 ; walletdir=~/.ilxd/wallet
-
-; The maximum size, in bytes, of the database memory cache
-; dbcache=256000000
 
 ; Write libp2p logs to the terminal
 ; debug=1
