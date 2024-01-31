@@ -135,7 +135,7 @@ Notice staked utxos are marked as such. Copy the commitment of the staked utxo(s
 Spend the coins:
 
 ```
-$ ilxcli spend --amount=105292150459298487 \
+$ ilxcli spend --all \
                --addr= reg1pvuxrsstxqcye5pzau9w27h42gukqjmpv8qeze88nadnqf4xx84aursjg6qd608vlxkcrda7zyzmuhwyzxu5q6j5s48htc60q065fu5cdvhnq9 \
                --commitment=110d2d4a3516fd399c248972ff3b3268c856140f3587ffae9348e9b890d16e29
 ```
