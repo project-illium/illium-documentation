@@ -139,8 +139,10 @@ $ ilxcli spend --all \
                --addr= reg1pvuxrsstxqcye5pzau9w27h42gukqjmpv8qeze88nadnqf4xx84aursjg6qd608vlxkcrda7zyzmuhwyzxu5q6j5s48htc60q065fu5cdvhnq9 \
                --commitment=110d2d4a3516fd399c248972ff3b3268c856140f3587ffae9348e9b890d16e29
 ```
+**Note**: the --all flag sweeps the entire value from this utxo only and the fee is subtracted from the utxo value. However, you don't need to
+do a full sweep of the utxo to destake. Just spending any amount will spend the utxo and create change (if applicable).
 
-**Note**: since you are allowed to stake multiple utxos, you must spend *all* your staked utxos to cease being a validator.
+**Note2**: since you are allowed to stake multiple utxos, you must spend *all* your staked utxos to cease being a validator.
 
 ### Stake Expiration
 Stake automatically expires after a 26-week period. You can obviously re-stake your coins after expiration by executing the
