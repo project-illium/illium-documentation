@@ -64,7 +64,7 @@ Becoming a validator is extremely simple. The following steps will walk you thro
    
     **Note**: You may stake more than one utxo.
 
-    **Note2**: Keep your node up and running. You will not earn rewards of your node is off.
+    **Note2**: Keep your node up and running. You will not earn rewards if your node is off.
    
 ### Earning rewards
 
