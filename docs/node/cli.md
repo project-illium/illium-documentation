@@ -84,6 +84,7 @@ Available commands:
   getnewaddress               Generates a new address and returns it
   getpeers                    Returns a list of peers that this node is connected to
   getprivatekey               Returns the serialized spend and view keys for the given address
+  getpublicaddress            Returns the most recent public address of the wallet
   gettimelockedaddress        Returns an address which locks coins until the provided timestamp
   gettransaction              Returns the transaction for the given transaction ID
   gettransactions             Returns the list of transactions for the wallet
