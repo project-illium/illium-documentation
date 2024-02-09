@@ -468,7 +468,7 @@ Evaluates to: `v0`
 ```
 
 check-overflow returns true if a + b > max-u64. While the `num` type supports integers much larger than 64 bits, the total
-number of illium coins does not exceed a u64 so it's important to verify no overflow is happening hen adding coin amounts.
+number of illium coins does not exceed a u64 so it's important to verify no overflow is happening when adding coin amounts.
 
 ```lisp
 (check-overflow 18446744073709551615 1)

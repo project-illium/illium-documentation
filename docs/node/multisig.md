@@ -75,7 +75,7 @@ To use the command line follow these steps:
 
 6. **List utxos**
 
-    Get the commitment of the multisig utxo
+    Get the commitment of the multisig utxo.
 
     ```
     $ ilxcli getutxos
@@ -93,7 +93,7 @@ To use the command line follow these steps:
 
 7. **Create a raw transaction**
 
-    This is a transaction template spending coins from the multisig to another address
+    This is a transaction template spending coins from the multisig to another address.
 
     ```
     $ ilxcli createrawtransaction --commitment=1ac959d9641afdb7bd321d811272e008181469d99306c6369a09256471de76a3 \
@@ -126,7 +126,7 @@ To use the command line follow these steps:
 
 10. **Prove the transaction**
 
-    Collect the signatures and use them to prove the transaction
+    Collect the signatures and use them to prove the transaction.
     
     ```
     $ ilxcli provemultisig --sig=bd11ecacb5016b0337c6d11ebe0b5b92fcafeec7c48e679ac744400bb9a8fc87086fb4ebe78269f3aa3b4c9d435468471d1b064c12d783e34bb3bec62b34c05c \
