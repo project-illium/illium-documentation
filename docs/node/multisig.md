@@ -28,7 +28,7 @@ To use the command line follow these steps:
 2. **Generate the view key pair**
 
     There should be one view keypair per multisig address and the private key should be shared with
-    each participant as they will need it to detect incoming paymants to the address.
+    each participant as they will need it to detect incoming payments to the address.
 
     ```
    $ ilxcli createmultisigviewkeypair
