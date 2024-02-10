@@ -47,7 +47,7 @@ The range of possible values for num looks like:
 
 ### Expressions
 
-Expression represent a piece of code or computation and usually (though not always) evaluate to a literal. 
+Expressions represent a piece of code or computation and usually (though not always) evaluate to a literal. 
 
 ### Arithmetic Expressions
 
@@ -405,81 +405,6 @@ You can hash any expression:
 (commit (cons 1 (cons 2 (cons 3 nil))))
 ```
 Evaluates to `(comm 0x2b86ff9e0f5845c44096867b82bc9ceb92572b978e62905181d644da4402fba5)`
-
-
-### Builtins
-
-The following functions are not technically builtin functions in Lurk, however they are functions that are defined in
-the illium validation program and thus are available to be used by unlocking script. Hence, they act like builtin functions.
-
-#### cat-and-hash
-cat-and-hash takes in two values, concatenates the values then returns the `blake2s` hash of the concatenation.
-The two most significant bits of the output are set to zero to fit within the max field element size.
-
-If the values are less than 32 bytes they will be padded before hashing.
-
-```lisp
-(cat-and-hash 1 2)
-```
-
-#### map-update
-
-```
-(map-update <key> <value> <map>)
-```
-
-map-update inserts or updates the value for the given key in the map and returns the updated map. The map must be formatted as a flat list:
-
-
-```lisp
-(:key0 value0 :key1 value1)
-```
-
-Example:
-```lisp
-(let ((m '(:k0 v0 :k1 v1)))
-     (map-update :k1 7 m))
-```
-Evaluates to: `(:k0 v0 :k1 7)`
-
-#### map-get
-
-```
-(map-get <key> <map>)
-```
-
-map-get returns the value for the given key in the map. The map must be formatted as a flat list:
-
-```lisp
-(:key0 value0 :key1 value1)
-```
-
-Example:
-```lisp
-(let ((m '(:k0 v0 :k1 v1)))
-     (map-get :k1 m))
-```
-Evaluates to: `v0`
-
-#### check-overflow
-
-```
-(check-overflow <a> <b>)
-```
-
-check-overflow returns true if a + b > max-u64. While the `num` type supports integers much larger than 64 bits, the total
-number of illium coins does not exceed a u64 so it's important to verify no overflow is happening when adding coin amounts.
-
-```lisp
-(check-overflow 18446744073709551615 1)
-```
-Evaluates to: `t`
-
-```lisp
-(check-overflow 3 1)
-```
-
-Evaluates to: `nil`
 
 ### Illium Locking Functions
 

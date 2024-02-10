@@ -137,6 +137,10 @@ forms:
 !(param locktime)                                     
 !(param locktime-precision)                           
 
+;; The below macros expand using the 'nth' function from
+;; the standard libary. As such this function will need
+;; to be imported if you use these macros.
+
 !(param nullifiers <index>)                           
 !(param pub-out <index>)                             
 !(param pub-out <index> commitment)                  

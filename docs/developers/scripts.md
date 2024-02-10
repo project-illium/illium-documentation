@@ -124,28 +124,27 @@ unlocking-params ((1 0 1) <sig0> <sig1>)
 ```lisp
 (lambda (locking-params unlocking-params input-index private-params public-params)
         !(import std/crypto/checksig)
-        !(import std/collections/nth)
 
         !(def threshold (car locking-params))
         !(def key-selector (car unlocking-params))
         !(def pubkeys (cdr locking-params))
-        !(def sigs (cdr unlocking-params))
+        !(def signatures (cdr unlocking-params))
         !(def sighash !(param sighash))
 
-        !(defun validate-sigs (selector key-idx sig-idx valid-sigs) (
+        !(defun validate-sigs (selector sigs keys valid-sigs) (
                 (if (car selector)
                     (if (= (car selector) 1)
-                        (if (checksig (nth sig-idx sigs) (cons (nth key-idx pubkeys) (cons (nth (+ key-idx 1) pubkeys) nil)) sighash)
-                            (validate-sigs (cdr selector) (+ key-idx 2) (+ sig-idx 1) (+ valid-sigs 1))
+                        (if (checksig (car sigs) !(list (car keys) (car (cdr keys))) sighash)
+                            (validate-sigs (cdr selector) (cdr sigs) (cdr (cdr keys)) (+ valid-sigs 1))
                             nil
                         )
-                        (validate-sigs (cdr selector) (+ key-idx 2) sig-idx valid-sigs)
+                        (validate-sigs (cdr selector) sigs (cdr (cdr keys)) valid-sigs)
                     )
                     (>= valid-sigs threshold)
                 )
         ))
 
-        (validate-sigs key-selector 0 0 0)
+        (validate-sigs key-selector signatures pubkeys 0)
 )
 ```
 
@@ -225,8 +224,8 @@ unlocking-params = (<exchange-rate> <oracle-signature> <spend-signature>)
         !(import std/crypto/checksig)
         !(import std/collections/nth)
         !(assert (>= (car unlocking-params) (car locking-params)))
-        !(assert (checksig (car (cdr unlocking-params)) (cons (nth 1 locking-params) (cons (nth 2 locking-params) nil)) (car unlocking-params)))
-        !(assert (checksig (car (cdr (cdr unlocking-params))) (cons (nth 3 locking-params) (cons (nth 4 locking-params) nil)) !(param sighash)))
+        !(assert (checksig (car (cdr unlocking-params)) !(list (nth 1 locking-params) (nth 2 locking-params)) (car unlocking-params)))
+        !(assert (checksig (car (cdr (cdr unlocking-params))) !(list (nth 3 locking-params) (nth 4 locking-params)) !(param sighash)))
         t
 )
 ```
