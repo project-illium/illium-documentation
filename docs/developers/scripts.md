@@ -43,7 +43,7 @@ If we wanted to we could have just hard-coded the public key inside the script i
 ```lisp
 (lambda (locking-params unlocking-params input-index private-params public-params)
       !(import std/crypto/checksig)
-      (checksig unlocking-params 0x06efea8759a776da6aba3eae8cb8546259dcbf8b972336218eb60ebec93d5136 (car public-params))
+      (checksig unlocking-params !(list 0x06efea8759a776da6aba3eae8cb8546259dcbf8b972336218eb60ebec93d5136 1c9db35580e3c8d4b5bb2dc33075835d85c4e340845337b6e5f6624aaf1f086a) (car public-params))
 )
 ```
 
