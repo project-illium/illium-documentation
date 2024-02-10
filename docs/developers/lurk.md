@@ -176,7 +176,7 @@ Example:
 Evaluates to: `function`
 
 To call a function you need to create a `list` (more on lists later) where the first element in the list is a function
-and the remaining elements are the function parameters.
+and the remaining elements are the function arguments.
 
 ```lisp
 ((lambda (x) (+ x 1)) 5)
