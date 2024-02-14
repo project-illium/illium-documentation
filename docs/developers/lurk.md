@@ -32,10 +32,10 @@ The underlying cryptography of Lurk makes use of finite fields. As such the larg
 is 
 
 ```
-0x40000000000000000000000000000000224698fc0994a8dd8c46eb2100000001
+0x30644e72e131a029b85045b68181585d2833e84879b9709143e1f593f0000000
 ```
 
-All arithmetic operations are conducted modulo this number. If your script relies on arithmetic operation performed on
+All arithmetic operations are conducted modulo this number (+1). If your script relies on arithmetic operation performed on
 large numbers you'll need to take this into account. 
 
 The range of possible values for num looks like:
@@ -405,6 +405,16 @@ You can hash any expression:
 (commit (cons 1 (cons 2 (cons 3 nil))))
 ```
 Evaluates to `(comm 0x2b86ff9e0f5845c44096867b82bc9ceb92572b978e62905181d644da4402fba5)`
+
+### Debugging
+The `emit` function prints the value of the evaluated expression to the terminal and
+returns the value.
+
+```lisp 
+((lambda (x y) (+ (emit x) y)) 3 5)
+```
+Prints: `3`
+Evaluates to: `8`
 
 ### Illium Locking Functions
 
