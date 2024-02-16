@@ -75,6 +75,20 @@ Evaluates to: `15`
 ```
 Evaluates to: `3`
 
+#### Mod
+Mod only works on `u64`
+```lisp
+(% (u64 8) (u64 3))
+```
+Evaluates to: `2u64`
+
+or
+```lisp
+(% 8u64 3u64)
+```
+Evaluates to: `2u64`
+
+
 #### Equals
 ```lisp
 (= 7 7)
