@@ -16,23 +16,37 @@ network is being used.
 
 ### Network Messages
 ```go
-message MsgAvaRequest {
-	// The request ID
-	uint32 request_ID       = 1;
-	// A list of one or more block heights
-	// we want the peer to vote on.
-	repeated uint32 heights = 2;
+enum ErrorResponse {
+    None       = 0;
+    NotFound   = 1;
+    BadRequest = 2;
+    NotCurrent = 3;
 }
 
-message MsgAvaResponse {
-	// The ID of the request this is a
-	// response to.
-	uint32 request_ID    = 1; 
-	// BlockID responses. One for each
-	// height in the request. A zero
-	// byte array means either unknown or
-	// unacceptable.
-	repeated bytes votes = 2;
+message MsgConsensusRequest {
+    oneof msg {
+        MsgPollRequest poll_request = 1;
+        GetBlockReq get_block = 2;
+    }
+}
+
+message MsgPollRequest {
+    uint32 request_ID       = 1;
+    repeated uint32 heights = 2;
+}
+
+message MsgPollResponse {
+    uint32 request_ID    = 1;
+    repeated bytes votes = 2;
+}
+
+message GetBlockReq {
+    bytes block_ID = 1;
+}
+
+message MsgBlockResp {
+    Block block         = 1;
+    ErrorResponse error = 2;
 }
 
 ```
@@ -83,5 +97,5 @@ If the next 1 millisecond step occurs before any of the outstanding requests ret
 In situations where there are more than two conflicting blocks at the same height, the bit finalization helps to coordinate
 preferences by reducing the candidate set until a block eventually finalizes. 
 
-    
+
     
