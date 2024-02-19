@@ -55,6 +55,7 @@ service NodeService {
     rpc GetTreasuryWhitelist(GetTreasuryWhitelistRequest) returns (GetTreasuryWhitelistResponse) {}
 
     // UpdateTreasuryWhitelist adds or removes a transaction to from the treasury whitelist
+    // This update is committed to the datastore and will persist between sessions.
     rpc UpdateTreasuryWhitelist(UpdateTreasuryWhitelistRequest) returns (UpdateTreasuryWhitelistResponse) {}
 
     // ReconsiderBlock tries to reprocess the given block
