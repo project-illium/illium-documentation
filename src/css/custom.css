@@ -60,5 +60,5 @@
 }
 
 .menu__link--active {
-  background-color: #222028;
+  background-color: #222028 !important;
 }
