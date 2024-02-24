@@ -19,6 +19,10 @@
   --ifm-code-font-size: 95%;
   --ifm-font-family-base: 'Ubuntu';
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
+}
+
+/* dark mode styles */
+[data-theme='dark'] {
 
   /* CUSTOM STYLES FOR ILLIUM */
   .navbar {
@@ -61,5 +65,4 @@
   .menu__link--active {
     background-color: #222028
   }
-
 }
