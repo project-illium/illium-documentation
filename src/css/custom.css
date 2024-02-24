@@ -21,48 +21,44 @@
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
 }
 
-/* dark mode styles */
-[data-theme='dark'] {
+/* CUSTOM STYLES FOR ILLIUM */
+.navbar {
+  background: #1a181e;
+}
 
-  /* CUSTOM STYLES FOR ILLIUM */
-  .navbar {
-    background: #1a181e
-  }
+.footer {
+  background: #1a181e;
+}
 
-  .footer {
-    background: #1a181e;
-  }
+.main-wrapper {
+  background: #000;
+}
 
-  .main-wrapper {
-    background: #000;
-  }
+.theme-doc-sidebar-container {
+  border-right: solid 1px #1a181e !important;
+}
 
-  .theme-doc-sidebar-container {
-    border-right: solid 1px #1a181e;
-  }
+.pagination-nav__link {
+  border: solid 1px #1a181e;
+}
 
-  .pagination-nav__link {
-    border: solid 1px #1a181e;
-  }
+.navbar-sidebar {
+  background: #1a181e;
+}
 
-  .navbar-sidebar {
-    background: #1a181e;
-  }
+.navbar__title {
+  display: none;
+}
 
-  .navbar__title {
-    display: none;
-  }
+.navbar__logo {
+  width: 30px;
+}
 
-  .navbar__logo {
-    width: 30px;
-  }
+.breadcrumbs__link {
+  background: #1a181e !important;
+  border-radius: 10px !important;
+}
 
-  .breadcrumbs__link {
-    background: #1a181e;
-    border-radius: 10px;
-  }
-
-  .menu__link--active {
-    background-color: #222028
-  }
+.menu__link--active {
+  background-color: #222028;
 }
