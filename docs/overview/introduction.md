@@ -1,4 +1,5 @@
 ---
+slug: /
 sidebar_position: 1
 description: Welcome to the illium protocol overview!
 ---

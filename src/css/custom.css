@@ -5,26 +5,61 @@
  */
 
 /* You can override the default Infima variables here. */
-:root {
-  --ifm-color-primary: #9448B6;
-  --ifm-color-primary-dark: #29784c;
-  --ifm-color-primary-darker: #277148;
-  --ifm-color-primary-darkest: #205d3b;
-  --ifm-color-primary-light: #33925d;
-  --ifm-color-primary-lighter: #359962;
-  --ifm-color-primary-lightest: #3cad6e;
-  --ifm-code-font-size: 95%;
-  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
-}
 
-/* For readability concerns, you should choose a lighter palette in dark mode. */
-[data-theme='dark'] {
-  --ifm-color-primary: #25c2a0;
-  --ifm-color-primary-dark: #21af90;
-  --ifm-color-primary-darker: #1fa588;
-  --ifm-color-primary-darkest: #1a8870;
-  --ifm-color-primary-light: #29d5b0;
-  --ifm-color-primary-lighter: #32d8b4;
-  --ifm-color-primary-lightest: #4fddbf;
-  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&display=swap');
+
+:root {
+  --ifm-color-primary: #FF79E9;
+  --ifm-color-primary-dark: #ff53e3;
+  --ifm-color-primary-darker: #ff41e0;
+  --ifm-color-primary-darkest: #ff08d6;
+  --ifm-color-primary-light: #ff9fef;
+  --ifm-color-primary-lighter: #ffb1f2;
+  --ifm-color-primary-lightest: #ffeafc;
+  --ifm-code-font-size: 95%;
+  --ifm-font-family-base: 'Ubuntu';
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
+
+  /* CUSTOM STYLES FOR ILLIUM */
+  .navbar {
+    background: #1a181e
+  }
+
+  .footer {
+    background: #1a181e;
+  }
+
+  .main-wrapper {
+    background: #000;
+  }
+
+  .theme-doc-sidebar-container {
+    border-right: solid 1px #1a181e;
+  }
+
+  .pagination-nav__link {
+    border: solid 1px #1a181e;
+  }
+
+  .navbar-sidebar {
+    background: #1a181e;
+  }
+
+  .navbar__title {
+    display: none;
+  }
+
+  .navbar__logo {
+    width: 30px;
+  }
+
+  .breadcrumbs__link {
+    background: #1a181e;
+    border-radius: 10px;
+  }
+
+  .menu__link--active {
+    background-color: #222028
+  }
+
 }

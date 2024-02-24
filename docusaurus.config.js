@@ -38,6 +38,7 @@ const config = {
       /** @type {import('@docusaurus/preset-classic').Options} */
       ({
         docs: {
+          routeBasePath: '/',
           sidebarPath: require.resolve('./sidebars.js'),
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
@@ -56,10 +57,14 @@ const config = {
     ({
       // Replace with your project's social card
       image: 'img/docusaurus-social-card.jpg',
+      colorMode: {
+        defaultMode: 'dark',
+        disableSwitch: true,
+      },
       navbar: {
         title: 'Illium',
         logo: {
-          alt: 'My Site Logo',
+          alt: 'Illium',
           src: 'img/logo.svg',
         },
         items: [
@@ -68,35 +73,35 @@ const config = {
             sidebarId: 'tutorialSidebar',
             position: 'left',
             label: 'Overview',
-            href: "/docs/overview/Protocol%20Overview/introduction"
+            href: "/"
           },
           {
             type: 'docSidebar',
             sidebarId: 'tutorialSidebar',
             position: 'left',
-            label: 'Protocol Specification',
-            href: "/docs/protocol_spec/overview"
+            label: 'Protocol',
+            href: "/protocol"
           },
           {
             type: 'docSidebar',
             sidebarId: 'tutorialSidebar',
             position: 'left',
             label: 'Node',
-            href: "/docs/node/running_a_node"
+            href: "/node"
           },
           {
             type: 'docSidebar',
             sidebarId: 'tutorialSidebar',
             position: 'left',
             label: 'API',
-            href: "/docs/api/overview"
+            href: "/api"
           },
           {
             type: 'docSidebar',
             sidebarId: 'tutorialSidebar',
             position: 'left',
             label: 'Developers',
-            href: "/docs/developers/overview"
+            href: "/developers"
           },
           {
             href: 'https://github.com/project-illium/illium-documentation',
@@ -113,7 +118,23 @@ const config = {
             items: [
               {
                 label: 'Introduction',
-                to: '/docs/overview/Protocol%20Overview/introduction',
+                to: '/',
+              },
+              {
+                label: 'Protocol',
+                to: '/protocol',
+              },
+              {
+                label: 'Node',
+                to: '/node',
+              },
+              {
+                label: 'API',
+                to: '/api',
+              },
+              {
+                label: 'Developers',
+                to: '/developers',
               },
             ],
           },
@@ -126,11 +147,11 @@ const config = {
               },
               {
                 label: 'Discord',
-                href: 'https://discord.gg/z2bsxRQe',
+                href: 'https://discord.gg/Grh8dA9R',
               },
               {
                 label: 'Twitter',
-                href: 'https://twitter.com/docusaurus',
+                href: 'https://twitter.com/illiumcrypto',
               },
             ],
           },
@@ -144,7 +165,7 @@ const config = {
             ],
           },
         ],
-        copyright: `Copyright © ${new Date().getFullYear()} Project-Illium.`,
+        copyright: `Copyright © ${new Date().getFullYear()} Illium.`,
       },
       prism: {
         theme: lightCodeTheme,

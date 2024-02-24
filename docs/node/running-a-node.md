@@ -1,4 +1,5 @@
 ---
+slug: /node
 sidebar_position: 1
 description: Running a node
 ---
