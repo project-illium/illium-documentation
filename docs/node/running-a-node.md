@@ -114,6 +114,19 @@ RPC Options:
                                     will automatically be disable if wsindex is
                                     disabled.
 
+Tor Options:
+      --torbinary=                  A path to the Tor binary. If this is
+                                    provided the server will start tor
+                                    automatically and shut it down on close.
+                                    All incoming and outgoing connections will
+                                    be routed through Tor.
+      --torrcfile=                  A path to a custom torrc file if you want
+                                    to configure tor with your own settings.
+      --tordualstack                This option tells ilxd to accept
+                                    connections over Tor AND over the clear
+                                    internet. Clear TCP connections will be
+                                    prioritized. This mode is NOT private.
+
 Help Options:
   -h, --help                        Show this help message
 ```
