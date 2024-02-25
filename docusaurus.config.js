@@ -159,13 +159,17 @@ const config = {
             title: 'More',
             items: [
               {
+                label: 'Illium.org',
+                href: 'https://illium.org',
+              },
+              {
                 label: 'GitHub',
                 href: 'https://github.com/project-illium',
               },
             ],
           },
         ],
-        copyright: `Copyright © ${new Date().getFullYear()} Illium.`,
+        copyright: `Copyright © ${new Date().getFullYear()} <a href="https://illium.org" target="_blank">Illium</a>`,
       },
       prism: {
         theme: lightCodeTheme,
