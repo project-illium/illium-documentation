@@ -62,3 +62,7 @@
 .menu__link--active {
   background-color: #222028 !important;
 }
+
+.prism-code {
+  background: #222028 !important;
+}
