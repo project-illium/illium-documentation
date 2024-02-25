@@ -23,27 +23,27 @@
 
 /* CUSTOM STYLES FOR ILLIUM */
 .navbar {
-  background: #1a181e;
+  background: #222028;
 }
 
 .footer {
-  background: #1a181e;
+  background: #222028;
 }
 
 .main-wrapper {
-  background: #000;
+  background: #141014;
 }
 
 .theme-doc-sidebar-container {
-  border-right: solid 1px #1a181e !important;
+  border-right: solid 1px #222028 !important;
 }
 
 .pagination-nav__link {
-  border: solid 1px #1a181e;
+  border: solid 1px #222028;
 }
 
 .navbar-sidebar {
-  background: #1a181e;
+  background: #222028;
 }
 
 .navbar__title {
