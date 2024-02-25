@@ -7,7 +7,7 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   title: 'Illium Docs',
-  tagline: 'Please go to github and help style this page',
+  tagline: 'The Endgame Blockchain',
   favicon: 'img/favicon.ico',
 
   // Set the production url of your site here
