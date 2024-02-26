@@ -18,9 +18,10 @@ configuration settings illium uses for the libp2p networking stack.
 // which includes the Noise protocol as well as TLS.
 libp2p.DefaultSecurity,
 
-// Transports. Both TCP and QUIC are supported.
+// Transports. TCP, QUIC, and an optional tor transport are supported.
 libp2p.Transport(tcp.NewTCPTransport),
 libp2p.Transport(quic.NewTransport),
+libp2p.Transport(torTransport),
 
 // Using the default stream multiplexer which is yamux.
 libp2p.DefaultMuxers,
@@ -34,6 +35,10 @@ libp2p.EnableAutoRelayWithPeerSource(peerSource),
 // attempt to dial the requesting peer and report on the
 // result.
 libp2p.EnableNATService(),
+
+// Enable the node to act as a relay if it discovers that we are
+// publicly reachable.
+libp2p.EnableRelayService(),
 
 // Enables the relay transport. It allows the illium node
 // to accept incoming conenctions through a relay and make
@@ -62,6 +67,7 @@ Network: `mainnet`, `testnet1`, or `regtest`
 /ipfs/id/push/1.0.0
 /ipfs/ping/1.0.0
 /libp2p/autonat/1.0.0
+/libp2p/circuit/relay/0.2.0/hop
 /libp2p/circuit/relay/0.2.0/stop
 ```
 
