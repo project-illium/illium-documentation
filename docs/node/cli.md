@@ -84,6 +84,7 @@ Available commands:
   getminstake                 Returns the node's current minimum stake policy
   getnetworkkey               Returns node's network private key
   getnewaddress               Generates a new address and returns it
+  getpeerinfo                 Returns info about the peer
   getpeers                    Returns a list of peers that this node is connected to
   getprivatekey               Returns the serialized spend and view keys for the given address
   getpublicaddress            Returns the most recent public address of the wallet

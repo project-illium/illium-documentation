@@ -14,6 +14,9 @@ service NodeService {
     // GetPeers returns a list of peers that this node is connected to
     rpc GetPeers(GetPeersRequest) returns (GetPeersResponse) {}
 
+    // GetPeerInfo returns a list of peers that this node is connected to
+    rpc GetPeerInfo(GetPeerInfoRequest) returns (GetPeerInfoResponse) {}
+
     // AddPeer attempts to connect to the provided peer
     rpc AddPeer(AddPeerRequest) returns (AddPeerResponse) {}
 
@@ -96,6 +99,15 @@ message GetPeersRequest {}
 message GetPeersResponse {
     // List of peers
     repeated Peer peers = 1;
+}
+
+message GetPeerInfoRequest {
+    // Peer ID to get info about
+    string peer_ID = 1;
+}
+message GetPeerInfoResponse {
+    // Info about the peer
+    Peer peer = 1;
 }
 
 message AddPeerRequest {
