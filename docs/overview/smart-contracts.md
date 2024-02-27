@@ -48,7 +48,7 @@ parts of the transaction and to make a decision to unlock or not based on what d
 ## Smart Contracts
 
 From this we can enforce a covenant and start building something that looks like a smart contract (again we are writting
-this is Go for readability, but in practice this would be written in lurk):
+this is Go for familiarity, but in practice this would be written in lurk):
 
 ```go
 func Unlock(lockingParams [][]byte, unlockingParams [][]byte, inputIndex int, priv PrivateParams, pub PublicParams) {
