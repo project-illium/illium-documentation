@@ -148,4 +148,18 @@ If you want to set any of the options remove the `;` from the start of the line.
 
 ; Disable the wallet server RPC service. This will automatically be disable if wsindex is disabled.
 ; disablewalletserverservice=1
+
+; Enable the prover RPC service. This is not turned on by default.
+; enableproverservice=1
+
+;; A path to the Tor binary. If this is provided the server will start tor automatically and shut it down on close.
+;; All incoming and outgoing connections will be routed through Tor.
+; torbinary=/path/to/tor
+
+;; A path to a custom torrc file if you want to configure tor with your own settings.
+;; torrcfile=/path/to/torrc
+
+;; This option tells ilxd to accept connections over Tor AND over the clear internet. Clear TCP connections will be prioritized.
+;; This mode is NOT private.
+;; tordualstack=1
 ```

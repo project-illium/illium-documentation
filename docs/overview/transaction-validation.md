@@ -67,7 +67,7 @@ The first thing that we need to prove is that the output commitments that our in
 the txoc set. Remember that txoc accumulator? We're going to use it here. 
 
 Below is an example of what the transaction validation lurk program looks like. Instead of writing it in lurk here we will 
-write it in Go for easier readability. Just remember that in the illium codebase, this is written in lurk.
+write it in Go simply for familiarity. Just remember that in the illium codebase, this is written in lurk.
 
 ```go
 

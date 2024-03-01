@@ -150,5 +150,4 @@ attack you need to enforce a covenant setting the asset-id for your contract out
 ### Overflows
 
 Makes sure when working with any arithmetic operations you consider the possibility of overflows. As you do so
-keep in mind that both ILX and token amounts cannot exceed a `u64` even though lurk supports larger integers. You
-can make use of the `check-overflow` builtin function that was discussed in the lurk section for this purpose.
+keep in mind that both ILX and token amounts cannot exceed a `u64` even though lurk supports larger integers.

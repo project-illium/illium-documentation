@@ -14,6 +14,9 @@ service NodeService {
     // GetPeers returns a list of peers that this node is connected to
     rpc GetPeers(GetPeersRequest) returns (GetPeersResponse) {}
 
+    // GetPeerInfo returns a list of peers that this node is connected to
+    rpc GetPeerInfo(GetPeerInfoRequest) returns (GetPeerInfoResponse) {}
+
     // AddPeer attempts to connect to the provided peer
     rpc AddPeer(AddPeerRequest) returns (AddPeerResponse) {}
 
@@ -78,10 +81,14 @@ message GetHostInfoResponse {
     repeated string addrs = 2;
     // The number of peers this node is connected to
     uint32 peers          = 3;
+    // The firewall status of the node
+    string reachability   = 4;
     // Is tx index enabled
-    bool tx_index         = 4;
+    bool tx_index         = 5;
     // Is the wallet server enabled
-    bool wallet_server    = 5;
+    bool wallet_server    = 6;
+    // Is the proving server enabled
+    bool proving_server   = 7;
 }
 
 message GetNetworkKeyRequest{}
@@ -94,6 +101,15 @@ message GetPeersRequest {}
 message GetPeersResponse {
     // List of peers
     repeated Peer peers = 1;
+}
+
+message GetPeerInfoRequest {
+    // Peer ID to get info about
+    string peer_ID = 1;
+}
+message GetPeerInfoResponse {
+    // Info about the peer
+    Peer peer = 1;
 }
 
 message AddPeerRequest {
