@@ -104,6 +104,11 @@ const config = {
             href: "/developers"
           },
           {
+            href: 'https://illium.org',
+            label: 'Illium.org',
+            position: 'right',
+          },
+          {
             href: 'https://github.com/project-illium/illium-documentation',
             label: 'GitHub',
             position: 'right',
@@ -147,7 +152,7 @@ const config = {
               },
               {
                 label: 'Discord',
-                href: 'https://discord.gg/Grh8dA9R',
+                href: 'https://discord.gg/yDq7KXdKmV',
               },
               {
                 label: 'Twitter',
