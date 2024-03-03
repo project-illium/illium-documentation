@@ -44,6 +44,12 @@ disablewalletserverservice=1
 The wallet server service requires the node to be run with the `--wsindex` option. If this index is not used the wallet
 server service will be disabled by default.
 
+To enable the proving service:
+
+```
+--enableproverservice
+```
+
 ### TLS
 
 Grpc requires the use of TLS for all RPCs. On first startup, ilxd will generate a self-signed certificate and put it in the 
