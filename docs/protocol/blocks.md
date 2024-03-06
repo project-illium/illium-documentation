@@ -22,6 +22,7 @@ message Block {
 
 message BlockTxs {
     repeated Transaction transactions = 1;
+	repeated bytes wids               = 2;
 }
 
 message XThinnerBlock {
