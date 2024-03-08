@@ -22,6 +22,10 @@
 }
 
 /* CUSTOM STYLES FOR ILLIUM */
+html {
+  scrollbar-color: #FF79E9 #1A181E;
+}
+
 .navbar {
   background: #222028;
 }
