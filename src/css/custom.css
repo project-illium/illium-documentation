@@ -26,6 +26,10 @@ html {
   scrollbar-color: #FF79E9 #1A181E;
 }
 
+.codeBlockContainer_node_modules-\@docusaurus-theme-classic-lib-theme-CodeBlock-Container-styles-module {
+  scrollbar-color: #474747 #1A181E;
+}
+
 .navbar {
   background: #222028;
 }
