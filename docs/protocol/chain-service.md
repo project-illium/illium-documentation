@@ -88,6 +88,7 @@ message GetHeadersStreamReq {
 // transaction list for each block)
 message GetBlockTxsStreamReq {
     uint32 start_height = 1;
+	bool no_proofs      = 2;
 }
 
 // Request to get the peer's block ID and height at the tip of the chain.
