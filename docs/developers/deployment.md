@@ -147,7 +147,7 @@ We'll do this using the gRPC interface.
     fmt.Println(types.NewID(resp.Transaction_ID).String())
 ```
 
-### Spend the UTXO
+### Spend the utxo
 ```go
     // Load the utxos from the wallet
     utxoResp, err := walletClient.GetUtxos(context.Background(), &pb.GetUtxosRequest{})

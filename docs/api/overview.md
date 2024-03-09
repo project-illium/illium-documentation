@@ -60,8 +60,8 @@ On linux the default is:
 $HOME/.ilxd/rpc.cert
 ```
 
-By default this certificate is used by the gRPC server. If for some reason you wish to generate a new certificate you can
-simply delete the `rpc.cert` and `rpc.key` files and it will generate new ones on next startup.
+By default, this certificate is used by the gRPC server. If for some reason you wish to generate a new certificate you can
+simply delete the `rpc.cert` and `rpc.key` files, and it will generate new ones on next startup.
 
 ***NOTE***: If a server using a self-signed certificate is running on a different machine from the client(s) the server's
 external IP address will need to be in the certificate for it to work. To tell ilxd to generate the certificate using your

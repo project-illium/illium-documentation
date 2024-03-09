@@ -25,7 +25,7 @@ Now compare that to Illium:
 - Each linked spend of the utxo represents a state transition of the contract.
 - User's need to know data about the most recent utxo in the chain of transactions to interact with the contract.
 
-Outside of that last part about needing to track the most recent utxo, there is very little difference betweeen
+Outside of that last part about needing to track the most recent utxo, there is very little difference between
 illium and ethereum. And it wouldn't be hard for an IDE to track the utxos for you to remove any mental overhead. 
 
 Let's take a look at some examples:

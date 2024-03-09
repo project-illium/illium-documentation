@@ -51,7 +51,7 @@ In Bitcoin these fields are unencrypted and are publicly visible to everyone.
 
 ## Illium
 
-In Illium transactions also have outputs but we hash the output data to prevent it from being publicly visible to anyone. 
+In Illium transactions also have outputs, but we hash the output data to prevent it from being publicly visible to anyone. 
 
 For example, Illium transactions look like:
 
@@ -76,7 +76,7 @@ commitment := hash(scriptHash, amount)
 
 If you're quick on your feet you might notice a potential attack here. If you know someone's scriptHash you can try brute
 forcing the scriptHash with every possible amount and checking to see if the corresponding hash exists in the chain. This
-would deanonymize the output. 
+would de-anonymize the output. 
 
 To combat this the sender of transaction generates a random number, which we call a `salt`, and concatenates the `salt` 
 to the `scriptHash` and `amount`. This effectively randomizes the commitment and prevents the brute force attack.

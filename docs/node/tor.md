@@ -41,7 +41,7 @@ $ ilxd --torbinary=/path/to/tor --tordualstack
 ### Validating with Tor
 
 Generally speaking it's not recommended that you use Tor when running a validator node. The reason for this is that validators
-and users not running tor may not be able to connect to you (there is relaying functionality but it's a best effort service). 
+and users not running tor may not be able to connect to you (there is relaying functionality, but it's a best effort service). 
 
 To the extent that other validators have trouble connecting to you, it could cause to get marked
 as having poor uptime resulting in a loss of your coinbase rewards. 

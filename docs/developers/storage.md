@@ -8,10 +8,10 @@ description: Marco extensions
 Illium only gives you 128 bytes to use for each contract's state field. For a lot of applications this is enough space.
 For other's it's not.
 
-If you need more storage you'll need create an offchain database, compute a merkle root of all the data in the database, 
+If you need more storage you'll need create an off-chain database, compute a merkle root of all the data in the database, 
 and store the root hash of the database in state. 
 
-Here's the interface for an offchain database written in Go:
+Here's the interface for an off-chain database written in Go:
 ```go
 type MerkleDB interface {
         // Put a new key/value pair into the database. This operation
@@ -62,7 +62,7 @@ The `std/merkle-db` module interface is:
 Now consider the following contract. It allows users to add new data to the contract storage. To do so they have to do
 the following:
 
-- Put the data to their local, offchain database.
+- Put the data to their local, off-chain database.
 - Get the new database root hash.
 - Fetch a merkle inclusion proof linking the data they just inserted to the new root hash.
 - Use data and merkle inclusion proof as input parameters to the contract.

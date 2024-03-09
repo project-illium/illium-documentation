@@ -55,7 +55,7 @@ libp2p.Ping(true),
 
 ## Protocols
 
-The following protocols are supported by the illium node. The /ilx/ protocols will be futher defined in this documentation.
+The following protocols are supported by the illium node. The /ilx/ protocols will be further defined in this documentation.
 
 Network: `mainnet`, `testnet1`, or `regtest`
 ```
@@ -85,7 +85,7 @@ network is being used.
 
 ## AutoRelay Configuration
 
-The autorelay uses the DHT content routing to discover a list of peers capable of acting as a relay. When a node determines
+The auto-relay uses the DHT content routing to discover a list of peers capable of acting as a relay. When a node determines
 that it is publicly reachable it advertises itself as a potential relay in the DHT. 
 
 The DHT key used for the advertisement is:
@@ -96,9 +96,9 @@ hash, _ := multihash.Sum([]byte(relayKey), multihash.SHA2_256, -1)
 key := cid.NewCidV1(cid.Raw, hash)
 ```
 
-## Pubsub Configuration
+## Pub-sub Configuration
 
-Pubsub is used for relaying transactions and blocks. The configuration options are:
+Pub-sub is used for relaying transactions and blocks. The configuration options are:
 
 ```go
 // We don't want to advertise who authored a transaction or block.

@@ -6,14 +6,14 @@ description: Security notes
 # Security
 
 In this section we're going to highlight some important security considerations when building a smart contract. Remember,
-smart contracts on illium work a little different than smart contracts on other platforms so it's important to take
+smart contracts on illium work a little different from smart contracts on other platforms, so it's important to take
 care when designing your contract and think through all the ways someone might try to attack it.
 
 ### Output Commitments
 
-In order to spend a utxo in illium one needs to know the full preimage of the output commitment. Smart contracts are typically
+In order to spend an utxo in illium one needs to know the full preimage of the output commitment. Smart contracts are typically
 used by multiple parties who do not necessarily trust each other. It may be possible for one of those parties to set one
-of the preimage values to a value unknown to the other users of the contract, thus preventing all other parites from interacting
+of the preimage values to a value unknown to the other users of the contract, thus preventing all other parties from interacting
 with the contract. 
 
 How do we prevent this? We need to enforce covenants on the all the preimage fields that are unknown to all the users ensuring
@@ -55,10 +55,10 @@ Example:
 ### State transitions
 
 As we talked about in the storage section, some contracts have a very large state that needs to be stored off chain with only
-the root hash of the offchain database stored in the contract. 
+the root hash of the off-chain database stored in the contract. 
 
 For these contracts in order to spend the utxo one not only needs to know the output commitment preimage, but also the private
-unlocking-parameters needed to update the offchain database.
+unlocking-parameters needed to update the off-chain database.
 
 These parameters are not normally found in the contract, so it's up to you to enforce a covenant requiring they be put in the
 transaction ― typically in the ciphertext field.
@@ -106,7 +106,7 @@ to interact with one of those instances.
 To identify a specific instance of a contract we're going to need to encode an `instance-id` in the state. And this
 `instance-id` should be encoded in such a way that it is unique to the contract and cannot be shared by other instances.
 
-A good way to do this is to use the nullifier of the deployment transaction as the `instance-id` as its guaranteed to
+A good way to do this is to use the nullifier of the deployment transaction as the `instance-id` as it's guaranteed to
 be unique. 
 
 For example:
@@ -125,10 +125,10 @@ For example:
 
 The transaction validation program only validates that:
 
-- The sum of ILX ouputs plus the transaction fee <= the sum of the ILX inputs
+- The sum of ILX outputs plus the transaction fee <= the sum of the ILX inputs
 - The sum of each unique output token <= the sum of each unique input token
 
-Thus one might try to steal coins by attaching an input for a junk token and sending that token
+Thus, one might try to steal coins by attaching an input for a junk token and sending that token
 to the contract output. 
 
 For example:

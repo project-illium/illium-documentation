@@ -20,7 +20,7 @@ On the other hand, a zero-knowledge proof allows a prover to demonstrate knowled
 
 Both of these concepts are critical for secure communication and transaction verification in a variety of applications.
 
-In code we might make use of digital signatures as follows:
+In code, we might make use of digital signatures as follows:
 
 ```go
 privateKey, publicKey := GenerateKeyPair()

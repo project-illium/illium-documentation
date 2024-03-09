@@ -57,7 +57,7 @@ output.
 The above example reads an integer from the input state, increments it by one, and saves the new state in the next output, 
 which a covenant enforces must be the same script. 
 
-You can think of this script as a deployed contract. The contract has code that runs every time the utxo is spent and it also
+You can think of this script as a deployed contract. The contract has code that runs every time the utxo is spent, and it also
 has state associated with it that can be read and mutated. 
 
 Let's take a look at a more practical example. The following is vault script. It has two keys, a hot key and a cold key. The

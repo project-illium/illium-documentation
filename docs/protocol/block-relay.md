@@ -19,7 +19,7 @@ the implementation details. But we will copy a high level overview written by Jo
 
 ***(a) Encoding***
 
-For encoding, we use a stack-based state machine that follows a three-stage cycle. At the end of each cycle, the bytes on the stack represent enough of the TXID’s initial bytes in order to be able to uniquely identify that TXID in mempool. At the start of each cycle, we’re left with the initial bytes for the previous transaction. Our three stages are as follows:
+For encoding, we use a stack-based state machine that follows a three-stage cycle. At the end of each cycle, the bytes on the stack represent enough of the txid’s initial bytes in order to be able to uniquely identify that txid in mempool. At the start of each cycle, we’re left with the initial bytes for the previous transaction. Our three stages are as follows:
 
 1. We can pop 1 or more bytes off the stack as necessary to disambiguate from the previous block transaction.
 2. We can push 1 or more bytes onto the stack as necessary to disambiguate from neighboring mempool transactions.
@@ -57,7 +57,7 @@ Our state machine starts with an empty stack.
 
 1.3 Our stack is now `00 02 87`. That’s enough information to uniquely identify this transaction as long as the recipient of this message has that transaction in their mempool and does not have a conflicting transaction with the same prefix.
 
-1.4 We’ll talk about the checksumming later.
+1.4 We’ll talk about the checksum later.
 
 2.1 We have `00 02 87` on our stack, and our next transaction begins with `00 04 37`, so we need to pop off two bytes. The first pop is automatic, so we need to tell our state machine to pop a second byte before going to the next stage. `pops.extend([1, 0])`
 
@@ -107,7 +107,7 @@ To decode, we run our state machine with that data.
 ### Checksums
 The Xthinner spec calls for the XthinnerBlock to have a checksum attached that can be used to detect collisions. 
 However, in illium blocks come quickly and typically have few transactions. With such a small number of transactions 
-collisions are less likely. In the event a collision happens the validation of the txRoot will fail and we will just 
+collisions are less likely. In the event a collision happens the validation of the txRoot will fail, and we will just 
 request the full list of block txids from the relaying peer.
 
 If checksums were included we could use them to narrow down the range in block where the collision occurred and just 

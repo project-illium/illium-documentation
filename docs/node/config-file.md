@@ -17,7 +17,7 @@ config file options will be overridden with the command line options.
 
 A sample config file is as follows:
 
-**Note**: the `;` in the config file denotes a comment line. Thus the following config file contains only  comments.
+**Note**: the `;` in the config file denotes a comment line. Thus, the following config file contains only  comments.
 If you want to set any of the options remove the `;` from the start of the line.
 
 ```

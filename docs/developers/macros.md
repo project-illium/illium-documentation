@@ -182,7 +182,7 @@ The preprocessor offers some limited package management facilities. Library file
 - Modules may import other modules, but cannot do circular imports.
 - All top level functions and variables defined in the module are exported.
 
-The preprocessor takes in a dependency directory as an argument. The dependency directory may have sub-directories.
+The preprocessor takes in a dependency directory as an argument. The dependency directory may have subdirectories.
 
 ```
 /deps

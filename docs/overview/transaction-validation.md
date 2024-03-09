@@ -136,7 +136,7 @@ exists in the set of all commitments, *without* actually revealing the specific 
 ### Proving Spend Authorization
 
 Next we need to prove that we're actually *authorized* to spend this commitment. To do this we will execute the users
-locking script with the provided unlocking parameters. For a basic transfer the UnlockignParams will usually contain a signature.
+locking script with the provided unlocking parameters. For a basic transfer the UnlockingParams will usually contain a signature.
 
 ```go
 func ProveTransactionValidity(priv PrivateParams, pub PublicParams) bool {
@@ -261,12 +261,12 @@ func ProveTransactionValidity(priv PrivateParams, pub PublicParams) bool {
 ### Proving No Double Spends
 
 If you've made it this far you've probably realized that we've proved that the output commitments that we're spending
-exist in the set of all output commitments. But we don't, as of yet, have any way of determining if those commitments 
+exist in the set of all output commitments. But we don't, as yet, have any way of determining if those commitments 
 are unspent. 
 
 To do this for each input we will calculate a hash value that we will call a `nullifier`. The nullifier will be derived 
 from private data in each commitment's preimage. It's calculated such that for each output commitment there is only one 
-nullifer but it's not possible to link the nullifier to a specific commitment without knowing the private data. 
+nullifier, but it's not possible to link the nullifier to a specific commitment without knowing the private data. 
 
 These nullifiers will be included in the body of the transaction that gets relayed to the network. 
 

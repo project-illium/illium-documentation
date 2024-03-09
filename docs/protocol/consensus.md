@@ -69,13 +69,13 @@ If the next 1 millisecond step occurs before any of the outstanding requests ret
     - If `>12` out of the last `16` recorded votes for a block are `No` then we consider the vote conclusive.
     - Unknown or unacceptable votes (zero ID) *are* included in the last 16 votes. They will prevent a block vote from being conclusive
    if there are enough of them.
-    - If the vote is conclusive and it agrees with our current state, either `Preferred` or `Not Preferred`, then we
+    - If the vote is conclusive, and it agrees with our current state, either `Preferred` or `Not Preferred`, then we
    increment a confidence counter by 1.
       - If the confidence counter is >= `160` and the current state is `Preferred`, then we mark the block as `Finalized` and
       mark all conflicting blocks as `Rejected`.
       - If the confidence counter is >= `160` and the current state is `Not Preferred`, then we do nothing. Eventually a
       conflicting block will finalize resulting in this one being marked as `Rejected`.
-    - If the vote is conclusive and it does not agree with our current state, either `Preferred` or `Not Preferred`, then
+    - If the vote is conclusive, and it does not agree with our current state, either `Preferred` or `Not Preferred`, then
    we flip our current preference and reset our confidence counter to zero. 
       - If the preference flipped from `Not Preferred` to `Preferred` then all conflicting blocks must also flip to `NotPreferred`
       by virtue of the same number of `No` votes having been cast for them.

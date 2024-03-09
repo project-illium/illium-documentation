@@ -63,7 +63,7 @@ If we add a sixth output commitment the second tree grows in size:
 
 ![Merkle-Tree-4](/img/Merkle-Tree-4.png)
 
-After a seventh output commitent we now have three peaks:
+After a seventh output commitment we now have three peaks:
 
 ![Merkle-Tree-5](/img/Merkle-Tree-5.png)
 
