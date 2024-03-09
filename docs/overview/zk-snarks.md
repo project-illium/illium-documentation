@@ -8,7 +8,7 @@ Before we can dive into the Illium protocol we need to get our heads around zk-s
 behind zk-snarks is super difficult to understand, you don't need to know any math to get a high level overview of
 what they are and what they do. 
 
-In a nutshell zk-snarks are programmatic cryptographic proofs that allow us to prove just about any statement we desire. 
+In a nutshell, zk-snarks are programmatic cryptographic proofs that allow us to prove just about any statement we desire. 
 
 Consider something you're likely already familiar with:
 
