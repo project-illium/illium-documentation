@@ -106,7 +106,7 @@ message GetBlockchainInfoResponse {
         // Alpha testnet
         ALPHANET = 3;
     }
-
+    
     // Which network the node is operating on
     Network network           = 1;
     // The current number of blocks in the chain
@@ -117,11 +117,11 @@ message GetBlockchainInfoResponse {
     int64 block_time          = 4;
     // When `tx_index` is true, the node has full transaction index enabled
     bool tx_index             = 5;
-    // The total number of coins in circulation
+    // The total number of coins in circulation in nanoillium
     uint64 circulating_supply = 6;
-    // The total number of coins staked
+    // The total number of coins staked in nanoillium
     uint64 total_staked       = 7;
-    // The balance of the treasury
+    // The balance of the treasury in nanoillium
     uint64 treasury_balance   = 8;
 }
 
@@ -130,7 +130,7 @@ message GetBlockInfoRequest {
         // The block hash as a byte array
         bytes block_ID = 1;
         // The block number
-        uint32 height   = 2;
+        uint32 height  = 2;
     }
 }
 message GetBlockInfoResponse {
@@ -143,7 +143,7 @@ message GetBlockRequest {
         // The block hash as a byte array
         bytes block_ID = 1;
         // The block number
-        uint32 height   = 2;
+        uint32 height  = 2;
     }
 }
 message GetBlockResponse {
@@ -211,15 +211,13 @@ message GetMerkleProofRequest {
 }
 message GetMerkleProofResponse {
     // Block header information for the corresponding transaction
-    BlockInfo block        = 1;
-    // Is the proof hashes corresponding to the witness hash tree.
-    repeated bytes Uhashes = 2;
-    // Is the proof hashes corresponding to the witness hash tree.
-    repeated bytes Whashes = 3;
+    BlockInfo block       = 1;
+    // Is the proof hashes linking the tx to the root
+    repeated bytes hashes = 2;
     // The least significant bit in flags corresponds to the last hash in `hashes`. The second least
     // significant to the second to last hash, and so on. The bit signifies whether the hash should be
     // prepended (0) or appended (1) when hashing each level in the tree.
-    uint32 flags           = 4;
+    uint32 flags          = 3;
 }
 
 message GetValidatorRequest {
@@ -233,9 +231,9 @@ message GetValidatorResponse {
 
 message GetValidatorSetInfoRequest{}
 message GetValidatorSetInfoResponse{
-    // The total number of coins staked on the network
+    // The total number of coins staked on the network in nanoillium
     uint64 total_staked   = 1;
-    // The total stake weighted by time locks.
+    // The total stake weighted by time locks in nanoillium
     uint64 stake_weight   = 2;
     // The total number of validators on the network
     uint32 num_validators = 3;
@@ -300,5 +298,4 @@ message SubscribeBlocksRequest {
 }
 
 message SubscribeCompressedBlocksRequest {}
-
 ```

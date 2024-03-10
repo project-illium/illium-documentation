@@ -1,5 +1,5 @@
 ---
-sidebar_position: 7
+sidebar_position: 8
 ---
 # Notifications
 
@@ -8,13 +8,21 @@ message TransactionNotification {
     // The transaction in this notification has finalized and
     // been added to the blockchain.
     Transaction transaction = 1;
+    // The ID of the block containing the transaction
+    bytes block_ID          = 2;
+    // The height of the block containing the transaction
+    uint32 block_height     = 3;
 }
 
 message WalletTransactionNotification {
     // The transaction in this notification has finalized and
     // been added to the blockchain.
     WalletTransaction transaction = 1;
-}
+    // The ID of the block containing the transaction
+    bytes block_ID                = 2;
+    // The height of the block containing the transaction
+    uint32 block_height           = 3;
+} 
 
 message WalletSyncNotification {
     // The current height the wallet is synced up to
