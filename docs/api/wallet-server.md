@@ -59,7 +59,6 @@ message GetWalletTransactionsRequest{
     bytes view_key  = 1;
     
     // The number of transactions to skip, starting with the oldest first.
-    // Does not affect results of unconfirmed transactions.
     uint32 nb_skip  = 2;
     // Specify the number of transactions to fetch.
     uint32 nb_fetch = 3;

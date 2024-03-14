@@ -56,6 +56,8 @@ Node Options:
                                     lite wallets
       --dropwsindex                 Delete the wallet server index from the
                                     database
+      --addrindex                   Enable the address index
+      --dropaddrindex               Delete the address index from the database                            
       --maxbanscore=                The maximum ban score a peer is allowed to
                                     have before getting banned (default: 100)
       --banduration=                The duration for which banned peers are
