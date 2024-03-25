@@ -77,6 +77,10 @@ Node Options:
       --mock                        Set the node to use mock proofs instead of
                                     full proofs. This option is only available
                                     for regtest.
+      --checkpoint=                 Set a custom block checkpoint. Proof validation
+                                    will be skipped up to this block. Formatted
+                                    as a json string {'blockID': 'hex',
+                                    'height': uint32}
 
 Policy:
       --minfeeperkilobyte=          The minimum fee per kilobyte that the node
