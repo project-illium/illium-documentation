@@ -27,7 +27,7 @@ Consider the history of major breakthroughs in cryptocurrencies:
 - Bitcoin proved that it's possible to build a fully decentralized currency. Unfortunately transactions are fully
 public and trivial to trace. It also offered limited ability to create programmable contracts.
 - Ethereum one upped Bitcoin by introducing fully programmable smart contracts. 
-- Zcash improved on both by making use of zk-snarks to encrypt tranasctions and improve privacy. Unfortunately Zcash's shielded transactions only work for basic transfers. 
+- Zcash improved on both by making use of zk-snarks to encrypt transactions and improve privacy. Unfortunately Zcash's shielded transactions only work for basic transfers. 
 - Illium extends the use of zk-snarks to full blown smart contracts making all transactions fully private.
 
 It should be noted that while transactions are completely private, users can still choose to share private data with third parties if they have a need to. And the sharing of private 
