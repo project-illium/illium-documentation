@@ -1,5 +1,5 @@
 ---
-sidebar_position: 3
+sidebar_position: 6
 ---
 # Node Service
 
@@ -57,7 +57,7 @@ service NodeService {
     // TreasuryTransactions not found in this list will have their initial preference set to not-preferred.
     rpc GetTreasuryWhitelist(GetTreasuryWhitelistRequest) returns (GetTreasuryWhitelistResponse) {}
 
-    // UpdateTreasuryWhitelist adds or removes a transaction to from the treasury whitelist
+    // UpdateTreasuryWhitelist adds or removes a transaction to from the treasury whitelist.
     // This update is committed to the datastore and will persist between sessions.
     rpc UpdateTreasuryWhitelist(UpdateTreasuryWhitelistRequest) returns (UpdateTreasuryWhitelistResponse) {}
 
@@ -148,24 +148,24 @@ message SetLogLevelResponse {}
 
 message GetMinFeePerKilobyteRequest {}
 message GetMinFeePerKilobyteResponse {
-    // Fee per kilobyte response
+    // Fee per kilobyte response in nanoillium
     uint64 fee_per_kilobyte = 1;
 }
 
 message SetMinFeePerKilobyteRequest {
-    // Fee per byte to set
+    // Fee per byte to set in nanoillium
     uint64 fee_per_kilobyte = 1;
 }
 message SetMinFeePerKilobyteResponse {}
 
 message GetMinStakeRequest {}
 message GetMinStakeResponse {
-    // Minimum stake response
+    // Minimum stake response in nanoillium
     uint64 min_stake_amount = 1;
 }
 
 message SetMinStakeRequest {
-    // Minimum stake amount to set
+    // Minimum stake amount to set in nanoillium
     uint64 min_stake_amount = 1;
 }
 message SetMinStakeResponse {}
@@ -198,8 +198,7 @@ message UpdateTreasuryWhitelistResponse {}
 
 message ReconsiderBlockRequest {
     // Block ID to reconsider.
-    bytes block_ID = 1;
-    
+    bytes block_ID =       1;
     // We likely don't have the block and will have to download it from
     // another peer. You can set the peer here. If empty we will try to find
     // it form a few random peers.

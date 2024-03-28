@@ -1,5 +1,5 @@
 ---
-sidebar_position: 6
+sidebar_position: 7
 ---
 # Data Messages
 
@@ -34,26 +34,28 @@ message BlockInfo {
     uint32 size       = 9;
     // The number of transactions in the block.
     uint32 num_txs    = 10;
+    // The total transaction fees in the block.
+    uint64 total_fees = 11;
 }
 
 message Validator {
     // The validator ID encoded in bytes.
-    bytes validator_ID        = 1;
-    // The number of coins staked by this validator.
-    uint64 total_stake        = 2;
-    // The total stake weighted by time lock.
-    uint64 stake_weight       = 3;
+    bytes validator_ID     = 1;
+    // The number of coins staked by this validator in nanoillium.
+    uint64 total_stake     = 2;
+    // The total stake weighted by time lock in nanoillium.
+    uint64 stake_weight    = 3;
     // The nullifiers for the utxos the validator has staked.
-    repeated Stake stake      = 4;
-    // The total of any unclaimed validator rewards.
-    uint64 unclaimed_coins    = 5;
+    repeated Stake stake   = 4;
+    // The total of any unclaimed validator rewards in nanoillium.
+    uint64 unclaimed_coins = 5;
     // The number of blocks this validator has created this epoch.
-    uint32 epoch_blocks       = 6;
+    uint32 epoch_blocks    = 6;
 
     message Stake {
         // The nullifier that is staked
         bytes nullifier           = 1;
-        // The amount staked
+        // The amount staked in nanoillium
         uint64 amount             = 2;
         // The timestamp that this utxo is timelocked until
         int64 timelocked_until    = 3;
@@ -69,7 +71,7 @@ message Validator {
 message Utxo {
     // The commitment associated with the output
     bytes commitment    = 1;
-    // The amount of coins
+    // The amount of coins in nanoillium
     uint64 amount       = 2;
     // The address that the utxo is associated with
     string address      = 3;
@@ -93,7 +95,7 @@ message RawTransaction {
 }
 
 message PrivateInput {
-    // The amount of the input
+    // The amount of the input in nanoillium
     uint64 amount                 = 1;
     // Input asset ID
     bytes asset_ID                = 2;
@@ -117,7 +119,7 @@ message PrivateInput {
 message PrivateOutput {
     // Output scriptHash
     bytes script_hash = 1;
-    // Output amount
+    // Output amount in nanoillium
     uint64 amount     = 2;
     // Output salt
     bytes salt        = 3;
@@ -152,37 +154,37 @@ message Peer {
 
 message WalletTransaction {
     // Transaction ID
-    bytes transaction_ID = 1;
-    // The net number of coins coming into the wallet
+    bytes transaction_ID        = 1;
+    // The net number of coins coming into the wallet in nanoillium
     // Positive = receive
     // Negative = send
-    int64 netCoins       = 2;
+    int64 netCoins              = 2;
     // The address and amount of each input if known
     // to the wallet.
-    repeated IO inputs   = 3;
+    repeated IOMetadata inputs  = 3;
     // The address and amount of each output if known
     // to the wallet.
-    repeated IO outputs  = 4;
-    
-    message IO {
-        // Either address/amount information or unknown
-        // if input or output did not belong to this wallet
-        // and can't be decrypted.
-        oneof io_type {
-            TxIO tx_io      = 1;
-            Unknown unknown = 2;
-        }
-    
-        message TxIO {
-            // Address associated with the input or output
-            string address = 1;
-            // Amount of coins associated with the input or output
-            uint64 amount  = 2;
-        }
-        
-        // Represents an input or output not belonging to
-        // the wallet.
-        message Unknown {}
+    repeated IOMetadata outputs = 4;
+}
+
+message IOMetadata {
+    // Either address/amount information or unknown
+    // if input or output did not belong to this wallet
+    // and can't be decrypted.
+    oneof io_type {
+        TxIO tx_io      = 1;
+        Unknown unknown = 2;
     }
+    
+    message TxIO {
+        // Address associated with the input or output
+        string address = 1;
+        // Amount of coins associated with the input or output in nanoillium
+        uint64 amount  = 2;
+    }
+    
+    // Represents an input or output not belonging to
+    // the wallet.
+    message Unknown {}
 }
 ```

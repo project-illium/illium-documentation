@@ -56,6 +56,8 @@ Node Options:
                                     lite wallets
       --dropwsindex                 Delete the wallet server index from the
                                     database
+      --addrindex                   Enable the address index
+      --dropaddrindex               Delete the address index from the database                            
       --maxbanscore=                The maximum ban score a peer is allowed to
                                     have before getting banned (default: 100)
       --banduration=                The duration for which banned peers are
@@ -75,6 +77,10 @@ Node Options:
       --mock                        Set the node to use mock proofs instead of
                                     full proofs. This option is only available
                                     for regtest.
+      --checkpoint=                 Set a custom block checkpoint. Proof validation
+                                    will be skipped up to this block. Formatted
+                                    as a json string {'blockID': 'hex',
+                                    'height': uint32}
 
 Policy:
       --minfeeperkilobyte=          The minimum fee per kilobyte that the node

@@ -12,7 +12,7 @@ hash at the top of the tree as shown below.
 ![Merkle-Tree-1](/img/Merkle-Tree-1.png)
 
 A unique feature of the merkle tree is that it allows us to build compact inclusion proofs. For example, if I want to
-prove that transaction 6 is in the block, I could do so my providing you with the full list of transactions in the block.
+prove that transaction 6 is in the block, I could do so by providing you with the full list of transactions in the block.
 That would work, you would see that, indeed, transaction 6 is in the block, but it's not very compact. Especially
 for larger blocks. 
 

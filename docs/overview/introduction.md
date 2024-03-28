@@ -32,7 +32,6 @@ public and trivial to trace. It also offered limited ability to create programma
 
 It should be noted that while transactions are completely private, users can still choose to share private data with third parties if they have a need to. And the sharing of private 
 data need not be an all-or-nothing proposition whereby the person you share the data with necessarily sees everything. Instead, it's possible to
-make use Illium's zk-snark functionality to selectively share only the parts of a transaction or 
-contract that are relevant, while keeping everything else private. 
+make use of Illium's zk-snark functionality to selectively share only the parts of a transaction or contract that are relevant, while keeping everything else private. 
 
 Additionally, Illium makes use of novel improvements to the avalanche consensus algorithm to offer nearly instantaneous transaction finalization. 

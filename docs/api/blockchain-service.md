@@ -17,8 +17,12 @@ service BlockchainService {
     // GetBlockInfo returns a BlockHeader plus some extra metadata.
     rpc GetBlockInfo(GetBlockInfoRequest)returns (GetBlockInfoResponse) {}
 
-    // GetBlock returns the detailed data for a block.
+    // GetBlock returns a BlockInfo metadata object plus the transactions either
+    // as IDs or full transactions.
     rpc GetBlock(GetBlockRequest) returns (GetBlockResponse) {}
+    
+    // GetRawBlock returns the raw block in protobuf format
+    rpc GetRawBlock(GetRawBlockRequest) returns (GetRawBlockResponse) {}
 
     // GetCompressedBlock returns a block that is stripped down to just the outputs.
     // It is the bare minimum information a client side wallet needs to compute its internal
@@ -34,7 +38,14 @@ service BlockchainService {
     // GetTransaction returns the transaction for the given transaction ID.
     //
     // **Requires TxIndex**
+    // **Input/Output metadata requires AddrIndex**
     rpc GetTransaction(GetTransactionRequest) returns (GetTransactionResponse) {}
+
+    // GetAddressTransactions returns a list of transactions for the given address
+    // Note: only public address are indexed
+    //
+    // **Requires AddrIndex**
+    rpc GetAddressTransactions(GetAddressTransactionsRequest) returns (GetAddressTransactionsResponse) {}
 
     // GetMerkleProof returns a Merkle (SPV) proof for a specific transaction
     // in the provided block.
@@ -52,6 +63,11 @@ service BlockchainService {
     // GetValidatorSet returns all the validators in the current validator set.
     rpc GetValidatorSet(GetValidatorSetRequest) returns (GetValidatorSetResponse) {}
 
+    // GetValidatorCoinbases returns a list of coinbase txids for the validator.
+    //
+    // **Requires AddrIndex**
+    rpc GetValidatorCoinbases(GetValidatorCoinbasesRequest) returns (GetValidatorCoinbasesResponse) {}
+    
     // GetAccumulatorCheckpoint returns the accumulator at the requested height.
     // If there is no checkpoint at that height, the *prior* checkpoint found in the
     // chain will be returned. If there is no prior checkpoint (as is prior to the first)
@@ -106,7 +122,7 @@ message GetBlockchainInfoResponse {
         // Alpha testnet
         ALPHANET = 3;
     }
-
+    
     // Which network the node is operating on
     Network network           = 1;
     // The current number of blocks in the chain
@@ -117,12 +133,16 @@ message GetBlockchainInfoResponse {
     int64 block_time          = 4;
     // When `tx_index` is true, the node has full transaction index enabled
     bool tx_index             = 5;
-    // The total number of coins in circulation
+    // The total number of coins in circulation in nanoillium
     uint64 circulating_supply = 6;
-    // The total number of coins staked
+    // The total number of coins staked in nanoillium
     uint64 total_staked       = 7;
-    // The balance of the treasury
+    // The balance of the treasury in nanoillium
     uint64 treasury_balance   = 8;
+    // The total size of the database on disk
+    uint64 blockchain_size    = 9;
+    // The current epoch number (also total number of epochs)
+    uint32 epoch              = 10;
 }
 
 message GetBlockInfoRequest {
@@ -130,7 +150,7 @@ message GetBlockInfoRequest {
         // The block hash as a byte array
         bytes block_ID = 1;
         // The block number
-        uint32 height   = 2;
+        uint32 height  = 2;
     }
 }
 message GetBlockInfoResponse {
@@ -143,10 +163,32 @@ message GetBlockRequest {
         // The block hash as a byte array
         bytes block_ID = 1;
         // The block number
+        uint32 height  = 2;
+    }
+
+    // Default is false, only the transaction IDs are included for
+    // a marshaled block.
+    bool full_transactions = 3;
+}
+message GetBlockResponse {
+    // The BlockInfo (including header data) for the block
+    BlockInfo block_info                  = 1;
+    // The blocks transactions (if requested).
+    //
+    // The transactions will either be returned in for or just the txids depending
+    // on the request.
+    repeated TransactionData transactions = 2;
+}
+
+message GetRawBlockRequest {
+    oneof id_or_height {
+        // The block hash as a byte array
+        bytes block_ID = 1;
+        // The block number
         uint32 height   = 2;
     }
 }
-message GetBlockResponse {
+message GetRawBlockResponse {
     // The full block response
     Block block = 1;
 }
@@ -202,7 +244,49 @@ message GetTransactionRequest {
 }
 message GetTransactionResponse {
     // The transaction response
-    Transaction tx = 1;
+    Transaction tx              = 1;
+    // The ID of the containing block
+    bytes block_ID              = 2;
+    // The height of the containing block
+    uint32 height               = 3;
+
+    // The input and output metadata will
+    // only only be non-nil if the address
+    // index is enabled.
+    //
+    // Further it will only metadata for public
+    // inputs or outputs will be included otherwise
+    // it will be `unknown`.
+    repeated IOMetadata inputs  = 4;
+    repeated IOMetadata outputs = 5;
+}
+
+message GetAddressTransactionsRequest {
+    // The address to get transactions for
+    string address = 1;
+    // The number of transactions to skip, starting with the oldest first.
+    uint32 nb_skip = 2;
+    // Specify the number of transactions to fetch.
+    uint32 nb_fetch = 3;
+}
+message GetAddressTransactionsResponse {
+    // The list of transactions
+    repeated TransactionWithMetadata txs = 1;
+    
+    message TransactionWithMetadata {
+        // The transaction response
+		Transaction tx              = 1;
+		// The ID of the containing block
+		bytes block_ID              = 2;
+        // The height of the containing block
+        uint32 height               = 3;
+        
+        // Metadata will only metadata for public
+        // inputs or outputs will be included otherwise
+        // it will be `unknown`.
+        repeated IOMetadata inputs  = 4;
+        repeated IOMetadata outputs = 5;
+    }
 }
 
 message GetMerkleProofRequest {
@@ -211,15 +295,13 @@ message GetMerkleProofRequest {
 }
 message GetMerkleProofResponse {
     // Block header information for the corresponding transaction
-    BlockInfo block        = 1;
-    // Is the proof hashes corresponding to the witness hash tree.
-    repeated bytes Uhashes = 2;
-    // Is the proof hashes corresponding to the witness hash tree.
-    repeated bytes Whashes = 3;
+    BlockInfo block       = 1;
+    // Is the proof hashes linking the tx to the root
+    repeated bytes hashes = 2;
     // The least significant bit in flags corresponds to the last hash in `hashes`. The second least
     // significant to the second to last hash, and so on. The bit signifies whether the hash should be
     // prepended (0) or appended (1) when hashing each level in the tree.
-    uint32 flags           = 4;
+    uint32 flags          = 3;
 }
 
 message GetValidatorRequest {
@@ -231,11 +313,20 @@ message GetValidatorResponse {
     Validator validator = 1;
 }
 
+message GetValidatorCoinbasesRequest {
+    // A serialized validator ID
+    bytes validator_ID = 1;
+}
+message GetValidatorCoinbasesResponse {
+    // Coinbase transactions
+    repeated bytes txids = 1;
+}
+
 message GetValidatorSetInfoRequest{}
 message GetValidatorSetInfoResponse{
-    // The total number of coins staked on the network
+    // The total number of coins staked on the network in nanoillium
     uint64 total_staked   = 1;
-    // The total stake weighted by time locks.
+    // The total stake weighted by time locks in nanoillium
     uint64 stake_weight   = 2;
     // The total number of validators on the network
     uint32 num_validators = 3;
@@ -300,5 +391,4 @@ message SubscribeBlocksRequest {
 }
 
 message SubscribeCompressedBlocksRequest {}
-
 ```

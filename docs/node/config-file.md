@@ -91,6 +91,12 @@ If you want to set any of the options remove the `;` from the start of the line.
 ; Delete the wallet server index from the database
 ; dropwsindex=1
 
+; Enable the address index
+; addrindex=1
+
+; Delete the address index from the database
+; dropaddrindex=1
+
 ; The max ban threshold. Overwhich nodes will be banned.
 ; maxbanscore=100
 
@@ -123,6 +129,9 @@ If you want to set any of the options remove the `;` from the start of the line.
 
 ; The default maximum size for network messages
 ; maxmessagesize=8388608
+
+; Set a custom block checkpoint. Proof validation will be skipped up to this block.
+; checkpoint={"blockID:"16a1ece9219012209c2589ceda00b0015d432d0b7b01c1cb606a1c2921480b03", "height": 6394}
 
 ; Specify the gRPC interface and port to listen on if you want to use the gRPC API.
 ; grpclisten=/ip4/0.0.0.0/tcp/5001

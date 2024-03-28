@@ -1,5 +1,5 @@
 ---
-sidebar_position: 5
+sidebar_position: 3
 ---
 # Wallet Server Service
 
@@ -45,13 +45,13 @@ message RegisterViewKeyRequest {
     // earlier birthday than needed as it puts more stress on the server.
     //
     // A zero value will not trigger a rescan.
-    int64 birthday                 = 3;
+    int64 birthday                = 3;
 }
 message RegisterViewKeyResponse {}
 
 message SubscribeTransactionsRequest {
     // A list of view keys to subscribe to
-    repeated bytes view_keys   = 1;
+    repeated bytes view_keys = 1;
 }
 
 message GetWalletTransactionsRequest{
@@ -59,18 +59,17 @@ message GetWalletTransactionsRequest{
     bytes view_key  = 1;
     
     // The number of transactions to skip, starting with the oldest first.
-    // Does not affect results of unconfirmed transactions.
     uint32 nb_skip  = 2;
     // Specify the number of transactions to fetch.
     uint32 nb_fetch = 3;
-	
+    
     oneof start_block {
         // Recommended. Only get transactions after (or within) a
         // starting block identified by hash.
         bytes block_ID = 4;
         // Recommended. Only get transactions after (or within) a
         // starting block identified by block number.
-        uint32 height = 5;
+        uint32 height  = 5;
     }
 }
 message GetWalletTransactionsResponse {
