@@ -136,7 +136,7 @@ you will also need to copy the node's network private key from the offline compu
 
 The network private key *not* have access to any of your funds. It is used by your node when authenticating connections
 between other validators and therefor is safe to keep on an online computer. Worst case scenario if your network key is 
-compromised you will not be able earn validator rewards until you create a new network key and migrate your node over to it.
+compromised you will not be able to earn validator rewards until you create a new network key and migrate your node over to it.
 
 **Offline Computer**
 

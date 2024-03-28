@@ -35,10 +35,10 @@ same and proceed to round 2.
 to round 2.
 - The process will be repeated for the remaining rounds. 
 
-At the end of the process all honest nodes should have the same current preference. The reason for this is because the
+At the end of the process all honest nodes should have the same current preference. The reason for this is the
 algorithm is designed to tip one way or another. Even in the event of a worst-case scenario initial preference split
 50-50, it's unlikely that it will still be 50-50 after the first round of polling due simply to the random nature of the
-polling. Even if somehow it did, it's extremely unlikely that would remain so after round 2 (or 3, 4, etc). 
+polling. Even if somehow it did, it's extremely unlikely that would remain so after round 2 (or 3, 4, etc.). 
 
 What you might see after each round is something like:
 
@@ -75,7 +75,7 @@ In this sense Illium *is* a Proof-of-stake coin. It just uses the avalanche prot
 Proof-of-stake, such as the nothing-at-stake problem, which Proof-of-stake coins typically solve through other 
 mechanisms.
 
-To stake coins users broadcast a special `StakeTransaction` which locks up a given UTXO:
+To stake coins users broadcast a special `StakeTransaction` which locks up a given utxo:
 
 ```protobuf
 message StakeTransaction {
@@ -90,7 +90,7 @@ message StakeTransaction {
 ```
 
 Full nodes validate the transaction and, when it's included in a block, add the validator to the validator set. The validator
-can remove himself from the validator set by spending his staked UTXO. The appearance of the nullifier in a standard
+can remove himself from the validator set by spending his staked utxo. The appearance of the nullifier in a standard
 transaction triggers the stake to be removed from the validator set. Validators are automatically removed from the set
 after 26 weeks if coins are not re-staked.
 
@@ -101,7 +101,7 @@ validators would be incentivized to flood the network with blocks to try to earn
 
 For the same reason, transactions fees are burned and are not paid to the creator of the block.
 
-Instead validators are rewarded at fixed one-week intervals. At each interval, each validator is credited with their
+Instead, validators are rewarded at fixed one-week intervals. At each interval, each validator is credited with their
 weighted share of that week's block reward. They can claim that share by creating and broadcasting a special `CoinbaseTransaction`:
 
 ```protobuf
@@ -119,14 +119,14 @@ no remaining unclaimed reward broadcasts a coinbase transaction, it will be inva
 
 ## Block Creation
 
-Blocks don't create themselves. A validator needs gather up transactions, put them in a block, and broadcast it. Unlike
+Blocks don't create themselves. A validator needs to gather transactions, put them in a block, and broadcast it. Unlike
 most other blockchains Illium has no fixed block interval. Blocks can be created as fast as transactions are generated. 
 
 Also unlike other Proof-of-stake chains, there are no restrictions on which validator can create a block. This 
 creates a potential attack vector whereby a malicious validator could flood the network with blocks, clog up the
 network, and slow down the consensus process. 
 
-To prevent this type of attack validators are expected to create blocks in proportion to their weighted share of the
+To prevent this type of attack, validators are expected to create blocks in proportion to their weighted share of the
 total stake. If a validator has 2% of the total stake, they should average 2% of the blocks over some interval. 
 
 If the number of blocks created by a validator deviates from their expected number of blocks by some standard deviation

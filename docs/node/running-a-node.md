@@ -6,7 +6,7 @@ description: Running a node
 
 # Running a node
 
-To start running an illum full node first head over to the [downloads page](https://github.com/project-illium/ilxd/releases) 
+To start running an illium full node first head over to the [downloads page](https://github.com/project-illium/ilxd/releases) 
 and download the binaries for your operating system.
 
 The download will be a .zip file that contains two executables:

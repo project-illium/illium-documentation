@@ -9,7 +9,7 @@ In this section we're going to talk about how time is used in illium transaction
 
 In a perfect world the timestamp of the block containing the transaction would be passed in to the unlocking script as a
 parameter. The problem here we often need to validate transactions twice ― once when they enter the mempool and again when 
-they enter a block and we simply don't know the block timestamp at the point when the transaction enters the mempool. 
+they enter a block, and we simply don't know the block timestamp at the point when the transaction enters the mempool. 
 
 Other blockchains get around this problem by just not validating transactions when they enter the mempool, instead relying
 on gas to prevent flooding. But one of the benefits of illium is we don't have gas fees! So we can't use that approach

@@ -121,7 +121,7 @@ Evaluates to: `t`
 
 ### Creating Variables
 
-To create and assign variables you need to do so inside of a let expression. The let expression takes the form:
+To create and assign variables you need to do so inside a let expression. The let expression takes the form:
 
 ```
 (let <list of bindings> <expression>)
@@ -133,7 +133,7 @@ Let's see what this looks like:
 ```
 Evaluates to: `8`
 
-Take note of a couple things. First, the first argument is a `list` of multiple variable assignments. Even if you 
+Take note of a couple of things. First, the first argument is a `list` of multiple variable assignments. Even if you 
 only intend to assign one variable, you still need to wrap the bindings in an extra parentheses. 
 
 ```lisp

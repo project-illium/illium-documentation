@@ -5,7 +5,7 @@ sidebar_position: 8
 # Assets
 
 Illium has native support for fungible and non-fungible assets (or tokens). An asset transfer looks no
-different from ordinary transfers or smart contracts on chain so it's not possible to distinguish a transaction
+different from ordinary transfers or smart contracts on chain, so it's not possible to distinguish a transaction
 which transfers assets from all other illium transactions. 
 
 To enable the token protocol we are going to once again modify our output commitment. This time we will add an

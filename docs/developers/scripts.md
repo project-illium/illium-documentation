@@ -78,13 +78,13 @@ The parameters to the unlocking function are as follows:
 seen by the network.
   - **sighash** (type `num`): The transaction's sighash.
   - **nullifiers** (type `list`): A list of `num` nullifiers from the transaction.
-  - **txo-root** (type `num`): The tranaction's txo-root.
+  - **txo-root** (type `num`): The transaction's txo-root.
   - **fee** (type `num`): The fee paid by the transaction.
   - **mint-id** (type `num`): If this is a token mint transaction, this is the ID of the token being minted. It will be `nil` otherwise.
   - **mint-amount** (type `num`): This is the amount of tokens being minted if this is a token mint transaction.
   - **public-outputs** (type `list`): A list of cons cells of format (`num`, `list`) representing the output commitment and
 ciphertext respectively. Note that each 32-byte chunk of ciphertext has the two most significant bits set to zero to fit within the
-the max field element size.
+max field element size.
   - **locktime** (type `num`): The transaction's locktime field.
   - **locktime-precision** (type `num`): The transaction's locktime precision field.
 
@@ -107,7 +107,7 @@ unlocking-params = (<large_random_secret_number>)
 
 ### Multisig Script
 
-This is an example of a 2 of 3 multisig. If 2 out of 3 key holders sign the transaction, the funds will unlock.
+This is an example of a 2 of 3 multisig. If 2 out of 3 keyholders sign the transaction, the funds will unlock.
 
 The committed locking params contains the threshold and a list of public keys.
 

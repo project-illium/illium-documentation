@@ -9,7 +9,7 @@ programming language. But there is more to smart contracts than just scripts. Ty
 allow users to save data (state) inside a contract and to read and manipulate that state. 
 
 Illium allows users to do this as well. To understand how we're going to have to introduce some changes to a few concepts
-we've already taked about. 
+we've already talked about. 
 
 ## Output Commitments
 
@@ -47,8 +47,8 @@ parts of the transaction and to make a decision to unlock or not based on what d
 
 ## Smart Contracts
 
-From this we can enforce a covenant and start building something that looks like a smart contract (again we are writting
-this is Go for familiarity, but in practice this would be written in lurk):
+From this we can enforce a covenant and start building something that looks like a smart contract (again we are writing
+this in Go for familiarity, but in practice this would be written in lurk):
 
 ```go
 func Unlock(lockingParams [][]byte, unlockingParams [][]byte, inputIndex int, priv PrivateParams, pub PublicParams) {

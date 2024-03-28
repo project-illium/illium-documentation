@@ -8,7 +8,7 @@ Before we can dive into the Illium protocol we need to get our heads around zk-s
 behind zk-snarks is super difficult to understand, you don't need to know any math to get a high level overview of
 what they are and what they do. 
 
-In a nutshell zk-snarks are programmatic cryptographic proofs that allow us to prove just about any statement we desire. 
+In a nutshell, zk-snarks are programmatic cryptographic proofs that allow us to prove just about any statement we desire. 
 
 Consider something you're likely already familiar with:
 
@@ -20,7 +20,7 @@ On the other hand, a zero-knowledge proof allows a prover to demonstrate knowled
 
 Both of these concepts are critical for secure communication and transaction verification in a variety of applications.
 
-In code we might make use of digital signatures as follows:
+In code, we might make use of digital signatures as follows:
 
 ```go
 privateKey, publicKey := GenerateKeyPair()

@@ -4,7 +4,7 @@ sidebar_position: 5
 
 # Lurk
 
-In our previous discussion of zk-snarks we hand-waived over all the complexity. Historically, zk-snarks have been
+In our previous discussion of zk-snarks we hand-waved over all the complexity. Historically, zk-snarks have been
 extremely difficult to work with. The `Compile()` function we mentioned earlier typically requires users to rewrite
 their function (called a circuit in zk-snark parlance) in a very low level mathematical representation. 
 Something that isn't easy to do for complex functions.
