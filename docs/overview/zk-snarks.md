@@ -4,7 +4,7 @@ sidebar_position: 2
 
 # zk-snarks
 
-Before we can dive into the Illium protocol we need to get our heads around zk-snarks. Don't worry, while the math
+Before we can dive into the Illium protocol we need to wrap our heads around zk-snarks. Don't worry, while the math
 behind zk-snarks is super difficult to understand, you don't need to know any math to get a high level overview of
 what they are and what they do. 
 

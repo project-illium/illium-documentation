@@ -1,7 +1,7 @@
 ---
 slug: /
 sidebar_position: 1
-description: Welcome to the illium protocol overview!
+description: Welcome to the Illium protocol overview!
 ---
 
 # Introduction
@@ -10,7 +10,7 @@ In this guide we will provide a comprehensive overview of the Illium protocol. T
 protocols built on top of zk-snarks may seem like a daunting task, but we're going to make it dirt simple. 
 If you have a decent understanding of the Bitcoin protocol there's no reason you can't also understand Illium.
 
-In fact,  in this guide we're going to reference Bitcoin quite a bit to as many of the concepts are similar. Where
+In fact, in this guide we're going to reference Bitcoin quite a bit, as many of the concepts are similar. Where
 they are different we will make sure to point it out. 
 
 But first...
@@ -34,4 +34,5 @@ It should be noted that while transactions are completely private, users can sti
 data need not be an all-or-nothing proposition whereby the person you share the data with necessarily sees everything. Instead, it's possible to
 make use of Illium's zk-snark functionality to selectively share only the parts of a transaction or contract that are relevant, while keeping everything else private. 
 
-Additionally, Illium makes use of novel improvements to the avalanche consensus algorithm to offer nearly instantaneous transaction finalization. 
+Additionally, Illium makes use of novel improvements to the [Avalanche Consensus protocol](./consensus.md) to
+offer nearly instantaneous transaction finalization. 
