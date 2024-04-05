@@ -6,7 +6,7 @@ description: Marco extensions
 # Storage
 
 Illium only gives you 128 bytes to use for each contract's state field. For a lot of applications this is enough space.
-For other's it's not.
+For others, it's not.
 
 If you need more storage you'll need create an off-chain database, compute a merkle root of all the data in the database, 
 and store the root hash of the database in state. 

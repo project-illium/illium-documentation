@@ -17,7 +17,7 @@ signature of a lambda function with a specific set of parameters.
 Notice the `locking-params` parameter. This is the same `lockingParams` that was committed to as part of the `scriptHash`.
 
 ```
-scritHash = hash(scriptCommitment || lockingParams)
+scriptHash = hash(scriptCommitment || lockingParams)
 ```
 
 The `lockingParams` that are committed to will ultimately get passed in to the unlocking function when the utxo is being
